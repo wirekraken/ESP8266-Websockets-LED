@@ -46,7 +46,7 @@ void setup(){
   while (WiFi.status() != WL_CONNECTED){ 
     delay(500);
     Serial.print(".");
-   }
+  }
   
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
@@ -97,6 +97,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
           bright = data.toInt();
           Serial.println(data);
           LEDS.setBrightness(bright);
+
         }  
         else if(payload[0] == 'F'){
           flag = 0;
@@ -104,15 +105,17 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
           ledMode = data.toInt();
           Serial.println(data);
           ledEffect(ledMode);
+
         }
         else if(payload[0] == '#'){
-          
+  
           if(!flag){
-               Serial.print("flag : ");
-               Serial.println(flag);
+              Serial.print("flag : ");
+              Serial.println(flag);
               ledMode = flag;
               ledEffect(ledMode);
               flag = 1;
+
           }
           else{
            //преобразуем в 24 битное цветовое число
@@ -173,6 +176,7 @@ void ledEffect(int ledMode){
       case 27: runnerChameleon(); break;
       case 28: blende(); break;
       case 29: blende_2();
+
     }
 }
   
@@ -192,6 +196,7 @@ String getContentType(String filename){
     else if(filename.endsWith(".zip")) return "application/x-zip";
     else if(filename.endsWith(".gz")) return "application/x-gzip";
     return "text/plain";
+
 }
 
 // функция поиска файла в файловой системе
@@ -207,4 +212,5 @@ bool handleFileRead(String path){
     return true;
   }
   return false;
+  
 }
