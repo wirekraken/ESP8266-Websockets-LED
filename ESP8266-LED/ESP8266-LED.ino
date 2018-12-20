@@ -7,7 +7,7 @@
 #include <FastLED.h>
 
 const char* ssid = "ssid"; // имя вашей сети
-const char* password = "voykov1968"; // пароль вашей сети
+const char* password = "password"; // пароль вашей сети
 
 IPAddress Ip(192,168,1,10); // IP-адрес для ESP
 IPAddress Gateway(192,168,1,1); // IP-адрес шлюза (роутера)
