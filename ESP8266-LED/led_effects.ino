@@ -129,7 +129,7 @@ void color_bounceFADE(){
   delay(delayValue);
 }
 
-// вращаются красный и синий
+// вращение красного и синего
 void red_blue_bounce(){
   idex++;
   if(idex >= LED_COUNT){
