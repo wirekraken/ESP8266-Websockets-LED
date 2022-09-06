@@ -122,9 +122,9 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
            uint32_t rgb = (uint32_t) strtol((const char *) &payload[1], NULL, 16);
           
            //преобразуем 24 бит по 8 бит на канал 
-           uint8_t r = abs(0 + (rgb >> 16) & 0xFF);
-           uint8_t g = abs(0 + (rgb >>  8) & 0xFF);
-           uint8_t b = abs(0 + (rgb >>  0) & 0xFF);
+           uint8_t r = abs(0 + (int)(rgb >> 16) & 0xFF);
+           uint8_t g = abs(0 + (int)(rgb >>  8) & 0xFF);
+           uint8_t b = abs(0 + (int)(rgb >>  0) & 0xFF);
            
            Serial.print("ColorPicker: ");
            Serial.print(r);
