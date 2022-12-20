@@ -1,40 +1,33 @@
-# Управление адресной лентой ws2812b с помощью ESP8266 через Web интерфэйс
+# ESP8266 - Websockets - LED strip
+
+#### Control an addressable LED strip with an ESP8266 via a Web browser.
 ![prev](https://i.ibb.co/fxM5H6V/led-min.jpg)
-## Описание проекта
-##### Управление: 
-* По WiFi или по Ethernet порту
 
-##### Особенности:
-- Постоянное TCP соединение
-- Длительность срабатывания при наихудшем сигнале WiFi не более 500мс 
-- Возможность асинхронного управления
-- Удобный colorpicker ([автор](https://github.com/NC22/HTML5-Color-Picker))
-- Имееться **29**  крутых эффектов
-- Плавная смена цветов
-- Плавная регулировка яркости
+## Features
+ - Adjust the brightness
+ - Color change via Color Picker. (Thanks to the [NC22](https://github.com/NC22/HTML5-Color-Picker))
+ - Selection of different effects
 
-## Материалы и компоненты
+## Hardware
 - ESP8266
-- ws2812b
-- резистор от перегрузки пина ESP (желательно)
-- 5-вольтовый источник питания (емкость в зависимости от кол-ва пикселей в ленте)
-- провода перемычки
-- Один из последних версий Arduino IDE вместе с :
-   - [Пакеты для ESP8266](https://github.com/esp8266/Arduino)
-   - [ESP8266FS плагин файловой системы](https://github.com/esp8266/arduino-esp8266fs-plugin) (используется для загрузки HTML, JS, CSS файлов в ESP)
-    - Библиотека Websockets (доступно из менеджера библиотек)
-    - Библиотека FastLed (доступно из менеджера библиотек)
-## Схема подключения
-![scheme](https://i.ibb.co/TMm0gJx/esp-ws2812b.png)
-## Установка
-- Подключить ESP8266 к вашему компьютеру
-- Открыть `ESP8266-LED.ino` и обновить сетевые настройки для вашей сети 
-- Загрузить скетч
-- В верхнем меню IDE выберите инструменты - > ESP8266 Sketch Upload, чтобы загрузить веб-файлы из каталога `data`.
-- Откройте монитор последовательного порта (при успешном подключении отобразиться ваш IP).
-- Перейдите по IP-адресу и наслаждайтесь )
+- Addressable LED strip (WS2811, WS2812, WS2812B)
+- 100 to 500 Ohm resistor (preferably)
+- 3.3V to 5V power supply (you can be powered directly from ESP, but the diodes will probably "flicker")
 
-## Aхтунг !
-![button](https://i.ibb.co/wzt967C/dan.png)
-Отмеченные функции с данным окрасом, имеют длинный цикл и при быстром смене яркости ESP8266 сильно нагружается и могут наблюдаться задержки !
-Рекомендую перед использованием этих функций сначала установить яркость.
+### Wiring diagram
+![scheme](https://i.ibb.co/TMm0gJx/esp-ws2812b.png)
+
+## Software
+- [Arduino IDE version (1.8.x)](https://www.arduino.cc/en/software)
+    - [ESP8266FS filesystem uploader](https://github.com/esp8266/arduino-esp8266fs-plugin) (used to upload files to ESP)
+#### Libraries
+        - [Websocket library](https://github.com/Links2004/arduinoWebSockets) (available from the library manager)
+        - [FastLED library](https://github.com/FastLED/FastLED) (available from the library manager)
+
+## Installing
+- Connect your ESP to your computer
+- Open `ESP8266-LED.ino` and update settings
+- Upload a sketch
+- In the IDE's top menu, select ***tools*** -> ***ESP8266 Sketch Data Upload*** to download files from the `data` directory.
+- Open the serial port monitor (if the connection is successful, IP your ESP will be displayed).
+- Open the browser and enter the IP address.
