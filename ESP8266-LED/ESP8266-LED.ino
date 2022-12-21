@@ -110,7 +110,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
           LEDS.setBrightness(brightness);
 
         }  
-        else if (payload[0] == 'F') { // effect
+        else if (payload[0] == 'E') { // effect
           isColorPicker = false;
           Serial.print("Effect: ");
           ledMode = data.toInt();

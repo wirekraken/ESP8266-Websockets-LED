@@ -1,45 +1,48 @@
-body{
+html, body {
 	margin: 0;
 	padding: 0;
+	user-select: none;
+	font-family: Tahoma;
+
 }
 
-#picker{
-	border-radius: 50%;
-	box-shadow: 2px 2px 2px black,-2px -2px 2px black;
-}
-
-#shower{
+#shower {
 	background:#9dd900;
 }
 
-#submenu{
+#submenu {
 	background: #5b5b5b;
 }
 
-#submenu span{
+#submenu span {
 	background: rgba(0,0,0,0.4);
 	text-align: center;
 	color: #feffde;
-	font-family: Arial;
 }
 
-@media only screen and (min-width: 600px){  /*for PC*/
-	body{
+@media only screen and (min-width: 600px) {  /*for PC*/
+	body {
 		min-width: 600px;
 	}
 
-	#container{
-		background: white;
-		box-shadow: 1px 1px 5px black,-1px -1px 5px black;
-		border-radius: 5px;
+	#wrapper {
+		display: flex;
+		justify-content: center;
+	}
+
+	#container {
+		margin-top: 20px;
+		background: rgba(255,255,255,0.4);
+		box-shadow: 0 0 25px black;
+		border-radius: 2px;
 		display: inline-flex;
-		flex-direction: row;
-		margin: 10px;
-		padding: 10px;
+		justify-content: center;
+		gap: 20px;
+		padding: 20px;
 
 	}
 
-	#shower{
+	#shower {
 	    width: 260px;
 	    margin: 0 0 0 20px;
 	    height: 60px;
@@ -48,7 +51,7 @@ body{
 	    border-top-right-radius: 3px;
 	}
 
-	#submenu{
+	#submenu {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
@@ -63,7 +66,7 @@ body{
 	    border-bottom-right-radius: 3px;
 	}
 
-	#submenu span{
+	#submenu span {
 		margin: 1px;
 		padding: 3px;
 		font-size: 17px;
@@ -72,12 +75,12 @@ body{
 	
 	/*--------range---------*/
 	
-	#rangeBlock{
+	#rangeBlock {
 		width: 70%;
 		margin-left: 15%;	
 	}
 
-	#range{
+	#range {
 		margin-top: 20px;
 		width: 100%;
 		margin-left: 0;
@@ -86,15 +89,15 @@ body{
 		color: transparent;	
 	}
 
-	#range:focus{
+	#range:focus {
 		outline: none;
 	}
 
-	#range:hover + #rangeValue{
+	#range:hover + #rangeValue {
 		opacity: 1;
 	}
 
-	#range::-webkit-slider-thumb{
+	#range::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		border: 1px solid #000000;
 		height: 26px;
@@ -105,7 +108,7 @@ body{
 		margin-top: -10px; 
 	}
 
-	input[type=range]::-moz-range-thumb{
+	input[type=range]::-moz-range-thumb {
 		border: 1px solid #000000;
 		height: 26px;
 		width: 26px;
@@ -115,7 +118,7 @@ body{
 		margin-top: -10px; 
 	}
 
-	#range::-webkit-slider-runnable-track{
+	#range::-webkit-slider-runnable-track {
 		height: 6px;
 		cursor: pointer;
 		background: #817d4b;
@@ -123,7 +126,7 @@ body{
 		border: 1px solid #010101;
 	}
 
-	input[type=range]::-moz-range-track{
+	input[type=range]::-moz-range-track {
 		height: 6px;
 		cursor: pointer;
 		background: #817d4b;
@@ -131,30 +134,7 @@ body{
 		border: 1px solid #010101;
 	}
 
-	#rangeValue{
-		height: 20px; width:28px;
-		color:white;
-		margin-top: -50px;
-		background: #4b4b4b;
-		position: absolute;
-		text-align: center;
-		line-height: 28px;
-		opacity: 0;
-		
-	}
-
-	#rangeValue:after{
-		content: "";
-		position: absolute; 
-		left: 0;
-		top: 20px;
-		border-top: 10px solid #4b4b4b;
-		border-left: 14px solid transparent;
-		border-right: 14px solid transparent;
-	
-	}
-
-	#currentEffect{
+	#currentEffect {
 		text-align: center;
 		margin: 0 0 -2px 0;
 		height: 30px;
@@ -163,28 +143,28 @@ body{
 	 	font-family: Verdana;
 	}
 
-	#arrow{
+	#arrow {
 		display: none; 
 	}
 }
 
-@media only screen and (max-width: 600px){ /*for mobile*/
-	body{
+@media only screen and (max-width: 600px) { /*for mobile*/
+	body {
 		overflow-y: hidden;
 	}
 
-	#container{
+	#container {
 		display: flex;
 		flex-direction: column;
-		/*важно для телефона т.к. при скролле наблюдаеться заторможение*/
+
 	}
 
-	#picker{
+	#picker {
 		width: 96%;
 		margin: 2%;
 	}
 
-	#shower{
+	#shower {
 	    width: 100%;
 	    position: fixed;
 	    left: 0;
@@ -194,11 +174,11 @@ body{
 
 	}
 
-	#showedBlock{
+	#showedBlock {
 		display: none;
 	}
 
-	#submenu{
+	#submenu {
 		position: absolute;
 		display: flex;
 		flex-direction: column;
@@ -209,7 +189,7 @@ body{
 		box-shadow: inset 0 15px 10px -10px #a4ff69;
 	}
 
-	#submenu span{
+	#submenu span {
 		margin: 1px 0 1px 0;
 		padding: 5px;
 		font-size: 20px;
@@ -218,14 +198,14 @@ body{
 	
 	/*--------range---------*/
 
-	#rangeBlock{
+	#rangeBlock {
 		width: 100%;
 		margin-top: 60px;
 		background: #9dd900;
 		height: 40px;
 	}
 
-	#range{
+	#range {
 		margin-top: 18px;
 		margin-bottom: 15px;
 		width: 90%;
@@ -236,11 +216,11 @@ body{
 		color: transparent;
 	}
 
-	#range:focus{
+	#range:focus {
 		outline: none;
 	}
 
-	#range::-webkit-slider-thumb{
+	#range::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		border: 1px solid #000000;
 		height: 36px;
@@ -251,7 +231,7 @@ body{
 		margin-top: -15px; 
 	}
 
-	#range::-moz-range-thumb{
+	#range::-moz-range-thumb {
 		border: 1px solid #000000;
 		height: 36px;
 		width: 36px;
@@ -261,7 +241,7 @@ body{
 		margin-top: -14px; 
 	}
 
-	#range::-webkit-slider-runnable-track{
+	#range::-webkit-slider-runnable-track {
 		height: 8px;
 		margin-top: -4px;
 		cursor: pointer;
@@ -270,7 +250,7 @@ body{
 		border: 1px solid #010101;
 	}
 
-	#range::-moz-range-track{
+	#range::-moz-range-track {
 	  	height: 8px;
 		margin-top: -4px;
 		cursor: pointer;
@@ -279,30 +259,7 @@ body{
 		border: 1px solid #010101;
 	}
 
-	#rangeValue{
-		height: 26px; width:38px;
-		color: white;
-		margin-top: -78px;
-		background: #4b4b4b;
-		position: absolute;
-		text-align: center;
-		line-height: 26px;
-		z-index: 20;
-		opacity: 0;
-		left: 5%;
-	}
-
-	#rangeValue:after{
-		content: "";
-		position: absolute; 
-		left: 0;
-		top: 26px;
-		border-top: 15px solid #4b4b4b;
-		border-left: 19px solid transparent;
-		border-right: 19px solid transparent;
-	}
-
-	#arrow{
+	#arrow {
 		fill: #817d4b;
 		stroke: black;
 		stroke-width: .2;
@@ -313,8 +270,8 @@ body{
 
 }
 
-@-moz-document url-prefix(){
-     #range{
+@-moz-document url-prefix() {
+     #range {
      	margin-top: 10px;
      	left:2.4%;
      }
