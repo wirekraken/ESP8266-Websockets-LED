@@ -1,7 +1,7 @@
 # ESP8266 - Websockets - LED strip
 
 #### Control an addressable LED strip with an ESP8266 via a Web browser.
-![prev](https://i.ibb.co/fxM5H6V/led-min.jpg)
+![prev](images/web-app.jpg)
 
 ## Features
  - Adjust the brightness
@@ -15,12 +15,12 @@
 - 3.3V to 5V power supply (you can be powered directly from ESP, but the diodes will probably "flicker")
 
 ### Wiring diagram
-![scheme](https://i.ibb.co/TMm0gJx/esp-ws2812b.png)
+![scheme](images/wiring-diagram.jpg)
 
 ## Software
 - [Arduino IDE version (1.8.x)](https://www.arduino.cc/en/software)
 - [ESP8266FS filesystem uploader](https://github.com/esp8266/arduino-esp8266fs-plugin) (used to upload files to ESP)
-- [Websocket library](https://github.com/Links2004/arduinoWebSockets) (available from the library manager)
+- [Websocket library (by Markus Sattler)](https://github.com/Links2004/arduinoWebSockets) (available from the library manager)
 - [FastLED library](https://github.com/FastLED/FastLED) (available from the library manager)
 
 ## Installing

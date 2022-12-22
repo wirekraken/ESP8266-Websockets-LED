@@ -1,5 +1,5 @@
 /*
-  wirekraken
+* ESP8266-Websockets-LED: https://github.com/wirekraken/ESP8266-Websockets-LED
 */
 
 #include <ESP8266WebServer.h>
