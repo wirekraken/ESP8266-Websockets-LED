@@ -36,7 +36,6 @@ ESP8266WebServer server; // 80 default
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("Serial started at 9600");
 
   // tell FastLED about the LED strip configuration
   LEDS.addLeds<WS2811, DATA_PIN, GRB>(leds, NUM_LEDS);
@@ -87,11 +86,9 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
    // if a new websocket connection is established
    if (type == WStype_CONNECTED) {
       IPAddress ip = webSocket.remoteIP(num);
-
-      String message = String("Websocket connection is established");
       
-      webSocket.broadcastTXT(message); // send status message to all connected clients
-      Serial.println(message);
+      webSocket.sendTXT(num, "Websocket established!"); // send status message
+      Serial.println("New client connected! Num: " + String(num));
     }
     // if new text data is received
     if (type == WStype_TEXT) {
@@ -104,7 +101,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
         
         if (payload[0] == 'B') { // brightness
           isColorPicker = false;
-          Serial.print("Brightness: ");
+          Serial.print("Client " + String(num) + ": Brightness: ");
           brightness = data.toInt();
           Serial.println(data);
           LEDS.setBrightness(brightness);
@@ -112,7 +109,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
         }  
         else if (payload[0] == 'E') { // effect
           isColorPicker = false;
-          Serial.print("Effect: ");
+          Serial.print("Client " + String(num) + ": Effect: ");
           ledMode = data.toInt();
           Serial.println(data);
           setEffect(ledMode);
@@ -129,18 +126,14 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 
           }
           else {
-           // decode RGB data
-           // ----------------------FIX ME-----------------------
-           int32_t rgb = (uint32_t) strtol((const char *) &payload[1], NULL, 16);
+           // decode HEX to RGB
+           uint32_t rgb = (uint32_t) strtol((const char *) &payload[1], NULL, 16);
            
-           uint8_t r = abs(0 + (rgb >> 16) & 0xFF);
-           uint8_t g = abs(0 + (rgb >>  8) & 0xFF);
-           uint8_t b = abs(0 + (rgb >>  0) & 0xFF);
+           uint8_t r = (rgb >> 16) & 0xFF;
+           uint8_t g = (rgb >>  8) & 0xFF;
+           uint8_t b = (rgb >>  0) & 0xFF;
            
-           Serial.print("Color picker: ");
-           Serial.print(r);
-           Serial.print(g);
-           Serial.println(b);
+           Serial.println("Client " + String(num) + ": Color: (" + String(r) + "," + String(g) + "," + String(b) + ")");
            
            for (int i = 0; i < NUM_LEDS; i++) {
              leds[i].setRGB(r,g,b);
