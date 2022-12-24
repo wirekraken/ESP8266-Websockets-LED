@@ -3,59 +3,87 @@
 <head>
 	<meta charset="UTF-8">
 	<title>color picker</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<link rel="stylesheet" href="style.css">
-	<script src="html5kellycolorpicker.min.js"></script>
+	<meta class="effects_item" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta class="effects_item" name="theme-color" content="red" />
+  <link rel="stylesheet" href="style.css">
+	<!-- <script src="html5kellycolorpicker.min.js"></script> -->
 </head>
 <body>
-  <div id="wrapper">
-    <div id="container">
-      <canvas id="picker"></canvas>
-      <div id="shower">
-        <svg viewBox="0 0 10 10" id="arrow" width="80">
-          <path d="M 0.7,5 L 6,10 L 7,9.4 L 3,5 L 6,1 L 5,0 Z"/>
-        </svg>
-        <div id="showedBlock">
-          <div id="rangeBlock">
-            <input type="range" id="range" step="1" value="25" min="0" max="255">
-          </div>
-          <p id="currentEffect">---------------</p>
-          <div id="submenu">
-            <span name="1">rainbow fade</span>
-            <span name="2">rainbow loop</span>
-            <span name="3">rainbow loop 2</span>
-            <span name="4">random march</span>
-            <span name="5">rgb propeller</span>
-            <span name="6">rotating red blue</span>
-            <span name="7">fire</span>
-            <span name="8">blue fire</span>
-            <span name="9">random bars</span>
-            <span name="10">flicker</span>
-            <span name="11">random color</span>
-            <span name="12">sparkle</span>
-            <span name="13">color bounce</span>
-            <span name="14">color bounce fade</span>
-            <span name="15">blue red bounce</span>
-            <span name="16">rainbow vertical</span>
-            <span name="17">matrix</span>
-            <span name="18">rwb march</span>
-            <span name="19">flame</span>
-            <span name="20">theater chase</span>
-            <span name="21">strobe</span>
-            <span name="22">police blinker</span>
-            <span name="23">kitt</span>
-            <span name="24">rule</span>
-            <span name="25">fade vertical</span>
-            <span name="26">fade to center</span>
-            <span name="27">runner chameleon</span>
-            <span name="28">blende</span>
-            <span name="29">blende 2</span>
-          </div>
-        </div>
+  <div class="app">
+
+    <div class="header">
+      <div class="settings_block">
+        <button class="button">*</button>
+      </div>
+      <div class="toggle_list">
+        <input type="checkbox" class="toggle_list_btn"/>
       </div>
     </div>
+
+    <div class="content">
+
+      <!-- <div class="current_led">
+        <span>Rainbow loop</span>
+      </div>
+      <div class="led_controls_rng">
+        <input class="range" type="range">
+        <input class="range" type="range">
+      </div> -->
+
+      <div class="effects_list" style="display:;">
+        <span class="effects_item" data-effect="1">rainbow fade</span>
+        <span class="effects_item" data-effect="2">rainbow loop</span>
+        <span class="effects_item" data-effect="3">rainbow loop 2</span>
+        <span class="effects_item" data-effect="4">random march</span>
+        <span class="effects_item" data-effect="5">rgb propeller</span>
+        <span class="effects_item" data-effect="6">rotating red blue</span>
+        <span class="effects_item" data-effect="7">fire</span>
+        <span class="effects_item" data-effect="8">blue fire</span>
+        <span class="effects_item" data-effect="9">random bars</span>
+        <span class="effects_item" data-effect="10">flicker</span>
+        <span class="effects_item" data-effect="11">random color</span>
+        <span class="effects_item" data-effect="12">sparkle</span>
+        <span class="effects_item" data-effect="13">color bounce</span>
+        <span class="effects_item" data-effect="14">color bounce fade</span>
+        <span class="effects_item" data-effect="15">blue red bounce</span>
+        <span class="effects_item" data-effect="16">rainbow vertical</span>
+        <span class="effects_item" data-effect="17">matrix</span>
+        <span class="effects_item" data-effect="18">rwb march</span>
+        <span class="effects_item" data-effect="19">flame</span>
+        <span class="effects_item" data-effect="20">theater chase</span>
+        <span class="effects_item" data-effect="21">strobe</span>
+        <span class="effects_item" data-effect="22">police blinker</span>
+        <span class="effects_item" data-effect="23">kitt</span>
+        <span class="effects_item" data-effect="24">rule</span>
+        <span class="effects_item" data-effect="25">fade vertical</span>
+        <span class="effects_item" data-effect="26">fade to center</span>
+        <span class="effects_item" data-effect="27">runner chameleon</span>
+        <span class="effects_item" data-effect="28">blende</span>
+        <span class="effects_item" data-effect="29">blende 2</span>
+      </div>
+
+    </div>
+
+      <div class="led_controls">
+
+          <input class="toggle_btn toggle_loop" type="checkbox"/>
+
+          <div class="led_controls_nav_block">
+            <button class="button prev_btn"><</button>
+            <div class="start_btn_block">
+              <input class="start_btn" id="start_btn" type="checkbox"/>
+              <label for="start_btn"></label>
+            </div>
+            <button class="button next_btn">></button>
+          </div>
+
+          <input class="toggle_btn toggle_random" type="checkbox"/>
+
+        </div>
+
   </div>
+
 </body>
 <script src="effects.js"></script>
-<script src="color.js"></script>
+<!-- <script src="color.js"></script> -->
 </html>
