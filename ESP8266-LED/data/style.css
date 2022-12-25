@@ -6,13 +6,25 @@ html, body {
 
 }
 
+/* .snowflake {
+    position: absolute;
+	z-index: 1000;
+    width: 10px;
+    height: 10px;
+    background: linear-gradient(white, white);
+    border-radius: 50%;
+    filter: drop-shadow(0 0 10px white);
+} */
+
+
 #wrapper {
 	display: none;
 }
 
-.app {
+#app {
 	/* background-color: aqua; */
 	background:#E11328;
+	background-color: #090a0f;
 	position: fixed;
 	height: 100vh;
 	width: 100%;
@@ -21,33 +33,81 @@ html, body {
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
+
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
 }
 
-.toggle_list {
+.header {
+	background-color: darkseagreen;
+
+}
+
+.header .toggle_settings {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	height: 40px;
+	width: 40px;
+}
+
+.header .settings_block {
+	position: absolute;
+	z-index: 1000;
+	top: 60px;
+	right: 10px;
+	width: 80vw;
+	background-color: rgba(0,0,0,.7);
+	height: 200px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-end;
+	text-align: right;
+	font-size: 20px;
+
+}
+
+
+
+.toggle_content {
 	width: 40px;
 	height: 40px;
 	background-color: #E11328;
 	position: absolute;
 	right: 10px;
-	top: 30px
+	top: 60px
 }
 
 .content {
-	background-color: rgb(118, 118, 218);
+	/* background-color: rgb(118, 118, 218); */
 	width: 100%;
+	height: 100%;
+	/* background: #dd8790; */
 
+}
+
+.content_main {
+	/* background-color: goldenrod; */
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .content .current_led {
 	background-color: aquamarine;
 	text-align: center;
-	font-size: 30px;
-	margin-top: 30vh;
+	font-size: 32px;
+	margin-top: -40vh;
 	/* flex-grow: 1; */
 }
 
 .led_controls_rng {
-	background-color: chartreuse;
+	/* background-color: chartreuse; */
 	/* height: 200px; */
 	display: flex;
 	flex-direction: column;
@@ -65,7 +125,7 @@ html, body {
 
 .content .effects_list {
 	/* position: absolute; */
-	background-color: cyan;
+	/* background-color: cyan; */
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -86,7 +146,7 @@ html, body {
 }
 
 .led_controls {
-	background-color: rgb(24, 144, 243);
+	/* background-color: rgb(24, 144, 243); */
 	display: flex;
 	justify-content: space-around;
 	align-items: center;

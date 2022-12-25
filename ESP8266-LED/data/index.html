@@ -4,33 +4,55 @@
 	<meta charset="UTF-8">
 	<title>color picker</title>
 	<meta class="effects_item" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<meta class="effects_item" name="theme-color" content="red" />
+	<meta class="effects_item" name="theme-color" content="darkblue" />
   <link rel="stylesheet" href="style.css">
 	<!-- <script src="html5kellycolorpicker.min.js"></script> -->
+  
 </head>
 <body>
-  <div class="app">
+  <!-- <div id="snow" count="20"></div> -->
+
+  <div id="app">
 
     <div class="header">
+      <div class="toggle_settings_block">
+        <input type="checkbox" class="toggle_settings"/>
+      </div>
+      <div class="toggle_content_block">
+        <input type="checkbox" class="toggle_content"/>
+      </div>
+
       <div class="settings_block">
-        <button class="button">*</button>
+        <label>Nav bg<input class="toggle_nav_bg" type="checkbox"></label>
+        <div class="theme_setter_block">
+          <input data-theme-color="red" class="theme_setter theme_red"  type="radio" name="theme">
+          <input data-theme-color="darkblue" class="theme_setter theme_darkblue" checked type="radio" name="theme">
+          <input data-theme-color="coral" class="theme_setter theme_coral" type="radio" name="theme">
+        </div>
+
+        <div class="bg_setter_block">
+          <input type="text">
+          <button class="bg_setter">set</button>
+        </div>
+
       </div>
-      <div class="toggle_list">
-        <input type="checkbox" class="toggle_list_btn"/>
-      </div>
+
     </div>
 
     <div class="content">
 
-      <!-- <div class="current_led">
-        <span>Rainbow loop</span>
+      <div class="content_main">
+        <div class="current_led">
+          <span>color bounce fade</span>
+        </div>
+        <div class="led_controls_rng">
+          <input class="range" type="range">
+          <input class="range" type="range">
+        </div>
       </div>
-      <div class="led_controls_rng">
-        <input class="range" type="range">
-        <input class="range" type="range">
-      </div> -->
 
-      <div class="effects_list" style="display:;">
+
+      <div class="effects_list" style="display:none;">
         <span class="effects_item" data-effect="1">rainbow fade</span>
         <span class="effects_item" data-effect="2">rainbow loop</span>
         <span class="effects_item" data-effect="3">rainbow loop 2</span>
@@ -84,6 +106,7 @@
   </div>
 
 </body>
+<!-- <script src="pure-snow.js"></script> -->
 <script src="effects.js"></script>
 <!-- <script src="color.js"></script> -->
 </html>
