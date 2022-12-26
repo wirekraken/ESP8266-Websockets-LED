@@ -1,0 +1,148 @@
+.content {
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(to top left, rgba(0, 0, 0, 1), rgba(50, 70, 70, 1));
+    /* background:white; */
+    background-image: radial-gradient(rgba(20, 26, 73, 0.644), rgb(0, 0, 0));
+}
+
+.content_main {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	
+}
+
+.content_main .current_led {
+	/* background-color: aquamarine; */
+    text-shadow: 0 0 10px #090a0f;
+	text-align: center;
+	font-size: 32px;
+	margin-top: -40vh;
+}
+
+.content_main .led_controls_rng {
+	/* background-color: chartreuse; */
+	/* height: 200px; */
+	display: flex;
+	flex-direction: column;
+	/* width: 100%; */
+	gap: 20px;
+	position: fixed;
+	bottom: 140px;
+
+}
+
+
+.led_controls_rng .range_brightness_block {
+    /* background-color: #ff4500; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 30px;
+    gap: 6px;
+    
+}
+.led_controls_rng img {
+    width: 22px;
+    filter: invert();
+}
+
+.led_controls_rng .range {
+	/* background-color: rgb(41, 26, 248); */
+	width: 35vh;
+
+}
+
+.led_controls_rng .range_duration_block {
+    /* background-color: #ff4500; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 30px;
+    gap: 6px;
+    
+}
+.led_controls_rng img {
+    width: 22px;
+    filter: invert();
+}
+
+.led_controls_rng .range {
+	/* background-color: rgb(41, 26, 248); */
+	width: 35vh;
+
+}
+
+.led_controls_rng output {
+    /* background: #ff4500; */
+    vertical-align: middle;
+    font-size: 1em;
+    font-family: Arial, sans-serif;
+    text-align: center;
+
+    padding: 5px 15px 5px 5px;
+    width: 20px;
+    font-size: 20px;
+
+    border-radius: 3px;
+    color: #fff;
+}
+
+.led_controls_rng .range[type="range"] {
+    -webkit-appearance: none;
+    /* margin-right: 15px; */
+    /* width: 200px; */
+    height: 5px;
+    border: none;
+    background: rgba(255, 255, 255, 0.6);
+    background: rgba(50, 50, 50, 0.6);
+    border-radius: 5px;
+    background-image: linear-gradient(#ff4500, #ff4500);
+    background-size: 70% 100%;
+    background-repeat: no-repeat;
+  }
+
+
+.led_controls_rng .range[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    background: silver;
+    box-shadow: 0 0 4px 0 #555;
+    /* transition: background .3s ease-in-out; */
+}
+
+
+/* ############################################ */
+
+.content .effects_list {
+	/* position: absolute; */
+	/* background-color: cyan; */
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	align-items: center;
+	gap: 5px;
+	font-size: 22px;
+	overflow-y: auto;
+	padding-top: 10px;
+	/* height: 100%; */
+	/* height: calc(100% - 120px); */
+}
+
+.effects_list span {
+	background: rgb(118, 118, 218);
+	background-color:yellowgreen;
+	background-color: #090a0f;
+	color: yellowgreen;
+	text-align: center;
+	padding: 10px;
+
+}

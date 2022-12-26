@@ -5,7 +5,10 @@
 	<title>color picker</title>
 	<meta class="effects_item" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<meta class="effects_item" name="theme-color" content="darkblue" />
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="header.css">
+  <link rel="stylesheet" href="content.css">
+  <link rel="stylesheet" href="nav.css">
 	<!-- <script src="html5kellycolorpicker.min.js"></script> -->
   
 </head>
@@ -15,25 +18,43 @@
   <div id="app">
 
     <div class="header">
+
       <div class="toggle_settings_block">
-        <input type="checkbox" class="toggle_settings"/>
+        <input type="checkbox" class="toggle_settings" id="toggle_settings"/>
+        <label for="toggle_settings"></label>
       </div>
+
       <div class="toggle_content_block">
-        <input type="checkbox" class="toggle_content"/>
+        <!-- <input class='control toggle' id='toggle-races' type="checkbox" checked> -->
+        
+
+        <input type="checkbox" class="toggle_content" id="toggle_content"/>
+        <label for="toggle_content"></label>
       </div>
 
       <div class="settings_block">
-        <label>Nav bg<input class="toggle_nav_bg" type="checkbox"></label>
+
         <div class="theme_setter_block">
-          <input data-theme-color="red" class="theme_setter theme_red"  type="radio" name="theme">
-          <input data-theme-color="darkblue" class="theme_setter theme_darkblue" checked type="radio" name="theme">
-          <input data-theme-color="coral" class="theme_setter theme_coral" type="radio" name="theme">
+          <span>Theme</span>
+          <div>
+            <input data-theme-color="yellowGreen" id="theme_yellowGreen" class="theme_setter theme_yellowGreen"  type="radio" name="theme">
+            <label for="theme_yellowGreen"></label>
+            <input data-theme-color="darkblue" id="theme_darkblue" class="theme_setter theme_darkblue" checked type="radio" name="theme">
+            <label for="theme_darkblue"></label>
+            <input data-theme-color="orangeRed" id="theme_orangeRed" class="theme_setter theme_orangeRed" type="radio" name="theme">
+            <label for="theme_orangeRed"></label>
+          </div>
         </div>
 
-        <div class="bg_setter_block">
+        <div class="toggle_fill_nav_block">
+          <label for="toggle_fill_nav">Fill nav</label>
+          <input type="checkbox" class="toggle_fill_nav" id="toggle_fill_nav"/>
+        </div>
+
+        <!-- <div class="bg_setter_block">
           <input type="text">
           <button class="bg_setter">set</button>
-        </div>
+        </div> -->
 
       </div>
 
@@ -42,12 +63,24 @@
     <div class="content">
 
       <div class="content_main">
+
         <div class="current_led">
           <span>color bounce fade</span>
         </div>
+
         <div class="led_controls_rng">
-          <input class="range" type="range">
-          <input class="range" type="range">
+
+          <div class="range_brightness_block">
+            <img src="icons/brightness.png">
+            <input class="range range_brightness" type="range" value="40" min="0" max="100"/>
+            <output class="brightness_value">0</output>
+          </div>
+          <div class="range_duration_block">
+            <img src="icons/duration.png">
+            <input class="range range_duration" type="range" value="8" min="2" max="60"/>
+            <output class="duration_value">2</output>
+          </div>
+
         </div>
       </div>
 
@@ -88,18 +121,24 @@
 
       <div class="led_controls">
 
-          <input class="toggle_btn toggle_loop" type="checkbox"/>
+        <div class="toggle_loop_block">
+          <input class="toggle toggle_loop" id="toggle_loop" type="checkbox"/>
+          <label for="toggle_loop"></label>
+        </div>
 
           <div class="led_controls_nav_block">
-            <button class="button prev_btn"><</button>
-            <div class="start_btn_block">
-              <input class="start_btn" id="start_btn" type="checkbox"/>
-              <label for="start_btn"></label>
+            <button class="button prev_btn"></button>
+            <div class="toggle_play_block">
+              <input class="toggle_play" id="toggle_play" type="checkbox"/>
+              <label for="toggle_play"></label>
             </div>
-            <button class="button next_btn">></button>
+            <button class="button next_btn"></button>
           </div>
 
-          <input class="toggle_btn toggle_random" type="checkbox"/>
+          <div class="toggle_random_block">
+            <input class="toggle toggle_random" id="toggle_random" type="checkbox"/>
+            <label for="toggle_random"></label>
+          </div>
 
         </div>
 
@@ -108,5 +147,6 @@
 </body>
 <!-- <script src="pure-snow.js"></script> -->
 <script src="effects.js"></script>
+<script src="themes.js"></script>
 <!-- <script src="color.js"></script> -->
 </html>

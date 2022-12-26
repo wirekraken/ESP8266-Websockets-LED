@@ -1,0 +1,146 @@
+.header {
+	background-color: darkseagreen;
+
+}
+
+.settings_block {
+	position: absolute;
+	z-index: 1000;
+	top: 60px;
+	right: 6px;
+    width: 170px;
+    height: 130px;
+	background-color: rgba(0,0,0,.7);
+	background: linear-gradient(to top left, rgba(0, 0, 0, 1), rgba(50, 70, 70, 1));
+	/* box-shadow: 0px -4px 0px 0px rgba(140,140,180,.2) inset; */
+	border-radius: 3px;
+    border: 1px solid #666;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-end;
+	text-align: right;
+	font-size: 22px;
+    color: #ccc;
+    gap: 20px;
+    padding: 10px;
+
+}
+
+.theme_setter_block input {
+    background-color: red;
+
+}
+
+.theme_setter_block input[type=radio] {
+    display: none;
+}
+
+.theme_setter_block label {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin: 6px 2px 0 2px;
+    border-radius: 3px;
+    color: #bbb;
+    border: 2px solid #555;
+}
+
+.theme_setter_block .theme_yellowGreen + label {
+    background-color:yellowgreen ;
+}
+.theme_setter_block .theme_darkblue + label {
+    background:darkblue ;
+}
+.theme_setter_block .theme_orangeRed + label {
+    background:orangered ;
+}
+
+.theme_setter_block input[type=radio]:checked + label {
+    border: 2px solid white;
+}
+
+.toggle_fill_nav_block input {
+    width: 22px;
+    height: 22px;
+
+}
+
+.toggle_settings_block {
+	position: absolute;
+	z-index: 1000;
+	right: 10px;
+	top: 10px;
+	/* background-color: #E11328; */
+
+}
+
+.toggle_settings_block input[type=checkbox] {
+    display: none;
+}
+
+.toggle_settings_block label {
+    display: block;
+    height: 40px;
+    width: 40px;
+    background-image: url('icons/settings.png');
+	/* background-color: green; */
+    background-repeat: no-repeat;
+    background-position: center;
+	background-size: cover;
+    filter: invert();
+    /* background-size: 18px; */
+	transition: .2s;
+}
+
+.toggle_settings_block input[type=checkbox]:checked + label {
+    /* background-position: 0 0; */
+	transform: rotate(45deg);
+
+}
+
+.toggle_settings_block label:hover {
+    /* background-color: rgba(100, 100, 100, .4); */
+}
+
+.toggle_content_block {
+	position: absolute;
+	z-index: 1000;
+	right: 10px;
+	top: 70px;
+	/* background-color: #E11328; */
+
+}
+
+.toggle_content_block input[type=checkbox] {
+    display: none;
+}
+
+.toggle_content_block label {
+    display: block;
+    height: 40px;
+    width: 40px;
+    background-image: url('icons/effect.png');
+
+    /* background-color: green; */
+    background-repeat: no-repeat;
+    background-position: center;
+	background-size: cover;
+
+    filter: invert();
+    /* background-size: 18px; */
+	transition: .2s;
+}
+
+.toggle_content_block input[type=checkbox]:checked + label {
+    /* background-position: 0 0; */
+	/* transform: rotate(180deg); */
+    transform: scale(-1,1);
+    background-image: url('icons/close.png');
+
+}
+
+.toggle_content_block label:hover {
+    /* background-color: rgba(100, 100, 100, .4); */
+}

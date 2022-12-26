@@ -79,118 +79,71 @@ toggleContent.onclick = function() {
 }
 
 
+// ######################### range #################################
 
-const bgSetter = document.querySelector('.bg_setter_block .bg_setter')
 
-// bgSetter.onclick = function() {
-// 	const bgInput = document.querySelector('.bg_setter_block input')
-// 	console.log(bgInput.value)
-// 	app.style.backgroundImage = `url(${ bgInput.value })`;
+// const rangeInputs = document.querySelectorAll('input[type="range"]')
+const rangeBrightness = document.querySelector('.range_brightness');
+const brightnessValue = document.querySelector('.brightness_value');
 
-// 	localStorage.setItem('bg', bgInput.value)
-	
+const rangeDuration = document.querySelector('.range_duration');
+const durationValue = document.querySelector('.duration_value');
+
+// rangeBrightness.oninput = handleRangeChange.apply(rangeBrightness);
+updateRange(rangeBrightness, brightnessValue);
+updateRange(rangeDuration, durationValue);
+
+// brightnessValue.value = rangeBrightness.value;
+// durationValue.value = rangeDuration.value;
+
+rangeBrightness.oninput = function() {
+	const min = this.min;
+	const max = this.max;
+	const val = this.value;
+
+	this.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%';
+
+	brightnessValue.value = this.value;
+}
+
+rangeDuration.oninput = function() {
+	const min = this.min;
+	const max = this.max;
+	const val = this.value;
+
+	this.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%';
+
+	durationValue.value = this.value;
+}
+
+function updateRange(range, valueElem) {
+	const min = range.min;
+	const max = range.max;
+	const val = range.value;
+	range.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%';
+	valueElem.value = range.value;
+}
+
+
+
+// function handleRangeChange(e) {
+// 	// let target = e.target;
+
+// 	// if (e.target.type !== 'range') {
+// 	// 	target = document.querySelector('.range_brightness');
+// 	// } 
+
+// 	const min = this.min;
+// 	const max = this.max;
+// 	const val = this.value;
+
+// 	this.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%';
+
+// 	brightnessValue.value = this.value;
 // }
 
-bgSetter.onclick = setBg;
-
-setBg();
-
-function setBg() {
-	const bgInput = document.querySelector('.bg_setter_block input')
-	let bg = null;
-
-	if (bgInput.value) {
-		localStorage.setItem('bg', bgInput.value);
-		console.log('set bg')
-		bg = bgInput.value;
-	}
-	else {
-		if (localStorage.getItem('bg')) {
-			// console.log(localStorage.getItem('bg'))
-			bg = localStorage.getItem('bg');
-			console.log('get bg')
-		}
-		bgInput.value = bg;
-	}
-
-	
-	console.log(bgInput.value)
-	app.style.backgroundImage = `url(${ bg })`;
-}
-
-// ###############################################################
-
-const themeSetters = document.querySelectorAll('.theme_setter_block .theme_setter');
-
-const navBgSetter = document.querySelector('.toggle_nav_bg')
-
-let checkedTheme = null;
-
-navBgSetter.onclick = function() {
-	if (this.checked) {
-		ledCont.style.background = checkedTheme;
-		localStorage.setItem('is_nav_color', true);
-	}
-	else {
-		ledCont.style.background = '';
-		localStorage.setItem('is_nav_color', '');
-	}
-}
 
 
-if (localStorage.getItem('theme')) {
-	document.querySelector('.theme_' + localStorage.getItem('theme')).checked = true;
-}
-
-if (localStorage.getItem('is_nav_color')) {
-	document.querySelector('.toggle_nav_bg').checked = true;
-}
-
-
-for (let item of themeSetters) {
-
-	if (item.checked) {
-
-		checkedTheme = item.dataset.themeColor;
-		if (localStorage.getItem('theme')) {
-			item.dataset.themeColor = localStorage.getItem('theme');
-		}
-
-		changeThemeColor(item.dataset.themeColor);
-		if (navBgSetter.checked) {
-			localStorage.setItem('is_nav_color', true);
-			ledCont.style.background = item.dataset.themeColor;
-		}
-		else {
-			localStorage.setItem('is_nav_color', '');
-		}
-			
-	}
-
-	item.onclick = function() {
-		changeThemeColor(this.dataset.themeColor);
-		checkedTheme = this.dataset.themeColor;
-		localStorage.setItem('theme', item.dataset.themeColor);
-
-		if (navBgSetter.checked) {
-			localStorage.setItem('is_nav_color', true);
-			ledCont.style.background = item.dataset.themeColor;
-		}
-		else {
-			localStorage.setItem('is_nav_color', '');
-		}
-			
-	}
-}
-
-// goldTheme.addEventListener('click', () => changeThemeColor('gold'));
-
-// changeThemeColor('darkblue')
-
-function changeThemeColor(color) {
-    const metaThemeColor = document.querySelector("meta[name=theme-color]");
-    metaThemeColor.setAttribute("content", color);
-    // setTimeout(function() {
-    //     changeThemeColor(color);
-    // }, 1000);
-}
+// rangeInputs.forEach(input => {
+//   input.addEventListener('input', handleRangeChange)
+// })
