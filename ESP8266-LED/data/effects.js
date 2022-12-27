@@ -234,8 +234,33 @@ const toggleLoop = document.getElementById('toggle_loop');
 
 toggleLoop.onclick = function() {
 	
-	let payload = (this.checked) ? 'L_1' : 'L_0';
+	let payload;
+	if (this.checked) {
+		toggleRandom.checked = false;
+		payload = 'L_1';
+	}
+	else {
+		payload = 'L_0';
+	}
 
+	console.log(payload);
+	webSocket.send(payload);
+
+}
+
+const toggleRandom = document.getElementById('toggle_random');
+
+toggleRandom.onclick = function() {
+
+	let payload;
+	if (this.checked) {
+		toggleLoop.checked = false;
+		payload = 'R_1';
+	}
+	else {
+		payload = 'R_0';
+	}
+	
 	console.log(payload);
 	webSocket.send(payload);
 

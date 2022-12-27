@@ -24,6 +24,7 @@ uint8_t brightness = 25;
 uint8_t effect = 0;
 
 bool isLoopEffect = false;
+bool isRandom = false;
 bool isColorPicker = true; // flag to switch between the colorpicker and effects
 
 // effects that will be in the loop
@@ -95,6 +96,18 @@ void loop() {
       
       webSocket.broadcastTXT(str);
       Serial.println("Sent: " + str);
+    }
+  }
+  if (isRandom) {
+    if ((millis() - lastChange) > duration) {
+      lastChange = millis();
+      effect = favEffects[random(0, numFavEffects - 1)];
+      currentEffect = effect - 1;
+
+      String str = "E_" + String(effect, DEC);
+      webSocket.broadcastTXT(str); // send the number of the current effect
+      Serial.println("Sent: " + str);
+    
     }
   }
   setEffect(effect);
@@ -176,6 +189,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 
       if (getData == "1") {        
         isLoopEffect = true;
+        isRandom = false;
         isColorPicker = false;
         
         Serial.print("LOOP: ");
@@ -187,6 +201,21 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
       else {
         isLoopEffect = false;
       }
+    }
+    else if(payload[0] == 'R') {
+
+      if (getData == "1") {
+        isLoopEffect = false;
+        isRandom = true;
+        isColorPicker = false;
+        
+        Serial.print("RAND: ");
+        Serial.println(getData);
+        
+      } else {
+        isRandom = false;
+      }
+
     }
     else if (payload[0] == '#') { // color (in hex format)
 
