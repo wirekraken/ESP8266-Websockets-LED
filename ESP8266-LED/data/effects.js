@@ -13,6 +13,9 @@ const effectElems = document.querySelectorAll('.effects_list span');
 const ledCont = document.querySelector('.led_controls');
 const togglePlay = document.querySelector('.toggle_play');
 
+const rangeBrightness = document.querySelector('.range_brightness');
+const brightnessValue = document.querySelector('.brightness_value');
+
 
 
 effectsList.style.height = document.documentElement.clientHeight - (ledCont.clientHeight + header.clientHeight) + 'px';
@@ -21,6 +24,7 @@ console.log(ledCont.offsetHeight)
 
 window.onload = function() {
 	initWebSocket();
+	alert("LOADED")
 };
 
 (screen.width > 600) ? handlerPC() : handlerMobile();
@@ -53,19 +57,20 @@ function initWebSocket() {
 function onMessage(payload) {
 
 	if (payload.data[0] === 'E') {
-		// const elems = document.querySelectorAll('.effects_list span');
-
 		currentEffect = (+payload.data.replace(/\D/g, ""));
 
-		updateList('gold')
+		updateList('olive');
 
-		// Array.from(elems, item => item.style.background = '');
-	    // elems[currentEffect - 1].style.background = 'SpringGreen';
-
-
+	}
+	else if (payload.data[0] === 'B') {
+		// brightnessValue.value = parseInt((+payload.data.replace(/\D/g, ""))/2555);
+		// rangeBrightness.style.backgroundSize = (rangeBrightness.value - 0) * 100 / (100 - 0) + '% 100%';
+		// rangeBrightness.value = parseInt((+payload.data.replace(/\D/g, ""))/2555);
+		console.log('get B :', payload.data)
 	}
 
 	console.log('got: ', payload.data);
+	// console.log(+payload.data.replace(/\D/g, ""));
 }
 
 function onClose(e) {
@@ -92,13 +97,13 @@ function sendEffect() {
 			currentEffect = this.dataset.effect;
 			togglePlay.checked = true;
 	
-			updateList('#6a9300');
+			updateList(localStorage.getItem('theme'));
 
-			let send = 'E_' + this.dataset.effect;
+			const payload = 'E_' + this.dataset.effect;
 
-			console.log(send);
+			console.log(payload);
 			console.log("Current: ", currentEffect)
-			webSocket.send(send);
+			webSocket.send(payload);
 
 		};
 	}
@@ -110,50 +115,34 @@ function updateList(color) {
 
 	let background = color;
 		
-	Array.from(effectElems, item => item.style.background = ''); // clear
+	Array.from(effectElems, item => {
+		item.style.background = '';
+		// item.classList.remove('pulse');
+	}); // clear
 
 	// if (+(effectElems[currentEffect - 1].dataset.effect) > 17) {
 	// 	background = '#cd5300';
 	// }
 
 	effectElems[currentEffect - 1].style.background = background;
+
+	// effectElems[currentEffect - 1].classList.add('pulse');
 }
 
 
 
-const toggleSettings = document.querySelector('.toggle_settings');
-const toggleContent = document.querySelector('.toggle_content');
 
-toggleSettings.onclick = function() {
-	if (this.checked) {
-		settingsBlock.style.display = 'flex';
-	}
-	else {
-		settingsBlock.style.display = 'none';
-	}
-};
-
-toggleContent.onclick = function() {
-	if (this.checked) {
-		effectsList.style.display = 'flex';
-		contentMain.style.display = 'none';
-	}
-	else {
-		contentMain.style.display = 'flex';
-		effectsList.style.display = 'none';
-	}
-};
 
 
 
 // ######################### range #################################
 
-(() => {
+// (() => {
 
 	// const rangeInputs = document.querySelectorAll('input[type="range"]')
-	const rangeBrightness = document.querySelector('.range_brightness');
+	// const rangeBrightness = document.querySelector('.range_brightness');
 	const rangeDuration = document.querySelector('.range_duration');
-	const brightnessValue = document.querySelector('.brightness_value');
+	// const brightnessValue = document.querySelector('.brightness_value');
 	const durationValue = document.querySelector('.duration_value');
 
 	// rangeBrightness.oninput = handleRangeChange.apply(rangeBrightness);
@@ -163,15 +152,30 @@ toggleContent.onclick = function() {
 	// brightnessValue.value = rangeBrightness.value;
 	// durationValue.value = rangeDuration.value;
 
+	let lastSend = 0;
+
 	rangeBrightness.oninput = function() {
 		const min = this.min;
 		const max = this.max;
 		const val = this.value;
 
 		this.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%';
-
 		brightnessValue.value = this.value;
+		
+		let payload = 'B_' + parseInt(val * 2.555);
+
+		const now = (new Date).getTime();
+		if (lastSend > now - 50) return; // send data no more than 50ms
+		lastSend = now;
+
+		console.log(payload);
+		webSocket.send(payload);
 	};
+	rangeBrightness.onchange = function() { // fixes if move the range quickly
+		const payload = 'B_' + parseInt(this.value * 2.555);
+		console.log(payload);
+		webSocket.send(payload);
+	}
 
 	rangeDuration.oninput = function() {
 		const min = this.min;
@@ -214,4 +218,28 @@ toggleContent.onclick = function() {
 	// rangeInputs.forEach(input => {
 	//   input.addEventListener('input', handleRangeChange)
 	// })
-})();
+// })();
+
+
+const toggleSettings = document.querySelector('.toggle_settings');
+const toggleContent = document.querySelector('.toggle_content');
+
+toggleSettings.onclick = function() {
+	if (this.checked) {
+		settingsBlock.style.display = 'flex';
+	}
+	else {
+		settingsBlock.style.display = 'none';
+	}
+};
+
+toggleContent.onclick = function() {
+	if (this.checked) {
+		effectsList.style.display = 'flex';
+		contentMain.style.display = 'none';
+	}
+	else {
+		contentMain.style.display = 'flex';
+		effectsList.style.display = 'none';
+	}
+};

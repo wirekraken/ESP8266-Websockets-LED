@@ -139,10 +139,23 @@
 
 .effects_list span {
 	background: rgb(118, 118, 218);
-	background-color:yellowgreen;
 	background-color: #090a0f;
-	color: yellowgreen;
+	color: #ccc;
 	text-align: center;
+    text-shadow: 0 2px 5px #000, 2px 0 5px #000;
 	padding: 10px;
 
+}
+
+.pulse {
+    animation: pulse .7s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { 
+        background-color: rgba(0, 0, 0, .7);
+    }
+    100% { 
+        background-color: #19bb42;
+    }
 }

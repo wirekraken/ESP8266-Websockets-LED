@@ -93,31 +93,38 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
   if (type == WStype_TEXT) {
 
     Serial.printf("[%u] get Text: %s\n", num, payload);
-    String data;
+    String getData;
+    String sendData;
 
     for (int i = 0; i < length; i++) {
       if (!isdigit(payload[i])) continue;
-      data += (char) payload[i];
+      getData += (char) payload[i];
       
     }
       
     if (payload[0] == 'B') { // brightness
       isColorPicker = false;
       Serial.print("Client " + String(num) + ": Brightness: ");
-      brightness = data.toInt();
-      Serial.println(data);
+      brightness = getData.toInt();
+      Serial.println(getData);
+
+      sendData = "B_" + String(brightness, DEC);
+      webSocket.broadcastTXT(sendData);
+      Serial.println("sent: " + sendData);
+
       LEDS.setBrightness(brightness);
 
-    }  
+    }
     else if (payload[0] == 'E') { // effect
       isColorPicker = false;
       Serial.print("Client " + String(num) + ": Effect: ");
-      ledMode = data.toInt();
-      Serial.println(data);
+      ledMode = getData.toInt();
+      Serial.println(getData);
 
-      String str = "E_" + String(ledMode, DEC);
-      webSocket.broadcastTXT(str);
-      Serial.println("sent: " + str);
+      sendData = "E_" + String(ledMode, DEC);
+      webSocket.broadcastTXT(sendData);
+      Serial.println("sent: " + sendData);
+      
       setEffect(ledMode);
 
     }

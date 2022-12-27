@@ -111,6 +111,8 @@ for (let item of themeSetters) {
 			// console.log(e.style.backgroundImage)
 		});
 
+		updateList(this.dataset.themeColor);
+
 
 		if (navFillSetter.checked) {
 			localStorage.setItem('is_nav_color', true);
