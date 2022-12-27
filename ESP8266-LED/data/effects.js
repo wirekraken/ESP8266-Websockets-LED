@@ -171,21 +171,31 @@ function updateList(color) {
 		console.log(payload);
 		webSocket.send(payload);
 	};
+
 	rangeBrightness.onchange = function() { // fixes if move the range quickly
 		const payload = 'B_' + parseInt(this.value * 2.555);
 		console.log(payload);
 		webSocket.send(payload);
 	}
 
+	// only for the interface range
 	rangeDuration.oninput = function() {
 		const min = this.min;
 		const max = this.max;
 		const val = this.value;
 
 		this.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%';
+		durationValue.value = this.value + 's';
 
-		durationValue.value = this.value;
 	};
+	rangeDuration.onchange = function() {
+		const payload = 'D_' + this.value;
+
+		console.log(payload);
+		webSocket.send(payload);
+	}
+
+
 
 	function updateRange(range, valueElem) {
 		const min = range.min;

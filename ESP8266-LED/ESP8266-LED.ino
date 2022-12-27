@@ -163,9 +163,18 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
       setEffect(effect);
 
     }
+    else if(payload[0] == 'D') { // duration
+      // isLoopEffect = false;
+      isColorPicker = false;
+      
+      Serial.print("Duration: ");
+      duration = (getData.toInt() * 1000);
+      Serial.println(duration);
+
+    }
     else if(payload[0] == 'L') { // loop
 
-      if (getData == "1") { // if the loop toggle is on
+      if (getData == "1") {        
         isLoopEffect = true;
         isColorPicker = false;
         
