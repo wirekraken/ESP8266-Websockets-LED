@@ -57,7 +57,7 @@ navFillSetter.onclick = function() {
 		ledCont.style.background = '';
 		localStorage.setItem('is_nav_color', '');
 	}
-}
+};
 
 
 if (localStorage.getItem('theme')) {
@@ -75,11 +75,13 @@ for (let item of themeSetters) {
 	if (item.checked) {
 
 		checkedTheme = item.dataset.themeColor;
+
 		if (localStorage.getItem('theme')) {
 			item.dataset.themeColor = localStorage.getItem('theme');
 		}
 
 		changeThemeColor(item.dataset.themeColor);
+
 		if (navFillSetter.checked) {
 			localStorage.setItem('is_nav_color', true);
 			ledCont.style.background = item.dataset.themeColor;
@@ -88,10 +90,10 @@ for (let item of themeSetters) {
 			localStorage.setItem('is_nav_color', '');
 		}
 
-		Array.from(effectsList.children, e => e.style.color = item.dataset.themeColor )
+		// Array.from(effectsList.children, e => e.style.color = item.dataset.themeColor )
 
 
-		Array.from(document.querySelectorAll('.range'), range => {
+		Array.from(document.querySelectorAll('.led_controls_rng .range'), range => {
 			range.style.backgroundImage = `linear-gradient(${item.dataset.themeColor}, ${item.dataset.themeColor})`;
 		});
 			
@@ -102,9 +104,9 @@ for (let item of themeSetters) {
 		checkedTheme = this.dataset.themeColor;
 		localStorage.setItem('theme', this.dataset.themeColor);
 
-		Array.from(effectsList.children, e => e.style.color = item.dataset.themeColor);
+		// Array.from(effectsList.children, e => e.style.color = item.dataset.themeColor);
 
-		Array.from(document.querySelectorAll('.range'), e => {
+		Array.from(document.querySelectorAll('.led_controls_rng .range'), e => {
 			e.style.backgroundImage = `linear-gradient(${this.dataset.themeColor}, ${this.dataset.themeColor})`;
 			// console.log(e.style.backgroundImage)
 		});
@@ -118,10 +120,9 @@ for (let item of themeSetters) {
 			localStorage.setItem('is_nav_color', '');
 		}
 			
-	}
+	};
 }
 
-// goldTheme.addEventListener('click', () => changeThemeColor('gold'));
 
 // changeThemeColor('darkblue')
 

@@ -2,13 +2,13 @@ uint8_t idex = 0;
 uint8_t ihue = 0;
 uint8_t saturationVal = 255;
 uint8_t ibright = 0;
-uint16_t TOP_INDEX = uint8_t(NUM_LEDS / 2); // center of the stip
-uint8_t EVENODD = NUM_LEDS % 2;
+uint16_t TOP_INDEX = uint8_t(LED_COUNT / 2); // center of the stip
+uint8_t EVENODD = LED_COUNT % 2;
 uint8_t bouncedirection = 0; // flag for color_bounce()
-int ledsX[NUM_LEDS][3]; // array for storing random pixel values
+int ledsX[LED_COUNT][3]; // array for storing random pixel values
 
 void updateColor(uint8_t r,uint8_t g,uint8_t b) {
-  for (uint8_t i = 0 ; i < NUM_LEDS; i++) {
+  for (uint8_t i = 0 ; i < LED_COUNT; i++) {
     leds[i].setRGB(r,g,b);
   }
 }
@@ -19,7 +19,7 @@ void rainbow_fade(){
   if(ihue > 255){
     ihue = 0;
   }
-  for(int idex = 0 ; idex < NUM_LEDS; idex++ ){
+  for(int idex = 0 ; idex < LED_COUNT; idex++ ){
     leds[idex] = CHSV(ihue, saturationVal, 255);
   }
   LEDS.show();
@@ -30,7 +30,7 @@ void rainbow_fade(){
 void rainbow_loop(){ 
   idex++;
   ihue = ihue + _step;
-  if(idex >= NUM_LEDS){
+  if(idex >= LED_COUNT){
     idex = 0;
   }
   if(ihue > 255){
@@ -43,7 +43,7 @@ void rainbow_loop(){
 
 // случайная смена цветов
 void random_burst(){
-  idex = random(0, NUM_LEDS);
+  idex = random(0, LED_COUNT);
   ihue = random(0, 255);
   leds[idex] = CHSV(ihue, saturationVal, 255);
   LEDS.show();
@@ -54,7 +54,7 @@ void random_burst(){
 void color_bounce(){
   if(bouncedirection == 0){
     idex = idex + 1;
-    if(idex == NUM_LEDS){
+    if(idex == LED_COUNT){
       bouncedirection = 1;
       idex = idex - 1;
     }
@@ -65,7 +65,7 @@ void color_bounce(){
       bouncedirection = 0;
     }
   }
-  for(int i = 0; i < NUM_LEDS; i++ ){
+  for(int i = 0; i < LED_COUNT; i++ ){
     if(i == idex){
       leds[i] = CHSV(_hue, saturationVal, 255);
     }
@@ -81,7 +81,7 @@ void color_bounce(){
 void color_bounceFADE(){
   if(bouncedirection == 0){
     idex = idex + 1;
-    if(idex == NUM_LEDS){
+    if(idex == LED_COUNT){
       bouncedirection = 1;
       idex = idex - 1;
     }
@@ -99,7 +99,7 @@ void color_bounceFADE(){
   int iR2 = adjacent_ccw(iR1);
   int iR3 = adjacent_ccw(iR2);
 
-  for(int i = 0; i < NUM_LEDS; i++ ){
+  for(int i = 0; i < LED_COUNT; i++ ){
     if(i == idex){
       leds[i] = CHSV(_hue, saturationVal, 255);
     }
@@ -132,14 +132,14 @@ void color_bounceFADE(){
 // вращение красного и синего
 void red_blue_bounce(){
   idex++;
-  if(idex >= NUM_LEDS){
+  if(idex >= LED_COUNT){
     idex = 0;
   }
   int idexR = idex;
   int idexB = antipodal_index(idexR);
   int thathue =(_hue + 160) % 255;
 
-  for(int i = 0; i < NUM_LEDS; i++ ){
+  for(int i = 0; i < LED_COUNT; i++ ){
     if(i == idexR){
       leds[i] = CHSV(_hue, saturationVal, 255);
     }
@@ -157,7 +157,7 @@ void red_blue_bounce(){
 int antipodal_index(int i){
   int iN = i + TOP_INDEX;
   if(i >= TOP_INDEX){
-    iN =( i + TOP_INDEX ) % NUM_LEDS;
+    iN =( i + TOP_INDEX ) % LED_COUNT;
   }
   return iN;
 }
@@ -165,7 +165,7 @@ int antipodal_index(int i){
 // вращение красного/синего
 void rotatingRedBlue(){
   idex++;
-  if(idex >= NUM_LEDS){
+  if(idex >= LED_COUNT){
     idex = 0;
   }
   int idexR = idex;
@@ -183,7 +183,7 @@ void flicker(){
   int random_delay = random(10, 100);
   int random_bool = random(0, random_bright);
   if(random_bool < 10){
-    for(int i = 0 ; i < NUM_LEDS; i++ ){
+    for(int i = 0 ; i < LED_COUNT; i++ ){
       leds[i] = CHSV(160, 50, random_bright);
     }
     LEDS.show();
@@ -220,13 +220,13 @@ int horizontal_index(int i){
   if(i == TOP_INDEX && EVENODD == 0){
     return TOP_INDEX;
   }
-  return NUM_LEDS - i;
+  return LED_COUNT - i;
 }
 
 //служебная функция
 void random_red(){
   int temprand;
-  for(int i = 0; i < NUM_LEDS; i++ ){
+  for(int i = 0; i < LED_COUNT; i++ ){
     temprand = random(0, 100);
     if(temprand > 50){
       leds[i].r = 255;
@@ -249,7 +249,7 @@ void rule30(){
   int iCW;
   int iCCW;
   int y = 100;
-  for(int i = 0; i < NUM_LEDS; i++ ){
+  for(int i = 0; i < LED_COUNT; i++ ){
     iCW = adjacent_cw(i);
     iCCW = adjacent_ccw(i);
     if(ledsX[iCCW][0] > y && ledsX[i][0] > y && ledsX[iCW][0] > y){
@@ -282,7 +282,7 @@ void rule30(){
 }
 int adjacent_cw(int i){
   int r;
-  if(i < NUM_LEDS - 1){
+  if(i < LED_COUNT - 1){
     r = i + 1;
   }else{
     r = 0;
@@ -295,7 +295,7 @@ int adjacent_ccw(int i){
     r = i - 1;
   }
   else{
-    r = NUM_LEDS - 1;
+    r = LED_COUNT - 1;
   }
   return r;
 }
@@ -305,7 +305,7 @@ void random_march(){
   copy_led_array();
   int iCCW;
   leds[0] = CHSV(random(0, 255), 255, 255);
-  for(int idex = 1; idex < NUM_LEDS ; idex++ ){
+  for(int idex = 1; idex < LED_COUNT ; idex++ ){
     iCCW = adjacent_ccw(idex);
     leds[idex].r = ledsX[iCCW][0];
     leds[idex].g = ledsX[iCCW][1];
@@ -315,7 +315,7 @@ void random_march(){
   delay(_delay);
 }
 void copy_led_array(){
-  for(int i = 0; i < NUM_LEDS; i++ ){
+  for(int i = 0; i < LED_COUNT; i++ ){
     ledsX[i][0] = leds[i].r;
     ledsX[i][1] = leds[i].g;
     ledsX[i][2] = leds[i].b;
@@ -347,7 +347,7 @@ void rwb_march(){
       leds[0].b = 255;
       break;
   }
-  for(int i = 1; i < NUM_LEDS; i++ ){
+  for(int i = 1; i < LED_COUNT; i++ ){
     iCCW = adjacent_ccw(i);
     leds[i].r = ledsX[iCCW][0];
     leds[i].g = ledsX[iCCW][1];
@@ -396,7 +396,7 @@ void rainbow_vertical(){
 
 // безумие случайных вспышек
 void random_color_pop(){
-  idex = random(0, NUM_LEDS);
+  idex = random(0, LED_COUNT);
   ihue = random(0, 255);
   updateColor(0, 0, 0);
   leds[idex] = CHSV(ihue, saturationVal, 255);
@@ -417,7 +417,7 @@ void policeBlinker(){
     LEDS.show(); delay(_delay);
   }
   for(int x = 0 ; x < 5; x++ ){
-    for(int i = TOP_INDEX ; i < NUM_LEDS; i++ ){
+    for(int i = TOP_INDEX ; i < LED_COUNT; i++ ){
       leds[i] = CHSV(thathue, saturationVal, 255);
     }
     LEDS.show(); delay(_delay);
@@ -430,14 +430,14 @@ void rgb_propeller(){ // пропеллер
   idex++;
   int ghue =(_hue + 80) % 255;
   int bhue =(_hue + 160) % 255;
-  int N3  = int(NUM_LEDS / 3);
-  int N6  = int(NUM_LEDS / 6);
-  int N12 = int(NUM_LEDS / 12);
+  int N3  = int(LED_COUNT / 3);
+  int N6  = int(LED_COUNT / 6);
+  int N12 = int(LED_COUNT / 12);
 
   for(int i = 0; i < N3; i++ ){
-    int j0 =(idex + i + NUM_LEDS - N12) % NUM_LEDS;
-    int j1 =(j0 + N3) % NUM_LEDS;
-    int j2 =(j1 + N3) % NUM_LEDS;
+    int j0 =(idex + i + LED_COUNT - N12) % LED_COUNT;
+    int j1 =(j0 + N3) % LED_COUNT;
+    int j2 =(j1 + N3) % LED_COUNT;
     leds[j0] = CHSV(_hue, saturationVal, 255);
     leds[j1] = CHSV(ghue, saturationVal, 255);
     leds[j2] = CHSV(bhue, saturationVal, 255);
@@ -473,7 +473,7 @@ void matrix(){
     leds[0] = CHSV(_hue, saturationVal, 0);
   }
   copy_led_array();
-  for(int i = 1; i < NUM_LEDS; i++ ){
+  for(int i = 1; i < LED_COUNT; i++ ){
     leds[i].r = ledsX[i - 1][0];
     leds[i].g = ledsX[i - 1][1];
     leds[i].b = ledsX[i - 1][2];
@@ -485,7 +485,7 @@ void matrix(){
 // плавная вращающаяся радуга
 void new_rainbow_loop(){
   ihue -= 1;
-  fill_rainbow( leds, NUM_LEDS, ihue );
+  fill_rainbow( leds, LED_COUNT, ihue );
   LEDS.show();
   delay(_delay);
 }
@@ -497,7 +497,7 @@ void setPixel(int Pixel, byte red, byte green, byte blue){
 }
 //служебная функция
 void setAll(byte red, byte green, byte blue){
-  for(int i = 0; i < NUM_LEDS; i++ ){
+  for(int i = 0; i < LED_COUNT; i++ ){
     setPixel(i, red, green, blue);
   }
   FastLED.show();
@@ -505,11 +505,11 @@ void setAll(byte red, byte green, byte blue){
 
 //линейный огонь
 void Fire(int Cooling, int Sparking, int SpeedDelay){
-  static byte heat[NUM_LEDS];
+  static byte heat[LED_COUNT];
   int cooldown;
 
-  for(int i = 0; i < NUM_LEDS; i++){
-    cooldown = random(0,((Cooling * 10) / NUM_LEDS) + 2);
+  for(int i = 0; i < LED_COUNT; i++){
+    cooldown = random(0,((Cooling * 10) / LED_COUNT) + 2);
 
     if(cooldown > heat[i]){
       heat[i] = 0;
@@ -518,7 +518,7 @@ void Fire(int Cooling, int Sparking, int SpeedDelay){
     }
   }
 
-  for( int k = NUM_LEDS - 1; k >= 2; k--){
+  for( int k = LED_COUNT - 1; k >= 2; k--){
     heat[k] =(heat[k - 1] + heat[k - 2] + heat[k - 2]) / 3;
   }
 
@@ -527,7 +527,7 @@ void Fire(int Cooling, int Sparking, int SpeedDelay){
     heat[y] = heat[y] + random(160, 255);
   }
 
-  for( int j = 0; j < NUM_LEDS; j++){
+  for( int j = 0; j < LED_COUNT; j++){
     setPixelHeatColor(j, heat[j] );
   }
 
@@ -550,7 +550,7 @@ void setPixelHeatColor(int Pixel, byte temperature){
 }
 
 void CenterToOutside(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
-  for(int i =((NUM_LEDS - EyeSize) / 2); i >= 0; i--){
+  for(int i =((LED_COUNT - EyeSize) / 2); i >= 0; i--){
     setAll(0, 0, 0);
 
     setPixel(i, red / 10, green / 10, blue / 10);
@@ -559,11 +559,11 @@ void CenterToOutside(byte red, byte green, byte blue, int EyeSize, int SpeedDela
     }
     setPixel(i + EyeSize + 1, red / 10, green / 10, blue / 10);
 
-    setPixel(NUM_LEDS - i, red / 10, green / 10, blue / 10);
+    setPixel(LED_COUNT - i, red / 10, green / 10, blue / 10);
     for(int j = 1; j <= EyeSize; j++){
-      setPixel(NUM_LEDS - i - j, red, green, blue);
+      setPixel(LED_COUNT - i - j, red, green, blue);
     }
-    setPixel(NUM_LEDS - i - EyeSize - 1, red / 10, green / 10, blue / 10);
+    setPixel(LED_COUNT - i - EyeSize - 1, red / 10, green / 10, blue / 10);
 
     FastLED.show();
     delay(SpeedDelay);
@@ -572,7 +572,7 @@ void CenterToOutside(byte red, byte green, byte blue, int EyeSize, int SpeedDela
 }
 
 void OutsideToCenter(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
-  for(int i = 0; i <=((NUM_LEDS - EyeSize) / 2); i++){
+  for(int i = 0; i <=((LED_COUNT - EyeSize) / 2); i++){
     setAll(0, 0, 0);
 
     setPixel(i, red / 10, green / 10, blue / 10);
@@ -581,11 +581,11 @@ void OutsideToCenter(byte red, byte green, byte blue, int EyeSize, int SpeedDela
     }
     setPixel(i + EyeSize + 1, red / 10, green / 10, blue / 10);
 
-    setPixel(NUM_LEDS - i, red / 10, green / 10, blue / 10);
+    setPixel(LED_COUNT - i, red / 10, green / 10, blue / 10);
     for(int j = 1; j <= EyeSize; j++){
-      setPixel(NUM_LEDS - i - j, red, green, blue);
+      setPixel(LED_COUNT - i - j, red, green, blue);
     }
-    setPixel(NUM_LEDS - i - EyeSize - 1, red / 10, green / 10, blue / 10);
+    setPixel(LED_COUNT - i - EyeSize - 1, red / 10, green / 10, blue / 10);
 
     FastLED.show();
     delay(SpeedDelay);
@@ -594,7 +594,7 @@ void OutsideToCenter(byte red, byte green, byte blue, int EyeSize, int SpeedDela
 }
 
 void LeftToRight(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
-  for(int i = 0; i < NUM_LEDS - EyeSize - 2; i++){
+  for(int i = 0; i < LED_COUNT - EyeSize - 2; i++){
     setAll(0, 0, 0);
     setPixel(i, red / 10, green / 10, blue / 10);
     for(int j = 1; j <= EyeSize; j++){
@@ -609,7 +609,7 @@ void LeftToRight(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, i
 
 // случайные вспышки белого цвета
 void Sparkle(byte red, byte green, byte blue, int SpeedDelay){
-  int Pixel = random(NUM_LEDS);
+  int Pixel = random(LED_COUNT);
   setPixel(Pixel, red, green, blue);
   FastLED.show();
   delay(SpeedDelay);
@@ -620,12 +620,12 @@ void Sparkle(byte red, byte green, byte blue, int SpeedDelay){
 void theaterChase(byte red, byte green, byte blue, int SpeedDelay){
   for(int j = 0; j < 10; j++){
     for(int q = 0; q < 3; q++){
-      for(int i = 0; i < NUM_LEDS; i = i + 3){
+      for(int i = 0; i < LED_COUNT; i = i + 3){
         setPixel(i + q, red, green, blue);
       }
       FastLED.show();
       delay(SpeedDelay);
-      for(int i = 0; i < NUM_LEDS; i = i + 3){
+      for(int i = 0; i < LED_COUNT; i = i + 3){
         setPixel(i + q, 0, 0, 0);
       }
     }
@@ -648,11 +648,11 @@ void Strobe(byte red, byte green, byte blue, int StrobeCount, int FlashDelay, in
 
 //голубой линейный огонь
 void blueFire(int Cooling, int Sparking, int SpeedDelay){
-  static byte heat[NUM_LEDS];
+  static byte heat[LED_COUNT];
   int cooldown;
 
-  for(int i = 0; i < NUM_LEDS; i++){
-    cooldown = random(0,((Cooling * 10) / NUM_LEDS) + 2);
+  for(int i = 0; i < LED_COUNT; i++){
+    cooldown = random(0,((Cooling * 10) / LED_COUNT) + 2);
 
     if(cooldown > heat[i]){
       heat[i] = 0;
@@ -660,14 +660,14 @@ void blueFire(int Cooling, int Sparking, int SpeedDelay){
       heat[i] = heat[i] - cooldown;
     }
   }
-  for( int k = NUM_LEDS - 1; k >= 2; k--){
+  for( int k = LED_COUNT - 1; k >= 2; k--){
     heat[k] =(heat[k - 1] + heat[k - 2] + heat[k - 2]) / 3;
   }
   if( random(255) < Sparking ){
     int y = random(7);
     heat[y] = heat[y] + random(160, 255);
   }
-  for( int j = 0; j < NUM_LEDS; j++){
+  for( int j = 0; j < LED_COUNT; j++){
     setPixelHeatColorBlue(j, heat[j] );
   }
   FastLED.show();
@@ -691,10 +691,10 @@ void setPixelHeatColorBlue(int Pixel, byte temperature){
 //расплывающие цвета
 void fadeToCenter(){
  static uint8_t hue;
-  for(int i = 0; i < NUM_LEDS/2; i++) {   
+  for(int i = 0; i < LED_COUNT/2; i++) {   
     leds.fadeToBlackBy(40);
     leds[i] = CHSV(hue++,255,255);
-    leds(NUM_LEDS/2,NUM_LEDS-1) = leds(NUM_LEDS/2 - 1 ,0);
+    leds(LED_COUNT/2,LED_COUNT-1) = leds(LED_COUNT/2 - 1 ,0);
     FastLED.delay(33);
   }  
 }
@@ -702,7 +702,7 @@ void fadeToCenter(){
 //бегающий по кругу паровозик
 void runnerChameleon(){
     static uint8_t hue = 0;
-  for(int i = 0; i < NUM_LEDS; i++) {
+  for(int i = 0; i < LED_COUNT; i++) {
     leds[i] = CHSV(hue++, 255, 255);
     FastLED.show(); 
      leds[i] = CRGB::Black;
@@ -714,7 +714,7 @@ void runnerChameleon(){
 
 void blende(){
     static uint8_t hue = 0;
-  for(int i = 0; i < NUM_LEDS; i++) {
+  for(int i = 0; i < LED_COUNT; i++) {
     leds[i] = CHSV(hue++, 255, 255);
     FastLED.show(); 
 //     leds[i] = CRGB::Black;
@@ -722,7 +722,7 @@ void blende(){
     delay(10);
   }
 
-  for(int i = (NUM_LEDS)-1; i >= 0; i--) {
+  for(int i = (LED_COUNT)-1; i >= 0; i--) {
     leds[i] = CHSV(hue++, 255, 255);
     FastLED.show();
 //     leds[i] = CRGB::Black;
@@ -733,7 +733,7 @@ void blende(){
 
 void blende_2(){
     static uint8_t hue = 0;
-  for(int i = 0; i < NUM_LEDS; i++) {
+  for(int i = 0; i < LED_COUNT; i++) {
     leds[i] = CHSV(hue++, 255, 255);
     FastLED.show(); 
     leds[i] = CRGB::Black;
@@ -741,7 +741,7 @@ void blende_2(){
     delay(10);
   }
 
-  for(int i = (NUM_LEDS)-1; i >= 0; i--) {
+  for(int i = (LED_COUNT)-1; i >= 0; i--) {
     leds[i] = CHSV(hue++, 255, 255);
     FastLED.show();
 //     leds[i] = CRGB::Black;
@@ -751,7 +751,7 @@ void blende_2(){
 }
 //служебная функция
 void fadeall(){
-  for(int i = 0; i < NUM_LEDS; i++) {
+  for(int i = 0; i < LED_COUNT; i++) {
     leds[i].nscale8(250); 
   } 
 }

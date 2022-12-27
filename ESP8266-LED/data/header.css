@@ -16,7 +16,8 @@
 	border-radius: 3px;
     border: 1px solid #666;
 
-	display: flex;
+	display: none;
+
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-end;

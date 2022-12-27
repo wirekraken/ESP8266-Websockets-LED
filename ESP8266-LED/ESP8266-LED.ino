@@ -7,7 +7,7 @@
 #include <FS.h>
 #include <FastLED.h>
 
-#define NUM_LEDS 60 // the number of pixels on the strip
+#define LED_COUNT 60 // the number of pixels on the strip
 #define DATA_PIN 14 // (D5 nodemcu), important: https://github.com/FastLED/FastLED/wiki/ESP8266-notes
 
 // SSID and password of the access point
@@ -24,7 +24,7 @@ uint8_t brightness = 25;
 uint8_t ledMode = 0;
 bool isColorPicker = true; // flag to switch between the colorpicker and effects
 
-CRGBArray<NUM_LEDS> leds;
+CRGBArray<LED_COUNT> leds;
 
 uint8_t _delay = 20;
 uint8_t _step = 10;
@@ -38,10 +38,9 @@ void setup() {
   Serial.begin(9600);
 
   // tell FastLED about the LED strip configuration
-  LEDS.addLeds<WS2811, DATA_PIN, GRB>(leds, NUM_LEDS);
+  LEDS.addLeds<WS2811, DATA_PIN, GRB>(leds, LED_COUNT);
   // set the brightness
   LEDS.setBrightness(brightness);
-  
   updateColor(0,0,0);
   LEDS.show(); // set new changes for led
 
@@ -84,65 +83,72 @@ void loop() {
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
 
    // if a new websocket connection is established
-   if (type == WStype_CONNECTED) {
-      IPAddress ip = webSocket.remoteIP(num);
-      
-      webSocket.sendTXT(num, "Websocket established!"); // send status message
-      Serial.println("New client connected! Num: " + String(num));
-    }
+  if (type == WStype_CONNECTED) {
+    IPAddress ip = webSocket.remoteIP(num);
+    
+    webSocket.sendTXT(num, "Websocket established!"); // send status message
+    Serial.println("New client connected! Num: " + String(num));
+  }
     // if new text data is received
-    if (type == WStype_TEXT) {
-        String data;
-        for (int i = 0; i < length; i++) {
-          if (!isdigit(payload[i])) continue;
-          data += (char) payload[i];
-          
-        }
+  if (type == WStype_TEXT) {
+
+    Serial.printf("[%u] get Text: %s\n", num, payload);
+    String data;
+
+    for (int i = 0; i < length; i++) {
+      if (!isdigit(payload[i])) continue;
+      data += (char) payload[i];
+      
+    }
+      
+    if (payload[0] == 'B') { // brightness
+      isColorPicker = false;
+      Serial.print("Client " + String(num) + ": Brightness: ");
+      brightness = data.toInt();
+      Serial.println(data);
+      LEDS.setBrightness(brightness);
+
+    }  
+    else if (payload[0] == 'E') { // effect
+      isColorPicker = false;
+      Serial.print("Client " + String(num) + ": Effect: ");
+      ledMode = data.toInt();
+      Serial.println(data);
+
+      String str = "E_" + String(ledMode, DEC);
+      webSocket.broadcastTXT(str);
+      Serial.println("sent: " + str);
+      setEffect(ledMode);
+
+    }
+    else if (payload[0] == '#') { // color (in hex format)
+
+      if (!isColorPicker) {
+        Serial.print("Color picker : ");
+        Serial.println(isColorPicker);
+        ledMode = isColorPicker;
+        setEffect(ledMode);
+        isColorPicker = true;
+
+      }
+      else {
+        // decode HEX to RGB
+        uint32_t rgb = (uint32_t) strtol((const char *) &payload[1], NULL, 16);
         
-        if (payload[0] == 'B') { // brightness
-          isColorPicker = false;
-          Serial.print("Client " + String(num) + ": Brightness: ");
-          brightness = data.toInt();
-          Serial.println(data);
-          LEDS.setBrightness(brightness);
-
-        }  
-        else if (payload[0] == 'E') { // effect
-          isColorPicker = false;
-          Serial.print("Client " + String(num) + ": Effect: ");
-          ledMode = data.toInt();
-          Serial.println(data);
-          setEffect(ledMode);
-
+        uint8_t r = (rgb >> 16) & 0xFF;
+        uint8_t g = (rgb >>  8) & 0xFF;
+        uint8_t b = (rgb >>  0) & 0xFF;
+        
+        Serial.println("Client " + String(num) + ": Color: (" + String(r) + "," + String(g) + "," + String(b) + ")");
+        
+        for (int i = 0; i < LED_COUNT; i++) {
+          leds[i].setRGB(r,g,b);
         }
-        else if (payload[0] == '#') { // color (in hex format)
-  
-          if (!isColorPicker) {
-              Serial.print("Color picker : ");
-              Serial.println(isColorPicker);
-              ledMode = isColorPicker;
-              setEffect(ledMode);
-              isColorPicker = true;
-
-          }
-          else {
-           // decode HEX to RGB
-           uint32_t rgb = (uint32_t) strtol((const char *) &payload[1], NULL, 16);
-           
-           uint8_t r = (rgb >> 16) & 0xFF;
-           uint8_t g = (rgb >>  8) & 0xFF;
-           uint8_t b = (rgb >>  0) & 0xFF;
-           
-           Serial.println("Client " + String(num) + ": Color: (" + String(r) + "," + String(g) + "," + String(b) + ")");
-           
-           for (int i = 0; i < NUM_LEDS; i++) {
-             leds[i].setRGB(r,g,b);
-           }
-           LEDS.show();
-            
-          }
-       }
-   } 
+        LEDS.show();
+        
+      }
+    }
+  } 
 }
 
 // call the desired effect
@@ -207,6 +213,11 @@ String getContentType(String filename) {
     else if(filename.endsWith(".html")) return "text/html";
     else if(filename.endsWith(".css")) return "text/css";
     else if(filename.endsWith(".js")) return "application/javascript";
+    else if(filename.endsWith(".png")) return "image/png";
+    else if(filename.endsWith(".gif")) return "image/gif";
+    else if(filename.endsWith(".jpg")) return "image/jpeg";
+    else if(filename.endsWith(".ico")) return "image/x-icon";
+    else if(filename.endsWith(".svg")) return "image/svg+xml";
     return "text/plain";
 
 }
