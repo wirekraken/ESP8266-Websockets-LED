@@ -266,6 +266,51 @@ toggleRandom.onclick = function() {
 
 }
 
+// ###############################
+
+const prevButton = document.querySelector('.prev_btn');
+
+prevButton.onclick = function() {
+
+	if (currentEffect === 1) {
+		currentEffect = LED_COUNT;
+	}
+	else {
+		--currentEffect;
+	}
+
+	updateList(localStorage.getItem('theme'));
+
+	const payload = 'E_' + currentEffect;
+
+	console.log(payload);
+	webSocket.send(payload);
+}
+
+const nextButton = document.querySelector('.next_btn');
+
+nextButton.onclick = function() {
+	
+	if (currentEffect === LED_COUNT) {
+		currentEffect = 1;
+	}
+	else {
+		++currentEffect;
+	}
+
+	updateList(localStorage.getItem('theme'));
+
+	const payload = 'E_' + currentEffect;
+
+	console.log(payload);
+	webSocket.send(payload);
+}
+
+
+
+// ###############################
+
+
 
 const toggleSettings = document.querySelector('.toggle_settings');
 const toggleContent = document.querySelector('.toggle_content');
