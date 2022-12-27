@@ -220,6 +220,17 @@ function updateList(color) {
 	// })
 // })();
 
+const toggleLoop = document.getElementById('toggle_loop');
+
+toggleLoop.onclick = function() {
+	
+	let payload = (this.checked) ? 'L_1' : 'L_0';
+
+	console.log(payload);
+	webSocket.send(payload);
+
+}
+
 
 const toggleSettings = document.querySelector('.toggle_settings');
 const toggleContent = document.querySelector('.toggle_content');
