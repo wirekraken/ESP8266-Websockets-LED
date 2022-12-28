@@ -23,6 +23,7 @@ IPAddress Subnet(255,255,255,0); // subnet mask
 uint8_t brightness = 25;
 uint8_t effect = 0;
 
+bool isPlay = false;
 bool isLoopEffect = false;
 bool isRandom = false;
 bool isColorPicker = true; // flag to switch between the colorpicker and effects
@@ -88,29 +89,31 @@ void loop() {
   webSocket.loop(); // constantly check for websocket events
   server.handleClient(); // run the web server
 
-  if (isLoopEffect) {
-    if ((millis() - lastChange) > duration) {
-      setFavEffects(favEffects, numFavEffects);
-  
-      String str = "E_" + String(currentEffect, DEC);
-      
-      webSocket.broadcastTXT(str);
-      Serial.println("Sent: " + str);
-    }
-  }
-  if (isRandom) {
-    if ((millis() - lastChange) > duration) {
-      lastChange = millis();
-      effect = favEffects[random(0, numFavEffects - 1)];
-      currentEffect = effect - 1;
-
-      String str = "E_" + String(effect, DEC);
-      webSocket.broadcastTXT(str); // send the number of the current effect
-      Serial.println("Sent: " + str);
+  if (isPlay) {
+    if (isLoopEffect) {
+      if ((millis() - lastChange) > duration) {
+        setFavEffects(favEffects, numFavEffects);
     
+        String str = "E_" + String(currentEffect, DEC);
+        
+        webSocket.broadcastTXT(str);
+        Serial.println("Sent: " + str);
+      }
     }
+    if (isRandom) {
+      if ((millis() - lastChange) > duration) {
+        lastChange = millis();
+        effect = favEffects[random(0, numFavEffects - 1)];
+        currentEffect = effect - 1;
+
+        String str = "E_" + String(effect, DEC);
+        webSocket.broadcastTXT(str); // send the number of the current effect
+        Serial.println("Sent: " + str);
+      
+      }
+    }
+    setEffect(effect);
   }
-  setEffect(effect);
 
 }
 
@@ -161,6 +164,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 
     }
     else if (payload[0] == 'E') { // effect
+      isPlay = true;
       isColorPicker = false;
 
       Serial.print("Client " + String(num) + ": Effect: ");
@@ -176,6 +180,23 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
       setEffect(effect);
 
     }
+    else if(payload[0] == 'P') {
+      if (getData == "1") {
+        isPlay = true;
+        if (effect == 0) {
+          effect = 1;
+        }
+        sendData = "E_" + String(effect, DEC);
+        webSocket.broadcastTXT(sendData);
+        Serial.println("sent: " + sendData);
+      } 
+      else {
+        // LEDS.clear();
+        isPlay = false;
+      }
+      Serial.print("PLAY: ");
+      Serial.println(getData);
+    }
     else if(payload[0] == 'D') { // duration
       // isLoopEffect = false;
       isColorPicker = false;
@@ -187,7 +208,8 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
     }
     else if(payload[0] == 'L') { // loop
 
-      if (getData == "1") {        
+      if (getData == "1") {
+        isPlay = true;
         isLoopEffect = true;
         isRandom = false;
         isColorPicker = false;
@@ -205,6 +227,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
     else if(payload[0] == 'R') {
 
       if (getData == "1") {
+        isPlay = true;
         isLoopEffect = false;
         isRandom = true;
         isColorPicker = false;
@@ -248,7 +271,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 }
 
 // call the desired effect
-void setEffect(const uint8_t num) { 
+void setEffect(const uint8_t num) {
     switch(num) {
       case 0: updateColor(0,0,0); break;
       case 1: rainbow_fade(); _delay = 20; break;       

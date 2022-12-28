@@ -230,12 +230,30 @@ function updateList(color) {
 	// })
 // })();
 
+
+
+togglePlay.onclick = function() {
+
+	let payload;
+	if (this.checked) {
+		payload = 'P_1';
+	}
+	else {
+		payload = 'P_0';
+	}
+
+	console.log(payload);
+	webSocket.send(payload);
+}
+
+
 const toggleLoop = document.getElementById('toggle_loop');
 
 toggleLoop.onclick = function() {
 	
 	let payload;
 	if (this.checked) {
+		togglePlay.checked = true;
 		toggleRandom.checked = false;
 		payload = 'L_1';
 	}
@@ -254,6 +272,7 @@ toggleRandom.onclick = function() {
 
 	let payload;
 	if (this.checked) {
+		togglePlay.checked = true;
 		toggleLoop.checked = false;
 		payload = 'R_1';
 	}
@@ -271,6 +290,8 @@ toggleRandom.onclick = function() {
 const prevButton = document.querySelector('.prev_btn');
 
 prevButton.onclick = function() {
+
+	togglePlay.checked = true;
 
 	if (currentEffect === 1) {
 		currentEffect = LED_COUNT;
@@ -290,6 +311,12 @@ prevButton.onclick = function() {
 const nextButton = document.querySelector('.next_btn');
 
 nextButton.onclick = function() {
+
+	if (!togglePlay.checked) {
+		currentEffect = 0;
+	}
+
+	togglePlay.checked = true;
 	
 	if (currentEffect === LED_COUNT) {
 		currentEffect = 1;
