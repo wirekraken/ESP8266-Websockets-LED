@@ -2,7 +2,7 @@ html, body {
 	margin: 0;
 	padding: 0;
 	user-select: none;
-	font-family: Tahoma;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	color-scheme: dark;
 
 }
@@ -17,20 +17,15 @@ html, body {
     filter: drop-shadow(0 0 10px white);
 } */
 
-
-#wrapper {
-	display: none;
-}
-
 #app {
-	/* background-color: aqua; */
-	background:#E11328;
-	background-color: #090a0f;
+	/* background-color: #090a0f; */
+	/* background-image: url(https://i.etsystatic.com/25673743/r/il/5858dc/2672020551/il_570xN.2672020551_n2co.jpg); */
+	/* background-color: red; */
 	position: fixed;
 	height: 100vh;
 	width: 100%;
 
-	/* display: flex; */
+	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
@@ -41,11 +36,22 @@ html, body {
 	
 }
 
-
-@media only screen and (min-width: 600px) {  /*for PC*/
+/*for PC*/
+@media only screen and (min-width: 600px) {
 
 }
 
-@media only screen and (max-width: 600px) { /*for mobile*/
+* {
+	scrollbar-width: thin;
+	scrollbar-color: rgba(100, 100, 100, 1) rgba(0,0,0,.4);
+}
 
+::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 7px;
+}
+  
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: rgba(178, 178, 178, 0.5);
 }

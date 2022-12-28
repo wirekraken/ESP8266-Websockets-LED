@@ -41,97 +41,110 @@ if (update) localStorage.clear();
 // 	app.style.backgroundImage = `url(${ bg })`;
 // }
 
+(() => {
 
-const themeSetters = document.querySelectorAll('.theme_setter_block .theme_setter');
+	const app = document.getElementById('app');
 
-const navFillSetter = document.querySelector('.toggle_fill_nav');
+	const themeSetters = document.querySelectorAll('.theme_setter_block .theme_setter');
 
-let checkedTheme = null;
+	const navFillSetter = document.querySelector('.toggle_fill_nav');
 
-navFillSetter.onclick = function() {
-	if (this.checked) {
-		ledCont.style.background = checkedTheme;
-		localStorage.setItem('is_nav_color', true);
-	}
-	else {
-		ledCont.style.background = '';
-		localStorage.setItem('is_nav_color', '');
-	}
-};
+	let checkedTheme = null;
 
-
-if (localStorage.getItem('theme')) {
-	document.querySelector('.theme_' + localStorage.getItem('theme')).checked = true;
-	console.log(localStorage.getItem('theme'))
-}
-
-if (localStorage.getItem('is_nav_color')) {
-	document.querySelector('.toggle_fill_nav').checked = true;
-}
-
-
-for (let item of themeSetters) {
-
-	if (item.checked) {
-
-		checkedTheme = item.dataset.themeColor;
-
-		if (localStorage.getItem('theme')) {
-			item.dataset.themeColor = localStorage.getItem('theme');
-		}
-
-		changeThemeColor(item.dataset.themeColor);
-
-		if (navFillSetter.checked) {
+	navFillSetter.onclick = function() {
+		if (this.checked) {
+			ledCont.style.background = checkedTheme;
 			localStorage.setItem('is_nav_color', true);
-			ledCont.style.background = item.dataset.themeColor;
 		}
 		else {
+			ledCont.style.background = '';
 			localStorage.setItem('is_nav_color', '');
 		}
-
-		// Array.from(effectsList.children, e => e.style.color = item.dataset.themeColor )
-
-
-		Array.from(document.querySelectorAll('.led_controls_rng .range'), range => {
-			range.style.backgroundImage = `linear-gradient(${item.dataset.themeColor}, ${item.dataset.themeColor})`;
-		});
-			
-	}
-
-	item.onclick = function() {
-		changeThemeColor(this.dataset.themeColor);
-		checkedTheme = this.dataset.themeColor;
-		localStorage.setItem('theme', this.dataset.themeColor);
-
-		// Array.from(effectsList.children, e => e.style.color = item.dataset.themeColor);
-
-		Array.from(document.querySelectorAll('.led_controls_rng .range'), e => {
-			e.style.backgroundImage = `linear-gradient(${this.dataset.themeColor}, ${this.dataset.themeColor})`;
-			// console.log(e.style.backgroundImage)
-		});
-
-		updateList(this.dataset.themeColor);
-
-
-		if (navFillSetter.checked) {
-			localStorage.setItem('is_nav_color', true);
-			ledCont.style.background = item.dataset.themeColor;
-		}
-		else {
-			localStorage.setItem('is_nav_color', '');
-		}
-			
 	};
-}
 
 
-// changeThemeColor('darkblue')
+	if (localStorage.getItem('theme')) {
+		document.querySelector('.theme_' + localStorage.getItem('theme')).checked = true;
+		console.log(localStorage.getItem('theme'))
+	}
 
-function changeThemeColor(color) {
-    const metaThemeColor = document.querySelector("meta[name=theme-color]");
-    metaThemeColor.setAttribute("content", color);
-    // setTimeout(function() {
-    //     changeThemeColor(color);
-    // }, 1000);
-}
+	if (localStorage.getItem('is_nav_color')) {
+		document.querySelector('.toggle_fill_nav').checked = true;
+	}
+
+
+	for (let item of themeSetters) {
+
+		if (item.checked) {
+
+			checkedTheme = item.dataset.themeColor;
+
+			if (localStorage.getItem('theme')) {
+				item.dataset.themeColor = localStorage.getItem('theme');
+			}
+
+			changeThemeColor(item.dataset.themeColor);
+
+			if (navFillSetter.checked) {
+				localStorage.setItem('is_nav_color', true);
+				ledCont.style.background = item.dataset.themeColor;
+			}
+			else {
+				localStorage.setItem('is_nav_color', '');
+			}
+
+			// Array.from(effectsList.children, e => e.style.color = item.dataset.themeColor )
+
+			
+			app.style.background = item.dataset.themeColor;
+
+			currentEffectELem.style.background = item.dataset.themeColor;
+
+			Array.from(document.querySelectorAll('.led_controls_rng .range'), range => {
+				range.style.backgroundImage = `linear-gradient(${item.dataset.themeColor}, ${item.dataset.themeColor})`;
+			});
+				
+		}
+
+		item.onclick = function() {
+			changeThemeColor(this.dataset.themeColor);
+			checkedTheme = this.dataset.themeColor;
+			localStorage.setItem('theme', this.dataset.themeColor);
+
+			// Array.from(effectsList.children, e => e.style.color = item.dataset.themeColor);
+
+			app.style.background = item.dataset.themeColor;
+
+			currentEffectELem.style.background = this.dataset.themeColor;
+
+			Array.from(document.querySelectorAll('.led_controls_rng .range'), e => {
+				e.style.backgroundImage = `linear-gradient(${this.dataset.themeColor}, ${this.dataset.themeColor})`;
+				// console.log(e.style.backgroundImage)
+			});
+
+			updateList(this.dataset.themeColor);
+
+
+			if (navFillSetter.checked) {
+				localStorage.setItem('is_nav_color', true);
+				ledCont.style.background = item.dataset.themeColor;
+			}
+			else {
+				localStorage.setItem('is_nav_color', '');
+			}
+				
+		};
+	}
+
+
+	// changeThemeColor('darkblue')
+
+	function changeThemeColor(color) {
+		const metaThemeColor = document.querySelector("meta[name=theme-color]");
+		metaThemeColor.setAttribute("content", color);
+		// setTimeout(function() {
+		//     changeThemeColor(color);
+		// }, 1000);
+	}
+
+})();

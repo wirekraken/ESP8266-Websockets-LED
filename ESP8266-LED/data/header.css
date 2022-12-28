@@ -1,8 +1,3 @@
-.header {
-	background-color: darkseagreen;
-
-}
-
 .settings_block {
 	position: absolute;
 	z-index: 1000;
@@ -10,11 +5,10 @@
 	right: 6px;
     width: 170px;
     height: 130px;
-	background-color: rgba(0,0,0,.7);
-	background: linear-gradient(to top left, rgba(0, 0, 0, 1), rgba(50, 70, 70, 1));
-	/* box-shadow: 0px -4px 0px 0px rgba(140,140,180,.2) inset; */
+	background-color: rgba(10,10,15,.9);
+	/* background: linear-gradient(to top left, rgba(0, 0, 0, 1), rgba(100, 140, 140, 1)); */
 	border-radius: 3px;
-    border: 1px solid #666;
+    border: 1px solid #ccc;
 
 	display: none;
 
@@ -26,11 +20,6 @@
     color: #ccc;
     gap: 20px;
     padding: 10px;
-
-}
-
-.theme_setter_block input {
-    background-color: red;
 
 }
 
@@ -86,7 +75,6 @@
     height: 40px;
     width: 40px;
     background-image: url('icons/settings.png');
-	/* background-color: green; */
     background-repeat: no-repeat;
     background-position: center;
 	background-size: cover;
@@ -96,13 +84,8 @@
 }
 
 .toggle_settings_block input[type=checkbox]:checked + label {
-    /* background-position: 0 0; */
 	transform: rotate(45deg);
 
-}
-
-.toggle_settings_block label:hover {
-    /* background-color: rgba(100, 100, 100, .4); */
 }
 
 .toggle_content_block {
@@ -110,7 +93,6 @@
 	z-index: 1000;
 	right: 10px;
 	top: 70px;
-	/* background-color: #E11328; */
 
 }
 
@@ -123,8 +105,6 @@
     height: 40px;
     width: 40px;
     background-image: url('icons/effect.png');
-
-    /* background-color: green; */
     background-repeat: no-repeat;
     background-position: center;
 	background-size: cover;
@@ -135,13 +115,33 @@
 }
 
 .toggle_content_block input[type=checkbox]:checked + label {
-    /* background-position: 0 0; */
-	/* transform: rotate(180deg); */
     transform: scale(-1,1);
     background-image: url('icons/close.png');
 
 }
 
-.toggle_content_block label:hover {
-    /* background-color: rgba(100, 100, 100, .4); */
+
+/* for PC */
+@media only screen and (min-width: 600px) {
+    .toggle_settings_block {
+        right: 30px;
+        top: 10px;
+    }
+    .toggle_settings_block label {
+        height: 30px;
+        width: 30px;
+    }
+    .toggle_content_block {
+        top: 10px;
+        right: 80px;
+    }
+    .toggle_content_block label {
+        height: 30px;
+        width: 30px;
+    }
+    .settings_block {
+        top: 60px;
+        right: 30px;
+        font-size: 16px;
+    }
 }

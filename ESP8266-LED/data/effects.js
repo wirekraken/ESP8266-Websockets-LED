@@ -7,6 +7,7 @@ const header = document.querySelector('.header');
 const settingsBlock = document.querySelector('.settings_block');
 
 const contentMain = document.querySelector('.content .content_main');
+const currentEffectELem = document.querySelector('.content_main .current_effect');
 const effectsList = document.querySelector('.content .effects_list');
 const effectElems = document.querySelectorAll('.effects_list span');
 
@@ -33,9 +34,9 @@ function handlerPC() {
 	// sendEffect();
 	
 }
-
+sendEffect();
 function handlerMobile() {
-	sendEffect();
+	
 
 }
 
@@ -110,7 +111,7 @@ function sendEffect() {
 }
 
 function updateList(color) {
-	const currentEffectELem = document.querySelector('.content_main .current_effect');
+	
 	currentEffectELem.innerText = effectElems[currentEffect - 1].innerText;
 
 	let background = color;

@@ -1,10 +1,8 @@
 .led_controls {
-	/* background-color: rgb(24, 144, 243); */
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
 	position: fixed;
-	/* top:0; */
 	height: 120px;
 	width: 100%;
 	bottom: 0;
@@ -12,7 +10,6 @@
 }
 
 .led_controls_nav_block {
-	/* background-color: burlywood; */
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
@@ -20,24 +17,18 @@
 
 }
 
-
-.toggle_play_block {
-    /* background-color: #0a2c74; */
-}
-
-
 .toggle_play_block .toggle_play[type=checkbox] {
     display: none;
 }
 
 .toggle_play_block label {
-    box-shadow: 0px 2px 5px rgba(0,0,0,.5);
     display: block;
     height: 80px;
     width: 80px;
     border-radius: 50%;
+    box-shadow: 0px 2px 5px rgba(0,0,0,.5);
     background-image: url('icons/play.svg');
-	background-color: rgb(255, 255, 255);
+	background-color: #fff;
     background-repeat: no-repeat;
     background-position: center;
 	background-size: contain;
@@ -46,15 +37,9 @@
 }
 
 .toggle_play_block .toggle_play[type=checkbox]:checked + label {
-    /* background-position: 0 0; */
     background-image: url('icons/pause.svg');
 
 }
-
-.toggle_play_block label:hover {
-    /* background-color: rgba(100, 100, 100, .4); */
-}
-
 
 .led_controls_nav_block button {
     border: 0;
@@ -87,7 +72,6 @@
     display: block;
     height: 40px;
     width: 40px;
-	/* background-color: green; */
     background-repeat: no-repeat;
     background-position: center;
 	background-size: contain;
@@ -101,7 +85,6 @@
 }
 
 .led_controls .toggle[type=checkbox]:checked + label {
-    /* background-color: rgba(0,0,0,.4); */
     filter: invert();
 
 }
@@ -113,5 +96,40 @@
 
 .toggle_random_block label {
     background-image: url('icons/random.png');
+
+}
+
+/* for PC */
+@media only screen and (min-width: 600px) {
+    .led_controls {
+        top: 0;
+        justify-content: center;
+        height: 50px;
+        box-shadow: 0 0px 5px 0px #000;
+    }
+    .led_controls .toggle + label {
+        display: block;
+        height: 26px;
+        width: 26px;
+        margin: 0 60px 0 60px;
+    
+    }
+    .led_controls_nav_block button {
+        height: 20px;
+        width: 20px;
+
+    }
+    .toggle_play_block label {
+        height: 40px;
+        width: 40px;
+        background-size: 15px;
+    }
+    .toggle_play_block label:hover {
+        background-color: rgba(255, 255, 255, .9);
+    }
+    
+    label, button, input {
+        cursor: pointer;
+    }
 
 }

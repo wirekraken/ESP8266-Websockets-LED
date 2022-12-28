@@ -1,9 +1,11 @@
 .content {
 	width: 100%;
 	height: 100%;
-	background: linear-gradient(to top left, rgba(0, 0, 0, 1), rgba(50, 70, 70, 1));
-    /* background:white; */
-    background-image: radial-gradient(rgba(20, 26, 73, 0.644), rgb(0, 0, 0));
+    background-image: radial-gradient(rgba(20, 26, 73, 0.6), rgb(0, 0, 0));
+    /* background-image: url(backgrounds/12.jpg); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .content_main {
@@ -17,11 +19,14 @@
 }
 
 .content_main .current_effect {
-	/* background-color: aquamarine; */
-    text-shadow: 0 0 10px #090a0f;
+	/* background-color: orangered; */
+    text-shadow: 0 1px 2px #000, 1px 0 2px #000;
 	text-align: center;
+    border-radius: 3px;
 	font-size: 32px;
+    padding: 10px;
 	margin-top: -40vh;
+
 }
 
 .content_main .led_controls_rng {
@@ -73,58 +78,38 @@
     filter: invert();
 }
 
-.led_controls_rng .range {
-	/* background-color: rgb(41, 26, 248); */
-	width: 35vh;
-
-}
-
 .led_controls_rng output {
-    /* background: #ff4500; */
-    vertical-align: middle;
-    font-size: 1em;
     font-family: Arial, sans-serif;
     text-align: center;
-
     padding: 5px 15px 5px 5px;
     width: 20px;
     font-size: 20px;
-
-    border-radius: 3px;
     color: #fff;
 }
 
 .led_controls_rng .range[type="range"] {
     -webkit-appearance: none;
-    /* margin-right: 15px; */
-    /* width: 200px; */
     height: 5px;
-    border: none;
-    background: rgba(255, 255, 255, 0.6);
-    background: rgba(50, 50, 50, 0.6);
+    background: rgba(60, 60, 60, 0.7);
     border-radius: 5px;
     background-image: linear-gradient(#ff4500, #ff4500);
     background-size: 70% 100%;
     background-repeat: no-repeat;
   }
 
-
 .led_controls_rng .range[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 26px;
     width: 26px;
     border-radius: 50%;
-    background: silver;
-    box-shadow: 0 0 4px 0 #555;
-    /* transition: background .3s ease-in-out; */
-}
+    background: #ddd;
+    box-shadow: 0 0 4px 0 rgba(212, 212, 212, .5);
 
+}
 
 /* ############################################ */
 
 .content .effects_list {
-	/* position: absolute; */
-	/* background-color: cyan; */
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -133,18 +118,22 @@
 	font-size: 22px;
 	overflow-y: auto;
 	padding-top: 10px;
-	/* height: 100%; */
-	/* height: calc(100% - 120px); */
+
 }
 
 .effects_list span {
-	background: rgb(118, 118, 218);
 	background-color: #090a0f;
-	color: #ccc;
-	text-align: center;
-    text-shadow: 0 2px 5px #000, 2px 0 5px #000;
+	color: #eee;
+    border-radius: 3px;
+    text-align: center;
+    text-shadow: 0 1px 2px #000, 1px 0 2px #000;
+    /* color:#090a0f;
+    text-shadow: 1px 0px 1px #000; */
 	padding: 10px;
 
+}
+.effects_list span:last-child {
+    margin-bottom: 20px;
 }
 
 .pulse {
@@ -157,5 +146,12 @@
     }
     100% { 
         background-color: #19bb42;
+    }
+}
+
+/*for PC*/
+@media only screen and (min-width: 600px) {
+    .content .effects_list {
+        margin: 50px 0 10px 0;
     }
 }
