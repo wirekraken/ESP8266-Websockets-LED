@@ -241,17 +241,20 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
 
     }
     else if (payload[0] == '#') { // color (in hex format)
-
-      if (!isColorPicker) {
-        Serial.print("Color picker : ");
-        Serial.println(isColorPicker);
-        effect = isColorPicker;
-        setEffect(effect);
-        isColorPicker = true;
-
-      }
-      else {
+      isPlay = false;
+      isColorPicker = true;
+      
+//      if (!isColorPicker) {
+//        Serial.print("Color: ");
+//        Serial.println(isColorPicker);
+//        effect = isColorPicker;
+////        setEffect(effect);
+////        isColorPicker = true;
+//
+//      }
+//      else {
         // decode HEX to RGB
+        
         uint32_t rgb = (uint32_t) strtol((const char *) &payload[1], NULL, 16);
         
         uint8_t r = (rgb >> 16) & 0xFF;
@@ -265,7 +268,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
         }
         LEDS.show();
         
-      }
+//      }
     }
   } 
 }

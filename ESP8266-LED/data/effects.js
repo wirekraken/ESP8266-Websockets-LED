@@ -1,9 +1,8 @@
-// const webSocket = new WebSocket('ws://' + window.location.hostname + ':81/');
 
-
-const app = document.getElementById('#app');
+const app = document.getElementById('app');
 
 const header = document.querySelector('.header');
+const colorPickerBlock = document.querySelector('.colorpicker_block');
 const settingsBlock = document.querySelector('.settings_block');
 
 const contentMain = document.querySelector('.content .content_main');
@@ -11,7 +10,7 @@ const currentEffectELem = document.querySelector('.content_main .current_effect'
 const effectsList = document.querySelector('.content .effects_list');
 const effectElems = document.querySelectorAll('.effects_list span');
 
-const ledCont = document.querySelector('.led_controls');
+const panel = document.querySelector('.panel');
 const togglePlay = document.querySelector('.toggle_play');
 
 const rangeBrightness = document.querySelector('.range_brightness');
@@ -19,26 +18,24 @@ const brightnessValue = document.querySelector('.brightness_value');
 
 
 
-effectsList.style.height = document.documentElement.clientHeight - (ledCont.clientHeight + header.clientHeight) + 'px';
+effectsList.style.height = document.documentElement.clientHeight - (panel.clientHeight + header.clientHeight) + 'px';
 
-console.log(ledCont.offsetHeight)
+console.log(panel.offsetHeight)
 
 window.onload = function() {
 	initWebSocket();
 	alert("LOADED")
 };
 
-(screen.width > 600) ? handlerPC() : handlerMobile();
+// (screen.width > 600) ? handlerPC() : handlerMobile();
 
-function handlerPC() {
-	// sendEffect();
-	
-}
+// function handlerPC() {
+// 	// sendEffect();
+// }
+// function handlerMobile() {
+// }
+
 sendEffect();
-function handlerMobile() {
-	
-
-}
 
 const LED_COUNT = 29;
 let currentEffect = 1;
@@ -138,7 +135,7 @@ function updateList(color) {
 
 // ######################### range #################################
 
-// (() => {
+(() => {
 
 	// const rangeInputs = document.querySelectorAll('input[type="range"]')
 	// const rangeBrightness = document.querySelector('.range_brightness');
@@ -229,7 +226,7 @@ function updateList(color) {
 	// rangeInputs.forEach(input => {
 	//   input.addEventListener('input', handleRangeChange)
 	// })
-// })();
+})();
 
 
 
@@ -339,9 +336,29 @@ nextButton.onclick = function() {
 // ###############################
 
 
-
+const toggleColorPicker = document.querySelector('.toggle_colorpicker');
 const toggleSettings = document.querySelector('.toggle_settings');
 const toggleContent = document.querySelector('.toggle_content');
+
+toggleColorPicker.onclick = function() {
+	let state = toggleContent.checked;
+	if (this.checked) {
+		currentEffectELem.style.display = 'none';
+		toggleContent.checked = false;
+		effectsList.style.display = 'none';
+		contentMain.style.display = 'flex';
+
+		colorPickerBlock.style.display = 'flex';
+	}
+	else {
+		currentEffectELem.style.display = 'flex';
+		if (state) {
+			toggleContent.checked = state;
+			effectsList.style.display = 'flex';
+		}
+		colorPickerBlock.style.display = 'none';
+	}
+};
 
 toggleSettings.onclick = function() {
 	if (this.checked) {
@@ -356,9 +373,13 @@ toggleContent.onclick = function() {
 	if (this.checked) {
 		effectsList.style.display = 'flex';
 		contentMain.style.display = 'none';
+
+		toggleColorPicker.checked = false;
+		colorPickerBlock.style.display = 'none';
 	}
 	else {
 		contentMain.style.display = 'flex';
 		effectsList.style.display = 'none';
+		currentEffectELem.style.display = 'flex';
 	}
 };

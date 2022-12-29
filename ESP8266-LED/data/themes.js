@@ -53,11 +53,11 @@ if (update) localStorage.clear();
 
 	navFillSetter.onclick = function() {
 		if (this.checked) {
-			ledCont.style.background = checkedTheme;
+			panel.style.background = checkedTheme;
 			localStorage.setItem('is_nav_color', true);
 		}
 		else {
-			ledCont.style.background = '';
+			panel.style.background = '';
 			localStorage.setItem('is_nav_color', '');
 		}
 	};
@@ -87,7 +87,7 @@ if (update) localStorage.clear();
 
 			if (navFillSetter.checked) {
 				localStorage.setItem('is_nav_color', true);
-				ledCont.style.background = item.dataset.themeColor;
+				panel.style.background = item.dataset.themeColor;
 			}
 			else {
 				localStorage.setItem('is_nav_color', '');
@@ -127,7 +127,7 @@ if (update) localStorage.clear();
 
 			if (navFillSetter.checked) {
 				localStorage.setItem('is_nav_color', true);
-				ledCont.style.background = item.dataset.themeColor;
+				panel.style.background = item.dataset.themeColor;
 			}
 			else {
 				localStorage.setItem('is_nav_color', '');

@@ -8,14 +8,16 @@
   <link rel="stylesheet" href="index.css">
   <link rel="stylesheet" href="header.css">
   <link rel="stylesheet" href="content.css">
-  <link rel="stylesheet" href="nav.css">
-	<!-- <script src="html5kellycolorpicker.min.js"></script> -->
+  <link rel="stylesheet" href="panel.css">
+	<script src="html5kellycolorpicker.min.js"></script>
   
 </head>
 <body>
   <!-- <div id="snow" count="20"></div> -->
 
   <div id="app">
+
+    
 
     <div class="header">
 
@@ -30,6 +32,11 @@
 
         <input type="checkbox" class="toggle_content" id="toggle_content"/>
         <label for="toggle_content"></label>
+      </div>
+
+      <div class="toggle_colorpicker_block">
+        <input type="checkbox" class="toggle_colorpicker" id="toggle_colorpicker"/>
+        <label for="toggle_colorpicker"></label>
       </div>
 
       <div class="settings_block">
@@ -56,6 +63,9 @@
           <button class="bg_setter">set</button>
         </div> -->
 
+      </div>
+      <div class="colorpicker_block">
+        <canvas id="colorpicker"></canvas>
       </div>
 
     </div>
@@ -119,14 +129,14 @@
 
     </div>
 
-      <div class="led_controls">
+      <div class="panel">
 
         <div class="toggle_loop_block">
           <input class="toggle toggle_loop" id="toggle_loop" type="checkbox"/>
           <label for="toggle_loop"></label>
         </div>
 
-          <div class="led_controls_nav_block">
+          <div class="panel_nav_block">
             <button class="button prev_btn"></button>
             <div class="toggle_play_block">
               <input class="toggle_play" id="toggle_play" type="checkbox"/>
@@ -148,5 +158,5 @@
 <!-- <script src="pure-snow.js"></script> -->
 <script src="effects.js"></script>
 <script src="themes.js"></script>
-<!-- <script src="color.js"></script> -->
+<script src="color.js"></script>
 </html>
