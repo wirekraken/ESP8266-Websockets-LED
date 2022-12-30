@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>color picker</title>
-	<meta class="effects_item" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<meta class="effects_item" name="theme-color" content="darkblue" />
+	<title>led controller</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="theme-color" content="yellowGreen" />
+  <link rel="icon" type="image/x-icon" href="icons/colorpicker.png">
   <link rel="stylesheet" href="index.css">
   <link rel="stylesheet" href="header.css">
   <link rel="stylesheet" href="content.css">
@@ -13,11 +14,8 @@
   
 </head>
 <body>
-  <!-- <div id="snow" count="20"></div> -->
 
   <div id="app">
-
-    
 
     <div class="header">
 
@@ -27,9 +25,6 @@
       </div>
 
       <div class="toggle_content_block">
-        <!-- <input class='control toggle' id='toggle-races' type="checkbox" checked> -->
-        
-
         <input type="checkbox" class="toggle_content" id="toggle_content"/>
         <label for="toggle_content"></label>
       </div>
@@ -44,24 +39,24 @@
         <div class="theme_setter_block">
           <span>Theme</span>
           <div>
-            <input data-theme-color="yellowGreen" id="theme_yellowGreen" class="theme_setter theme_yellowGreen"  type="radio" name="theme">
-            <label for="theme_yellowGreen"></label>
-            <input data-theme-color="darkblue" id="theme_darkblue" class="theme_setter theme_darkblue" checked type="radio" name="theme">
-            <label for="theme_darkblue"></label>
             <input data-theme-color="orangeRed" id="theme_orangeRed" class="theme_setter theme_orangeRed" type="radio" name="theme">
             <label for="theme_orangeRed"></label>
+            <input data-theme-color="yellowGreen" id="theme_yellowGreen" class="theme_setter theme_yellowGreen" checked type="radio" name="theme">
+            <label for="theme_yellowGreen"></label>
+            <input data-theme-color="royalBlue" id="theme_royalBlue" class="theme_setter theme_royalBlue" type="radio" name="theme">
+            <label for="theme_royalBlue"></label>
           </div>
         </div>
 
-        <div class="toggle_fill_nav_block">
-          <label for="toggle_fill_nav">Fill nav</label>
-          <input type="checkbox" class="toggle_fill_nav" id="toggle_fill_nav"/>
+        <div class="toggle_panel_fill_block">
+          <label for="toggle_panel_fill">Fill panel</label>
+          <input type="checkbox" class="toggle_panel_fill" checked id="toggle_panel_fill"/>
         </div>
 
-        <!-- <div class="bg_setter_block">
-          <input type="text">
-          <button class="bg_setter">set</button>
-        </div> -->
+        <div class="toggle_bg_block">
+          <label for="toggle_bg">Background</label>
+          <input type="checkbox" class="toggle_bg" id="toggle_bg"/>
+        </div>
 
       </div>
       <div class="colorpicker_block">
@@ -82,13 +77,13 @@
 
           <div class="range_brightness_block">
             <img src="icons/brightness.png">
-            <input class="range range_brightness" type="range" value="40" min="0" max="100"/>
-            <output class="brightness_value">0</output>
+            <input class="range range_brightness" type="range" value="25" min="0" max="100"/>
+            <output class="brightness_value"></output>
           </div>
           <div class="range_duration_block">
             <img src="icons/duration.png">
-            <input class="range range_duration" type="range" value="8" min="2" max="60"/>
-            <output class="duration_value">2</output>
+            <input class="range range_duration" type="range" value="10" min="2" max="60"/>
+            <output class="duration_value"></output>
           </div>
 
         </div>
@@ -96,35 +91,37 @@
 
 
       <div class="effects_list" style="display:none;">
-        <span class="effects_item" data-effect="1">rainbow fade</span>
-        <span class="effects_item" data-effect="2">rainbow loop</span>
-        <span class="effects_item" data-effect="3">rainbow loop 2</span>
-        <span class="effects_item" data-effect="4">random march</span>
-        <span class="effects_item" data-effect="5">rgb propeller</span>
-        <span class="effects_item" data-effect="6">rotating red blue</span>
-        <span class="effects_item" data-effect="7">fire</span>
-        <span class="effects_item" data-effect="8">blue fire</span>
-        <span class="effects_item" data-effect="9">random bars</span>
-        <span class="effects_item" data-effect="10">flicker</span>
-        <span class="effects_item" data-effect="11">random color</span>
-        <span class="effects_item" data-effect="12">sparkle</span>
-        <span class="effects_item" data-effect="13">color bounce</span>
-        <span class="effects_item" data-effect="14">color bounce fade</span>
-        <span class="effects_item" data-effect="15">blue red bounce</span>
-        <span class="effects_item" data-effect="16">rainbow vertical</span>
-        <span class="effects_item" data-effect="17">matrix</span>
-        <span class="effects_item" data-effect="18">rwb march</span>
-        <span class="effects_item" data-effect="19">flame</span>
-        <span class="effects_item" data-effect="20">theater chase</span>
-        <span class="effects_item" data-effect="21">strobe</span>
-        <span class="effects_item" data-effect="22">police blinker</span>
-        <span class="effects_item" data-effect="23">kitt</span>
-        <span class="effects_item" data-effect="24">rule</span>
-        <span class="effects_item" data-effect="25">fade vertical</span>
-        <span class="effects_item" data-effect="26">fade to center</span>
-        <span class="effects_item" data-effect="27">runner chameleon</span>
-        <span class="effects_item" data-effect="28">blende</span>
-        <span class="effects_item" data-effect="29">blende 2</span>
+
+        <span data-effect="1">rainbow fade</span>
+        <span data-effect="2">rainbow loop</span>
+        <span data-effect="3">rainbow loop 2</span>
+        <span data-effect="4">random march</span>
+        <span data-effect="5">rgb propeller</span>
+        <span data-effect="6">rotating red blue</span>
+        <span data-effect="7">fire</span>
+        <span data-effect="8">blue fire</span>
+        <span data-effect="9">random bars</span>
+        <span data-effect="10">flicker</span>
+        <span data-effect="11">random color</span>
+        <span data-effect="12">sparkle</span>
+        <span data-effect="13">color bounce</span>
+        <span data-effect="14">color bounce fade</span>
+        <span data-effect="15">blue red bounce</span>
+        <span data-effect="16">rainbow vertical</span>
+        <span data-effect="17">matrix</span>
+        <span data-effect="18">rwb march</span>
+        <span data-effect="19">flame</span>
+        <span data-effect="20">theater chase</span>
+        <span data-effect="21">strobe</span>
+        <span data-effect="22">police blinker</span>
+        <span data-effect="23">kitt</span>
+        <span data-effect="24">rule</span>
+        <span data-effect="25">fade vertical</span>
+        <span data-effect="26">fade to center</span>
+        <span data-effect="27">runner chameleon</span>
+        <span data-effect="28">blende</span>
+        <span data-effect="29">blende 2</span>
+
       </div>
 
     </div>
@@ -155,8 +152,9 @@
   </div>
 
 </body>
-<!-- <script src="pure-snow.js"></script> -->
-<script src="effects.js"></script>
-<script src="themes.js"></script>
-<script src="color.js"></script>
+  <script src="index.js"></script>
+  <!-- <script src="pure-snow.js"></script> -->
+  <script src="effects.js"></script>
+  <script src="themes.js"></script>
+  <script src="color.js"></script>
 </html>

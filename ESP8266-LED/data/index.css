@@ -4,23 +4,12 @@ html, body {
 	user-select: none;
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	color-scheme: dark;
+	overflow: hidden;
 
 }
 
-/* .snowflake {
-    position: absolute;
-	z-index: 1000;
-    width: 10px;
-    height: 10px;
-    background: linear-gradient(white, white);
-    border-radius: 50%;
-    filter: drop-shadow(0 0 10px white);
-} */
-
 #app {
 	/* background-color: #090a0f; */
-	/* background-image: url(https://i.etsystatic.com/25673743/r/il/5858dc/2672020551/il_570xN.2672020551_n2co.jpg); */
-	/* background-color: red; */
 	position: fixed;
 	height: 100vh;
 	width: 100%;
@@ -50,7 +39,7 @@ html, body {
 	-webkit-appearance: none;
 	width: 7px;
 }
-  
+
 ::-webkit-scrollbar-thumb {
 	border-radius: 10px;
 	background-color: rgba(178, 178, 178, 0.5);

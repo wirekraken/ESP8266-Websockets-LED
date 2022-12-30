@@ -1,76 +1,67 @@
-// const bgSetter = document.querySelector('.bg_setter_block .bg_setter')
-
-// bgSetter.onclick = function() {
-// 	const bgInput = document.querySelector('.bg_setter_block input')
-// 	console.log(bgInput.value)
-// 	app.style.backgroundImage = `url(${ bgInput.value })`;
-
-// 	localStorage.setItem('bg', bgInput.value)
-	
-// }
-
 
 let update = 0;
 
 if (update) localStorage.clear();
 
-// bgSetter.onclick = setBg;
-
-// setBg();
-
-// function setBg() {
-// 	const bgInput = document.querySelector('.bg_setter_block input')
-// 	let bg = null;
-
-// 	if (bgInput.value) {
-// 		localStorage.setItem('bg', bgInput.value);
-// 		console.log('set bg')
-// 		bg = bgInput.value;
-// 	}
-// 	else {
-// 		if (localStorage.getItem('bg')) {
-// 			// console.log(localStorage.getItem('bg'))
-// 			bg = localStorage.getItem('bg');
-// 			console.log('get bg')
-// 		}
-// 		bgInput.value = bg;
-// 	}
-
-	
-// 	console.log(bgInput.value)
-// 	app.style.backgroundImage = `url(${ bg })`;
-// }
-
 (() => {
-
-	const app = document.getElementById('app');
 
 	const themeSetters = document.querySelectorAll('.theme_setter_block .theme_setter');
 
-	const navFillSetter = document.querySelector('.toggle_fill_nav');
+	const content = document.querySelector('.content');
+	const togglePanelFill = document.querySelector('.toggle_panel_fill');
+	const toggleBg = document.querySelector('.toggle_bg');
 
-	let checkedTheme = null;
+	let background = 'background/bg.jpg';
 
-	navFillSetter.onclick = function() {
+	if (toggleBg.checked) {
+		content.style.backgroundImage = `url(${ background })`;
+		localStorage.setItem('bg', true);
+	}
+
+	if (localStorage.getItem('bg')) {
+		toggleBg.checked = true;
+		content.style.backgroundImage = `url(${ background })`;
+	}
+	else {
+		toggleBg.checked = false;
+		content.style.backgroundImage = 'radial-gradient(rgba(20, 26, 73, 0.6), rgb(0, 0, 0))';
+	}
+
+	toggleBg.onclick = function() {
 		if (this.checked) {
-			panel.style.background = checkedTheme;
-			localStorage.setItem('is_nav_color', true);
+			content.style.backgroundImage = `url(${ background })`;
+			localStorage.setItem('bg', true);
 		}
 		else {
-			panel.style.background = '';
-			localStorage.setItem('is_nav_color', '');
+			content.style.backgroundImage = 'radial-gradient(rgba(20, 26, 73, 0.6), rgb(0, 0, 0))';
+			localStorage.setItem('bg', '');
 		}
 	};
 
+	let checkedTheme = null;
+
+	togglePanelFill.onclick = function() {
+		if (this.checked) {
+			panel.style.background = checkedTheme;
+			// localStorage.setItem('panel_fill', true);
+		}
+		else {
+			panel.style.background = '';
+			// localStorage.setItem('panel_fill', false);
+		}
+	};
 
 	if (localStorage.getItem('theme')) {
 		document.querySelector('.theme_' + localStorage.getItem('theme')).checked = true;
 		console.log(localStorage.getItem('theme'))
 	}
 
-	if (localStorage.getItem('is_nav_color')) {
-		document.querySelector('.toggle_fill_nav').checked = true;
-	}
+	// if (localStorage.getItem('panel_fill')) {
+	// 	document.querySelector('.toggle_panel_fill').checked = true;
+	// }
+	// else {
+	// 	document.querySelector('.toggle_panel_fill').checked = false;
+	// }
 
 
 	for (let item of themeSetters) {
@@ -79,20 +70,23 @@ if (update) localStorage.clear();
 
 			checkedTheme = item.dataset.themeColor;
 
+			if (togglePanelFill.checked) {
+				panel.style.background = checkedTheme;
+			}
+
 			if (localStorage.getItem('theme')) {
 				item.dataset.themeColor = localStorage.getItem('theme');
+			}
+			else {
+				localStorage.setItem('theme', checkedTheme);
 			}
 
 			changeThemeColor(item.dataset.themeColor);
 
-			if (navFillSetter.checked) {
-				localStorage.setItem('is_nav_color', true);
+			if (togglePanelFill.checked) {
+				// localStorage.setItem('panel_fill', true);
 				panel.style.background = item.dataset.themeColor;
 			}
-			else {
-				localStorage.setItem('is_nav_color', '');
-			}
-
 			// Array.from(effectsList.children, e => e.style.color = item.dataset.themeColor )
 
 			
@@ -107,6 +101,7 @@ if (update) localStorage.clear();
 		}
 
 		item.onclick = function() {
+
 			changeThemeColor(this.dataset.themeColor);
 			checkedTheme = this.dataset.themeColor;
 			localStorage.setItem('theme', this.dataset.themeColor);
@@ -125,12 +120,12 @@ if (update) localStorage.clear();
 			updateList(this.dataset.themeColor);
 
 
-			if (navFillSetter.checked) {
-				localStorage.setItem('is_nav_color', true);
+			if (togglePanelFill.checked) {
+				// localStorage.setItem('panel_fill', true);
 				panel.style.background = item.dataset.themeColor;
 			}
 			else {
-				localStorage.setItem('is_nav_color', '');
+				// localStorage.setItem('panel_fill', '');
 			}
 				
 		};

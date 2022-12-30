@@ -1,11 +1,11 @@
 .content {
 	width: 100%;
 	height: 100%;
-    background-image: radial-gradient(rgba(20, 26, 73, 0.6), rgb(0, 0, 0));
-    /* background-image: url(backgrounds/12.jpg); */
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+	background-image: radial-gradient(rgba(20, 26, 73, 0.6), rgb(0, 0, 0));
+	/* background-image: url(backgrounds/12.jpg); */
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 .content_main {
@@ -19,19 +19,16 @@
 }
 
 .content_main .current_effect {
-	/* background-color: orangered; */
-    text-shadow: 0 1px 2px #000, 1px 0 2px #000;
+	text-shadow: 0 1px 2px #000, 1px 0 2px #000;
 	text-align: center;
-    border-radius: 3px;
+	border-radius: 3px;
 	font-size: 32px;
-    padding: 10px;
+	padding: 10px;
 	margin-top: -40vh;
 
 }
 
 .content_main .led_controls_rng {
-	/* background-color: chartreuse; */
-	/* height: 200px; */
 	display: flex;
 	flex-direction: column;
 	/* width: 100%; */
@@ -43,18 +40,18 @@
 
 
 .led_controls_rng .range_brightness_block {
-    /* background-color: #ff4500; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 30px;
-    gap: 6px;
-    
+	/* background-color: #ff4500; */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 30px;
+	gap: 6px;
+	
 }
 .led_controls_rng img {
-    width: 22px;
-    filter: invert();
+	width: 22px;
+	filter: invert();
 }
 
 .led_controls_rng .range {
@@ -64,46 +61,46 @@
 }
 
 .led_controls_rng .range_duration_block {
-    /* background-color: #ff4500; */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 30px;
-    gap: 6px;
-    
+	/* background-color: #ff4500; */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 30px;
+	gap: 6px;
+	
 }
 .led_controls_rng img {
-    width: 22px;
-    filter: invert();
+	width: 22px;
+	filter: invert();
 }
 
 .led_controls_rng output {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 5px 15px 5px 5px;
-    width: 20px;
-    font-size: 20px;
-    color: #fff;
+	font-family: Arial, sans-serif;
+	text-align: center;
+	padding: 5px 15px 5px 5px;
+	width: 20px;
+	font-size: 20px;
+	color: #fff;
 }
 
 .led_controls_rng .range[type="range"] {
-    -webkit-appearance: none;
-    height: 5px;
-    background: rgba(60, 60, 60, 0.7);
-    border-radius: 5px;
-    background-image: linear-gradient(#ff4500, #ff4500);
-    background-size: 70% 100%;
-    background-repeat: no-repeat;
-  }
+	-webkit-appearance: none;
+	height: 5px;
+	background: rgba(10, 10, 10, .8);
+	border-radius: 5px;
+	background-image: linear-gradient(#666, #666);
+	background-size: 70% 100%;
+	background-repeat: no-repeat;
+}
 
 .led_controls_rng .range[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 26px;
-    width: 26px;
-    border-radius: 50%;
-    background: #ddd;
-    box-shadow: 0 0 4px 0 rgba(212, 212, 212, .5);
+	-webkit-appearance: none;
+	height: 26px;
+	width: 26px;
+	border-radius: 50%;
+	background: #ddd;
+	box-shadow: 0 0 4px 0 rgba(212, 212, 212, .5);
 
 }
 
@@ -123,35 +120,20 @@
 
 .effects_list span {
 	background-color: #090a0f;
+	text-shadow: 0 1px 2px #000, 1px 0 2px #000;
 	color: #eee;
-    border-radius: 3px;
-    text-align: center;
-    text-shadow: 0 1px 2px #000, 1px 0 2px #000;
-    /* color:#090a0f;
-    text-shadow: 1px 0px 1px #000; */
+	border-radius: 3px;
+	text-align: center;
 	padding: 10px;
 
 }
 .effects_list span:last-child {
-    margin-bottom: 20px;
-}
-
-.pulse {
-    animation: pulse .7s infinite alternate;
-}
-
-@keyframes pulse {
-    0% { 
-        background-color: rgba(0, 0, 0, .7);
-    }
-    100% { 
-        background-color: #19bb42;
-    }
+	margin-bottom: 20px;
 }
 
 /*for PC*/
 @media only screen and (min-width: 600px) {
-    .content .effects_list {
-        margin: 50px 0 10px 0;
-    }
+	.content .effects_list {
+		margin: 50px 0 10px 0;
+	}
 }

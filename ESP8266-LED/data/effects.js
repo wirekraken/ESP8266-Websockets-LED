@@ -1,41 +1,19 @@
-
-const app = document.getElementById('app');
-
-const header = document.querySelector('.header');
-const colorPickerBlock = document.querySelector('.colorpicker_block');
-const settingsBlock = document.querySelector('.settings_block');
-
-const contentMain = document.querySelector('.content .content_main');
 const currentEffectELem = document.querySelector('.content_main .current_effect');
 const effectsList = document.querySelector('.content .effects_list');
 const effectElems = document.querySelectorAll('.effects_list span');
 
-const panel = document.querySelector('.panel');
 const togglePlay = document.querySelector('.toggle_play');
+const prevButton = document.querySelector('.prev_btn');
+const nextButton = document.querySelector('.next_btn');
+const toggleLoop = document.getElementById('toggle_loop');
+const toggleRandom = document.getElementById('toggle_random');
+
 
 const rangeBrightness = document.querySelector('.range_brightness');
 const brightnessValue = document.querySelector('.brightness_value');
 
-
-
 effectsList.style.height = document.documentElement.clientHeight - (panel.clientHeight + header.clientHeight) + 'px';
 
-console.log(panel.offsetHeight)
-
-window.onload = function() {
-	initWebSocket();
-	alert("LOADED")
-};
-
-// (screen.width > 600) ? handlerPC() : handlerMobile();
-
-// function handlerPC() {
-// 	// sendEffect();
-// }
-// function handlerMobile() {
-// }
-
-sendEffect();
 
 const LED_COUNT = 29;
 let currentEffect = 1;
@@ -43,12 +21,12 @@ let currentEffect = 1;
 let webSocket;
 
 function initWebSocket() {
-    console.log('Trying to open a WebSocket connection...');
-    webSocket = new WebSocket('ws://' + window.location.hostname + ':81/');
-    webSocket.onopen = onOpen;
-    webSocket.onclose = onClose;
-    webSocket.onerror = onError;
-    webSocket.onmessage = onMessage;
+	console.log('Trying to open a WebSocket connection...');
+	webSocket = new WebSocket('ws://' + window.location.hostname + ':81/');
+	webSocket.onopen = onOpen;
+	webSocket.onclose = onClose;
+	webSocket.onerror = onError;
+	webSocket.onmessage = onMessage;
 }
 
 
@@ -57,23 +35,24 @@ function onMessage(payload) {
 	if (payload.data[0] === 'E') {
 		currentEffect = (+payload.data.replace(/\D/g, ""));
 
-		updateList('olive');
+		updateList(localStorage.getItem('theme'));
 
 	}
+	// synchronization should be
 	else if (payload.data[0] === 'B') {
 		// brightnessValue.value = parseInt((+payload.data.replace(/\D/g, ""))/2555);
 		// rangeBrightness.style.backgroundSize = (rangeBrightness.value - 0) * 100 / (100 - 0) + '% 100%';
 		// rangeBrightness.value = parseInt((+payload.data.replace(/\D/g, ""))/2555);
-		console.log('get B :', payload.data)
+		// console.log('B :', payload.data)
 	}
 
-	console.log('got: ', payload.data);
+	console.log('Received: ', payload.data);
 	// console.log(+payload.data.replace(/\D/g, ""));
 }
 
 function onClose(e) {
-    console.log('Connection closed ', e);
-    setTimeout(initWebSocket, 1000);
+	console.log('Connection closed ', e);
+	setTimeout(initWebSocket, 1000);
 }
 
 function onError(e) {
@@ -95,7 +74,8 @@ function sendEffect() {
 			currentEffect = this.dataset.effect;
 			togglePlay.checked = true;
 	
-			updateList(localStorage.getItem('theme'));
+			// updateList(localStorage.getItem('theme'));
+			updateList('gray'); // not handled by the server yet
 
 			const payload = 'E_' + this.dataset.effect;
 
@@ -113,10 +93,7 @@ function updateList(color) {
 
 	let background = color;
 		
-	Array.from(effectElems, item => {
-		item.style.background = '';
-		// item.classList.remove('pulse');
-	}); // clear
+	Array.from(effectElems, item => item.style.background = ''); // clear
 
 	// if (+(effectElems[currentEffect - 1].dataset.effect) > 17) {
 	// 	background = '#cd5300';
@@ -124,16 +101,8 @@ function updateList(color) {
 
 	effectElems[currentEffect - 1].style.background = background;
 
-	// effectElems[currentEffect - 1].classList.add('pulse');
 }
 
-
-
-
-
-
-
-// ######################### range #################################
 
 (() => {
 
@@ -183,7 +152,7 @@ function updateList(color) {
 		const val = this.value;
 
 		this.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%';
-		durationValue.value = this.value + 's';
+		durationValue.value = this.value;
 
 	};
 	rangeDuration.onchange = function() {
@@ -193,8 +162,6 @@ function updateList(color) {
 		webSocket.send(payload);
 	}
 
-
-
 	function updateRange(range, valueElem) {
 		const min = range.min;
 		const max = range.max;
@@ -203,31 +170,7 @@ function updateList(color) {
 		valueElem.value = range.value;
 	};
 
-
-
-	// function handleRangeChange(e) {
-	// 	// let target = e.target;
-
-	// 	// if (e.target.type !== 'range') {
-	// 	// 	target = document.querySelector('.range_brightness');
-	// 	// } 
-
-	// 	const min = this.min;
-	// 	const max = this.max;
-	// 	const val = this.value;
-
-	// 	this.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%';
-
-	// 	brightnessValue.value = this.value;
-	// }
-
-
-
-	// rangeInputs.forEach(input => {
-	//   input.addEventListener('input', handleRangeChange)
-	// })
 })();
-
 
 
 togglePlay.onclick = function() {
@@ -243,9 +186,6 @@ togglePlay.onclick = function() {
 	console.log(payload);
 	webSocket.send(payload);
 }
-
-
-const toggleLoop = document.getElementById('toggle_loop');
 
 toggleLoop.onclick = function() {
 	
@@ -264,8 +204,6 @@ toggleLoop.onclick = function() {
 
 }
 
-const toggleRandom = document.getElementById('toggle_random');
-
 toggleRandom.onclick = function() {
 
 	let payload;
@@ -282,10 +220,6 @@ toggleRandom.onclick = function() {
 	webSocket.send(payload);
 
 }
-
-// ###############################
-
-const prevButton = document.querySelector('.prev_btn');
 
 prevButton.onclick = function() {
 
@@ -305,8 +239,6 @@ prevButton.onclick = function() {
 	console.log(payload);
 	webSocket.send(payload);
 }
-
-const nextButton = document.querySelector('.next_btn');
 
 nextButton.onclick = function() {
 
@@ -330,56 +262,3 @@ nextButton.onclick = function() {
 	console.log(payload);
 	webSocket.send(payload);
 }
-
-
-
-// ###############################
-
-
-const toggleColorPicker = document.querySelector('.toggle_colorpicker');
-const toggleSettings = document.querySelector('.toggle_settings');
-const toggleContent = document.querySelector('.toggle_content');
-
-toggleColorPicker.onclick = function() {
-	let state = toggleContent.checked;
-	if (this.checked) {
-		currentEffectELem.style.display = 'none';
-		toggleContent.checked = false;
-		effectsList.style.display = 'none';
-		contentMain.style.display = 'flex';
-
-		colorPickerBlock.style.display = 'flex';
-	}
-	else {
-		currentEffectELem.style.display = 'flex';
-		if (state) {
-			toggleContent.checked = state;
-			effectsList.style.display = 'flex';
-		}
-		colorPickerBlock.style.display = 'none';
-	}
-};
-
-toggleSettings.onclick = function() {
-	if (this.checked) {
-		settingsBlock.style.display = 'flex';
-	}
-	else {
-		settingsBlock.style.display = 'none';
-	}
-};
-
-toggleContent.onclick = function() {
-	if (this.checked) {
-		effectsList.style.display = 'flex';
-		contentMain.style.display = 'none';
-
-		toggleColorPicker.checked = false;
-		colorPickerBlock.style.display = 'none';
-	}
-	else {
-		contentMain.style.display = 'flex';
-		effectsList.style.display = 'none';
-		currentEffectELem.style.display = 'flex';
-	}
-};
