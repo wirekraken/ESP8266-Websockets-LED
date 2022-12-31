@@ -33,7 +33,7 @@ uint8_t favEffects[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22
 uint8_t numFavEffects = sizeof(favEffects);
 
 uint32_t lastChange;
-uint32_t duration = 3000; // duration of the effect in the loop
+uint32_t duration = 10000; // (10s) duration of the effect in the loop
 uint8_t currentEffect = 0;
 
 
@@ -258,34 +258,34 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
 // call the desired effect
 void setEffect(const uint8_t num) {
   switch(num) {
-    case 0: updateColor(0,0,0); break;
-    case 1: rainbow_fade(); _delay = 20; break;       
-    case 2: rainbow_loop(); _delay = 20; break;
-    case 3: new_rainbow_loop(); _delay = 5; break;
-    case 4: random_march(); _delay = 40; break;  
-    case 5: rgb_propeller(); _delay = 25; break;
-    case 6: rotatingRedBlue(); _delay = 40; _hue = 0; break;
-    case 7: Fire(55, 120, _delay); _delay = 15; break; 
+case 0: updateColor(0,0,0); break;
+    case 1: rainbowFade(); _delay = 20; break;       
+    case 2: rainbowLoop(); _delay = 20; break;
+    case 3: rainbowLoopFade(); _delay = 5; break;
+    case 4: rainbowVertical(); _delay = 50; _step = 15; break;
+    case 5: randomMarch(); _delay = 40; break;  
+    case 6: rgbPropeller(); _delay = 25; break;
+    case 7: fire(55, 120, _delay); _delay = 15; break; 
     case 8: blueFire(55, 250, _delay); _delay = 15; break;  
-    case 9: random_burst(); _delay = 20; break;
+    case 9: randomBurst(); _delay = 20; break;
     case 10: flicker(); _delay = 20; break;
-    case 11: random_color_pop(); _delay = 35; break;                                      
-    case 12: Sparkle(255, 255, 255, _delay); _delay = 0; break;                   
-    case 13: color_bounce(); _delay = 20; _hue = 0; break;
-    case 14: color_bounceFADE(); _delay = 40; _hue = 0; break;
-    case 15: red_blue_bounce(); _delay = 40; _hue = 0; break;
-    case 16: rainbow_vertical(); _delay = 50; _step = 15; break;
+    case 11: randomColorPop(); _delay = 35; break;                                      
+    case 12: sparkle(255, 255, 255, _delay); _delay = 0; break;                   
+    case 13: colorBounce(); _delay = 20; _hue = 0; break;
+    case 14: colorBounceFade(); _delay = 40; _hue = 0; break;
+    case 15: redBlueBounce(); _delay = 40; _hue = 0; break;
+    case 16: rotatingRedBlue(); _delay = 40; _hue = 0; break;
     case 17: matrix(); _delay = 50; _hue = 95; break; 
 
     // heavy effects
-    case 18: rwb_march(); _delay = 80; break;                         
+    case 18: rwbMarch(); _delay = 80; break;                         
     case 19: flame(); break;
     case 20: theaterChase(255, 0, 0, _delay); _delay = 50; break;
-    case 21: Strobe(255, 255, 255, 10, _delay, 1000); _delay = 100; break;
+    case 21: strobe(255, 255, 255, 10, _delay, 1000); _delay = 100; break;
     case 22: policeBlinker(); _delay = 25; break;
     case 23: kitt(); _delay = 100; break;
     case 24: rule30(); _delay = 100; break;
-    case 25: fade_vertical(); _delay = 60; _hue = 180; break;
+    case 25: fadeVertical(); _delay = 60; _hue = 180; break;
     case 26: fadeToCenter(); break;
     case 27: runnerChameleon(); break;
     case 28: blende(); break;
