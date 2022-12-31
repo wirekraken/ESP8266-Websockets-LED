@@ -138,34 +138,36 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
   }
     // if new text data is received
   if (type == WStype_TEXT) {
-
     Serial.printf("[%u] get Text: %s\n", num, payload);
+    messageHandler(num, payload, length);
     
-    String getData;
-    String sendData;
+  } 
+}
 
-    for (int i = 0; i < length; i++) {
-      if (!isdigit(payload[i])) continue;
-      getData += (char) payload[i];
-      
-    }
-      
-    if (payload[0] == 'B') { // brightness
-      isColorPicker = false;
+void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
+
+  String getData;
+  String sendData;
+
+  for (int i = 0; i < length; i++) {
+    if (!isdigit(payload[i])) continue;
+    getData += (char) payload[i];
+  }
+
+  switch (payload[0]) {
+    // brightness
+    case 'B':
       Serial.print("Client " + String(num) + ": Brightness: ");
       brightness = getData.toInt();
       Serial.println(getData);
 
       sendData = "B_" + String(brightness, DEC);
-      // webSocket.broadcastTXT(sendData);
       Serial.println("sent: " + sendData);
-
       LEDS.setBrightness(brightness);
-
-    }
-    else if (payload[0] == 'E') { // effect
+    break;
+    // effect
+    case 'E':
       isPlay = true;
-      isColorPicker = false;
 
       Serial.print("Client " + String(num) + ": Effect: ");
       effect = getData.toInt();
@@ -178,9 +180,9 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
       Serial.println("sent: " + sendData);
       
       setEffect(effect);
-
-    }
-    else if(payload[0] == 'P') {
+    break;
+    // play
+    case 'P':
       if (getData == "1") {
         isPlay = true;
         if (effect == 0) {
@@ -191,46 +193,39 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
         Serial.println("sent: " + sendData);
       } 
       else {
-        // LEDS.clear();
         isPlay = false;
       }
       Serial.print("PLAY: ");
       Serial.println(getData);
-    }
-    else if(payload[0] == 'D') { // duration
-      // isLoopEffect = false;
-      isColorPicker = false;
-      
+    break;
+    // duration
+    case 'D':
       Serial.print("Duration: ");
       duration = (getData.toInt() * 1000);
       Serial.println(duration);
-
-    }
-    else if(payload[0] == 'L') { // loop
-
+    break;
+    // loop
+    case 'L':
       if (getData == "1") {
         isPlay = true;
         isLoopEffect = true;
         isRandom = false;
-        isColorPicker = false;
         
         Serial.print("LOOP: ");
         effect = getData.toInt();
         Serial.println(getData);
-        // setEffect(effect);
         
       } 
       else {
         isLoopEffect = false;
       }
-    }
-    else if(payload[0] == 'R') {
-
+    break;
+    // random
+    case 'R':
       if (getData == "1") {
         isPlay = true;
         isLoopEffect = false;
         isRandom = true;
-        isColorPicker = false;
         
         Serial.print("RAND: ");
         Serial.println(getData);
@@ -238,78 +233,65 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
       } else {
         isRandom = false;
       }
-
-    }
-    else if (payload[0] == '#') { // color (in hex format)
+    break;
+    // color (in hex format)
+    case '#':
       isPlay = false;
       isColorPicker = true;
+      // decode HEX to RGB
+      uint32_t rgb = (uint32_t) strtol((const char *) &payload[1], NULL, 16);
       
-//      if (!isColorPicker) {
-//        Serial.print("Color: ");
-//        Serial.println(isColorPicker);
-//        effect = isColorPicker;
-////        setEffect(effect);
-////        isColorPicker = true;
-//
-//      }
-//      else {
-        // decode HEX to RGB
-        
-        uint32_t rgb = (uint32_t) strtol((const char *) &payload[1], NULL, 16);
-        
-        uint8_t r = (rgb >> 16) & 0xFF;
-        uint8_t g = (rgb >>  8) & 0xFF;
-        uint8_t b = (rgb >>  0) & 0xFF;
-        
-        Serial.println("Client " + String(num) + ": Color: (" + String(r) + "," + String(g) + "," + String(b) + ")");
-        
-        for (int i = 0; i < LED_COUNT; i++) {
-          leds[i].setRGB(r,g,b);
-        }
-        LEDS.show();
-        
-//      }
-    }
-  } 
+      uint8_t r = (rgb >> 16) & 0xFF;
+      uint8_t g = (rgb >>  8) & 0xFF;
+      uint8_t b = (rgb >>  0) & 0xFF;
+      
+      Serial.println("Client " + String(num) + ": Color: (" + String(r) + "," + String(g) + "," + String(b) + ")");
+      
+      for (int i = 0; i < LED_COUNT; i++) {
+        leds[i].setRGB(r,g,b);
+      }
+      LEDS.show();
+    break;
+  }
 }
 
 // call the desired effect
 void setEffect(const uint8_t num) {
-    switch(num) {
-      case 0: updateColor(0,0,0); break;
-      case 1: rainbow_fade(); _delay = 20; break;       
-      case 2: rainbow_loop(); _delay = 20; break;
-      case 3: new_rainbow_loop(); _delay = 5; break;
-      case 4: random_march(); _delay = 40; break;  
-      case 5: rgb_propeller(); _delay = 25; break;
-      case 6: rotatingRedBlue(); _delay = 40; _hue = 0; break;
-      case 7: Fire(55, 120, _delay); _delay = 15; break; 
-      case 8: blueFire(55, 250, _delay); _delay = 15; break;  
-      case 9: random_burst(); _delay = 20; break;
-      case 10: flicker(); _delay = 20; break;
-      case 11: random_color_pop(); _delay = 35; break;                                      
-      case 12: Sparkle(255, 255, 255, _delay); _delay = 0; break;                   
-      case 13: color_bounce(); _delay = 20; _hue = 0; break;
-      case 14: color_bounceFADE(); _delay = 40; _hue = 0; break;
-      case 15: red_blue_bounce(); _delay = 40; _hue = 0; break;
-      case 16: rainbow_vertical(); _delay = 50; _step = 15; break;
-      case 17: matrix(); _delay = 50; _hue = 95; break; 
-  
-      // heavy effects
-      case 18: rwb_march(); _delay = 80; break;                         
-      case 19: flame(); break;
-      case 20: theaterChase(255, 0, 0, _delay); _delay = 50; break;
-      case 21: Strobe(255, 255, 255, 10, _delay, 1000); _delay = 100; break;
-      case 22: policeBlinker(); _delay = 25; break;
-      case 23: kitt(); _delay = 100; break;
-      case 24: rule30(); _delay = 100; break;
-      case 25: fade_vertical(); _delay = 60; _hue = 180; break;
-      case 26: fadeToCenter(); break;
-      case 27: runnerChameleon(); break;
-      case 28: blende(); break;
-      case 29: blende_2();
+  switch(num) {
+    case 0: updateColor(0,0,0); break;
+    case 1: rainbow_fade(); _delay = 20; break;       
+    case 2: rainbow_loop(); _delay = 20; break;
+    case 3: new_rainbow_loop(); _delay = 5; break;
+    case 4: random_march(); _delay = 40; break;  
+    case 5: rgb_propeller(); _delay = 25; break;
+    case 6: rotatingRedBlue(); _delay = 40; _hue = 0; break;
+    case 7: Fire(55, 120, _delay); _delay = 15; break; 
+    case 8: blueFire(55, 250, _delay); _delay = 15; break;  
+    case 9: random_burst(); _delay = 20; break;
+    case 10: flicker(); _delay = 20; break;
+    case 11: random_color_pop(); _delay = 35; break;                                      
+    case 12: Sparkle(255, 255, 255, _delay); _delay = 0; break;                   
+    case 13: color_bounce(); _delay = 20; _hue = 0; break;
+    case 14: color_bounceFADE(); _delay = 40; _hue = 0; break;
+    case 15: red_blue_bounce(); _delay = 40; _hue = 0; break;
+    case 16: rainbow_vertical(); _delay = 50; _step = 15; break;
+    case 17: matrix(); _delay = 50; _hue = 95; break; 
 
-    }
+    // heavy effects
+    case 18: rwb_march(); _delay = 80; break;                         
+    case 19: flame(); break;
+    case 20: theaterChase(255, 0, 0, _delay); _delay = 50; break;
+    case 21: Strobe(255, 255, 255, 10, _delay, 1000); _delay = 100; break;
+    case 22: policeBlinker(); _delay = 25; break;
+    case 23: kitt(); _delay = 100; break;
+    case 24: rule30(); _delay = 100; break;
+    case 25: fade_vertical(); _delay = 60; _hue = 180; break;
+    case 26: fadeToCenter(); break;
+    case 27: runnerChameleon(); break;
+    case 28: blende(); break;
+    case 29: blende_2();
+
+  }
 }
   
 // send the right file to the client (if it exists)
@@ -330,16 +312,16 @@ bool handleFileRead(String path) {
 
 // determine the MIME type of file
 String getContentType(String filename) {
-    if (server.hasArg("download")) return "application/octet-stream";
-    else if(filename.endsWith(".htm")) return "text/html";
-    else if(filename.endsWith(".html")) return "text/html";
-    else if(filename.endsWith(".css")) return "text/css";
-    else if(filename.endsWith(".js")) return "application/javascript";
-    else if(filename.endsWith(".png")) return "image/png";
-    else if(filename.endsWith(".gif")) return "image/gif";
-    else if(filename.endsWith(".jpg")) return "image/jpeg";
-    else if(filename.endsWith(".ico")) return "image/x-icon";
-    else if(filename.endsWith(".svg")) return "image/svg+xml";
-    return "text/plain";
+  if (server.hasArg("download")) return "application/octet-stream";
+  else if(filename.endsWith(".htm")) return "text/html";
+  else if(filename.endsWith(".html")) return "text/html";
+  else if(filename.endsWith(".css")) return "text/css";
+  else if(filename.endsWith(".js")) return "application/javascript";
+  else if(filename.endsWith(".png")) return "image/png";
+  else if(filename.endsWith(".gif")) return "image/gif";
+  else if(filename.endsWith(".jpg")) return "image/jpeg";
+  else if(filename.endsWith(".ico")) return "image/x-icon";
+  else if(filename.endsWith(".svg")) return "image/svg+xml";
+  return "text/plain";
 
 }
