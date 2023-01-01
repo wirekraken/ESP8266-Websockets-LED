@@ -12,11 +12,11 @@ const toggleSettings = document.querySelector('.toggle_settings');
 const toggleContent = document.querySelector('.toggle_content');
 
 window.onload = () => {
-	onImagesLoaded(app, () => {
+	// onImagesLoaded(app, () => {
 		console.log('All content loaded');
 		initWebSocket();
 		sendEffect();
-	});
+	// });
 };
 
 toggleColorPicker.onclick = function() {
@@ -64,23 +64,23 @@ toggleSettings.onclick = function() {
 };
 
 
-function onImagesLoaded(container, event) {
-	const images = container.getElementsByTagName('img');
-	let loaded = images.length;
-	for (let image of images) {
-		if (image.complete) {
-			loaded--;
-		}
-		else {
-			image.addEventListener('load', function() {
-				loaded--;
-				if (loaded === 0) {
-					event();
-				}
-			});
-		}
-		if (loaded == 0) {
-			event();
-		}
-	}
-}
+// function onImagesLoaded(container, event) {
+// 	const images = container.getElementsByTagName('img');
+// 	let loaded = images.length;
+// 	for (let image of images) {
+// 		if (image.complete) {
+// 			loaded--;
+// 		}
+// 		else {
+// 			image.addEventListener('load', function() {
+// 				loaded--;
+// 				if (loaded === 0) {
+// 					event();
+// 				}
+// 			});
+// 		}
+// 		if (loaded == 0) {
+// 			event();
+// 		}
+// 	}
+// }

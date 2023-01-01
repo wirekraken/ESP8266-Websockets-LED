@@ -8,7 +8,6 @@ const nextButton = document.querySelector('.next_btn');
 const toggleLoop = document.getElementById('toggle_loop');
 const toggleRandom = document.getElementById('toggle_random');
 
-
 const rangeBrightness = document.querySelector('.range_brightness');
 const brightnessValue = document.querySelector('.brightness_value');
 const rangeDuration = document.querySelector('.range_duration');
@@ -112,7 +111,7 @@ function sendEffect() {
 			togglePlay.checked = true;
 	
 			// updateList(localStorage.getItem('theme'));
-			updateList('rgba(70,70,70,.5'); // not handled by the server yet
+			updateList('rgba(120,120,120,.8'); // not handled by the server yet
 
 			const payload = 'E_' + this.dataset.effect;
 
@@ -248,7 +247,7 @@ prevButton.onclick = function() {
 		--currentEffect;
 	}
 
-	updateList('rgba(70,70,70,.5');
+	updateList('rgba(120,120,120,.8');
 
 	const payload = 'E_' + currentEffect;
 
@@ -271,7 +270,7 @@ nextButton.onclick = function() {
 		++currentEffect;
 	}
 
-	updateList('rgba(70,70,70,.5');
+	updateList('rgba(120,120,120,.8');
 
 	const payload = 'E_' + currentEffect;
 
