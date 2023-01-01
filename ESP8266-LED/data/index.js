@@ -11,8 +11,8 @@ const toggleColorPicker = document.querySelector('.toggle_colorpicker');
 const toggleSettings = document.querySelector('.toggle_settings');
 const toggleContent = document.querySelector('.toggle_content');
 
-window.onload = function() {
-	onImagesLoaded(app, function() {
+window.onload = () => {
+	onImagesLoaded(app, () => {
 		console.log('All content loaded');
 		initWebSocket();
 		sendEffect();

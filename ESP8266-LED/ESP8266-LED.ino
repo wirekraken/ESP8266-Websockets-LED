@@ -21,6 +21,7 @@ IPAddress Subnet(255,255,255,0); // subnet mask
 
 // default values. You will change them via the Web interface
 uint8_t brightness = 25;
+uint32_t duration = 10000; // (10s) duration of the effect in the loop
 uint8_t effect = 0;
 
 bool isPlay = false;
@@ -33,7 +34,6 @@ uint8_t favEffects[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22
 uint8_t numFavEffects = sizeof(favEffects);
 
 uint32_t lastChange;
-uint32_t duration = 10000; // (10s) duration of the effect in the loop
 uint8_t currentEffect = 0;
 
 
@@ -129,16 +129,17 @@ void setFavEffects(const uint8_t *arr, uint8_t count) {
 // the callback for handling incoming data
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
 
-   // if a new websocket connection is established
+  // if a new websocket connection is established
   if (type == WStype_CONNECTED) {
     IPAddress ip = webSocket.remoteIP(num);
-    
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!must be shown in the web interface!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     webSocket.sendTXT(num, "Websocket established!"); // send status message
     Serial.println("New client connected! Num: " + String(num));
   }
-    // if new text data is received
+  // if new text data is received
   if (type == WStype_TEXT) {
-    Serial.printf("[%u] get Text: %s\n", num, payload);
+    Serial.printf("Client[%u] Received: %s\n", num, payload);
     messageHandler(num, payload, length);
     
   } 
@@ -155,31 +156,36 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
   }
 
   switch (payload[0]) {
-    // brightness
-    case 'B':
-      Serial.print("Client " + String(num) + ": Brightness: ");
-      brightness = getData.toInt();
-      Serial.println(getData);
-
-      sendData = "B_" + String(brightness, DEC);
-      Serial.println("sent: " + sendData);
-      LEDS.setBrightness(brightness);
-    break;
     // effect
     case 'E':
       isPlay = true;
-
-      Serial.print("Client " + String(num) + ": Effect: ");
       effect = getData.toInt();
       Serial.println(getData);
 
       currentEffect = getData.toInt() - 1; // so that the loop starts from the current one
 
-      sendData = "E_" + String(effect, DEC);
+      sendData = "E_" + getData;
       webSocket.broadcastTXT(sendData);
-      Serial.println("sent: " + sendData);
       
       setEffect(effect);
+    break;
+    // brightness
+    case 'B':
+      Serial.println(getData);
+      brightness = getData.toInt();
+
+      sendData = "B_" + getData;
+      webSocket.broadcastTXT(sendData);
+      
+      LEDS.setBrightness(brightness);
+    break;
+    // duration
+    case 'D':
+      Serial.println(getData);
+      duration = (getData.toInt() * 1000);
+
+      sendData = "D_" + getData;
+      webSocket.broadcastTXT(sendData);
     break;
     // play
     case 'P':
@@ -190,19 +196,12 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
         }
         sendData = "E_" + String(effect, DEC);
         webSocket.broadcastTXT(sendData);
-        Serial.println("sent: " + sendData);
       } 
       else {
         isPlay = false;
       }
-      Serial.print("PLAY: ");
-      Serial.println(getData);
-    break;
-    // duration
-    case 'D':
-      Serial.print("Duration: ");
-      duration = (getData.toInt() * 1000);
-      Serial.println(duration);
+      sendData = "P_" + getData;
+      webSocket.broadcastTXT(sendData);
     break;
     // loop
     case 'L':
@@ -210,15 +209,14 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
         isPlay = true;
         isLoopEffect = true;
         isRandom = false;
-        
-        Serial.print("LOOP: ");
-        effect = getData.toInt();
-        Serial.println(getData);
-        
+
+        effect = getData.toInt(); // ?????
       } 
       else {
         isLoopEffect = false;
       }
+      sendData = "L_" + getData;
+      webSocket.broadcastTXT(sendData);
     break;
     // random
     case 'R':
@@ -226,14 +224,14 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
         isPlay = true;
         isLoopEffect = false;
         isRandom = true;
-        
-        Serial.print("RAND: ");
-        Serial.println(getData);
-        
-      } else {
+      } 
+      else {
         isRandom = false;
       }
+      sendData = "R_" + getData;
+      webSocket.broadcastTXT(sendData);
     break;
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!must be synchronized!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // color (in hex format)
     case '#':
       isPlay = false;
@@ -253,6 +251,7 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
       LEDS.show();
     break;
   }
+  Serial.println("Sent: " + sendData);
 }
 
 // call the desired effect

@@ -11,6 +11,8 @@ const toggleRandom = document.getElementById('toggle_random');
 
 const rangeBrightness = document.querySelector('.range_brightness');
 const brightnessValue = document.querySelector('.brightness_value');
+const rangeDuration = document.querySelector('.range_duration');
+const durationValue = document.querySelector('.duration_value');
 
 effectsList.style.height = document.documentElement.clientHeight - (panel.clientHeight + header.clientHeight) + 'px';
 
@@ -29,25 +31,10 @@ function initWebSocket() {
 	webSocket.onmessage = onMessage;
 }
 
-
 function onMessage(payload) {
+	messageHandler(payload.data);
 
-	if (payload.data[0] === 'E') {
-		currentEffect = (+payload.data.replace(/\D/g, ""));
-
-		updateList(localStorage.getItem('theme'));
-
-	}
-	// synchronization should be
-	else if (payload.data[0] === 'B') {
-		// brightnessValue.value = parseInt((+payload.data.replace(/\D/g, ""))/2555);
-		// rangeBrightness.style.backgroundSize = (rangeBrightness.value - 0) * 100 / (100 - 0) + '% 100%';
-		// rangeBrightness.value = parseInt((+payload.data.replace(/\D/g, ""))/2555);
-		// console.log('B :', payload.data)
-	}
-
-	console.log('Received: ', payload.data);
-	// console.log(+payload.data.replace(/\D/g, ""));
+	// console.log('Received: ', payload.data);
 }
 
 function onClose(e) {
@@ -64,6 +51,56 @@ function onOpen() {
 
 }
 
+function messageHandler(payload) {
+	let getData = (+payload.replace(/\D/g, ""));
+	switch(payload[0]) {
+		case 'E':
+			togglePlay.checked = true;
+			currentEffect = getData;
+			updateList(localStorage.getItem('theme')); // handled by the server
+		break;
+		case 'B':
+			// setTimeout(() => {
+				updateRange(rangeBrightness, brightnessValue, parseInt(getData/2.555));
+			// }, 10);
+		break;
+		case 'D':
+			// setTimeout(() => {
+				updateRange(rangeDuration, durationValue, getData, isDuration=true);
+			// }, 10);
+		break;
+		case 'P':
+			if (getData === 1) {
+				togglePlay.checked = true;
+			}
+			else {
+				togglePlay.checked = false;
+				console.log("PP")
+			}
+		break;
+		case 'L':
+			if (getData === 1) {
+				togglePlay.checked = true;
+				toggleLoop.checked = true;
+				toggleRandom.checked = false;
+			}
+			else {
+				toggleLoop.checked = false;
+			}
+		break;
+		case 'R':
+			if (getData === 1) {
+				togglePlay.checked = true;
+				toggleRandom.checked = true;
+				toggleLoop.checked = false;
+			}
+			else {
+				toggleRandom.checked = false;
+			}
+		break;
+	}
+	console.log('Received: ', payload, getData);
+}
 
 function sendEffect() {
 	
@@ -75,7 +112,7 @@ function sendEffect() {
 			togglePlay.checked = true;
 	
 			// updateList(localStorage.getItem('theme'));
-			updateList('gray'); // not handled by the server yet
+			updateList('rgba(70,70,70,.5'); // not handled by the server yet
 
 			const payload = 'E_' + this.dataset.effect;
 
@@ -88,48 +125,29 @@ function sendEffect() {
 }
 
 function updateList(color) {
-	
 	currentEffectELem.innerText = effectElems[currentEffect - 1].innerText;
-
-	let background = color;
-		
 	Array.from(effectElems, item => item.style.background = ''); // clear
-
 	// if (+(effectElems[currentEffect - 1].dataset.effect) > 17) {
 	// 	background = '#cd5300';
 	// }
-
-	effectElems[currentEffect - 1].style.background = background;
+	currentEffectELem.style.background = color;
+	effectElems[currentEffect - 1].style.background = color;
 
 }
 
 
 (() => {
 
-	// const rangeInputs = document.querySelectorAll('input[type="range"]')
-	// const rangeBrightness = document.querySelector('.range_brightness');
-	const rangeDuration = document.querySelector('.range_duration');
-	// const brightnessValue = document.querySelector('.brightness_value');
-	const durationValue = document.querySelector('.duration_value');
-
-	// rangeBrightness.oninput = handleRangeChange.apply(rangeBrightness);
-	updateRange(rangeBrightness, brightnessValue);
-	updateRange(rangeDuration, durationValue);
-
-	// brightnessValue.value = rangeBrightness.value;
-	// durationValue.value = rangeDuration.value;
+	updateRange(rangeBrightness, brightnessValue, 25);
+	updateRange(rangeDuration, durationValue, 10, isDuration=true);
 
 	let lastSend = 0;
 
 	rangeBrightness.oninput = function() {
-		const min = this.min;
-		const max = this.max;
-		const val = this.value;
 
-		this.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%';
-		brightnessValue.value = this.value;
+		updateRange(rangeBrightness, brightnessValue, this.value);
 		
-		let payload = 'B_' + parseInt(val * 2.555);
+		let payload = 'B_' + parseInt(this.value * 2.555);
 
 		const now = (new Date).getTime();
 		if (lastSend > now - 50) return; // send data no more than 50ms
@@ -147,12 +165,7 @@ function updateList(color) {
 
 	// only for the interface range
 	rangeDuration.oninput = function() {
-		const min = this.min;
-		const max = this.max;
-		const val = this.value;
-
-		this.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%';
-		durationValue.value = this.value;
+		updateRange(rangeDuration, durationValue, this.value, isDuration=true);
 
 	};
 	rangeDuration.onchange = function() {
@@ -162,15 +175,18 @@ function updateList(color) {
 		webSocket.send(payload);
 	}
 
-	function updateRange(range, valueElem) {
-		const min = range.min;
-		const max = range.max;
-		const val = range.value;
-		range.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%';
-		valueElem.value = range.value;
-	};
-
 })();
+
+function updateRange(range, output, value, isDuration=false) {
+	const min = range.min;
+	const max = range.max;
+
+	range.style.backgroundSize = (value - min) * 100 / (max - min) + '% 100%';
+	range.value = value;
+
+	output.value = isDuration ? value + 's' : value;
+
+};
 
 
 togglePlay.onclick = function() {
@@ -232,7 +248,7 @@ prevButton.onclick = function() {
 		--currentEffect;
 	}
 
-	updateList(localStorage.getItem('theme'));
+	updateList('rgba(70,70,70,.5');
 
 	const payload = 'E_' + currentEffect;
 
@@ -255,7 +271,7 @@ nextButton.onclick = function() {
 		++currentEffect;
 	}
 
-	updateList(localStorage.getItem('theme'));
+	updateList('rgba(70,70,70,.5');
 
 	const payload = 'E_' + currentEffect;
 
