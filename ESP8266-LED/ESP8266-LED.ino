@@ -1,11 +1,17 @@
-/*
-* ESP8266-Websockets-LED: https://github.com/wirekraken/ESP8266-Websockets-LED
-*/
+/**
+ * @author   Alexander Vojkov <wirekraken>
+ * @version  2.0
+ * @link     https://github.com/wirekraken/ESP8266-Websockets-LED
+**/
 
-#include <ESP8266WebServer.h>
-#include <WebSocketsServer.h>
+#include <ESP8266WebServer.h> // auto installed after installing ESP boards
+#include <WebSocketsServer.h> // by Markus Settler
+
+// the SPIFFS upload function is not currently supported on Arduino 2.0
+// use 1.8.x version
+// see: https://github.com/arduino/arduino-ide/issues/58
 #include <FS.h>
-#include <FastLED.h>
+#include <FastLED.h> // by Daniel Garcia
 
 #define LED_COUNT 60 // the number of pixels on the strip
 #define DATA_PIN 14 // (D5 nodemcu), important: https://github.com/FastLED/FastLED/wiki/ESP8266-notes
@@ -27,10 +33,10 @@ uint8_t effect = 0;
 bool isPlay = false;
 bool isLoopEffect = false;
 bool isRandom = false;
-bool isColorPicker = true; // flag to switch between the colorpicker and effects
+bool isColorPicker = false;
 
 // effects that will be in the loop
-uint8_t favEffects[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29};
+uint8_t favEffects[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33};
 uint8_t numFavEffects = sizeof(favEffects);
 
 uint32_t lastChange;
@@ -38,10 +44,11 @@ uint8_t currentEffect = 0;
 
 
 CRGBArray<LED_COUNT> leds;
-
+// variables for basic effects settings
 uint8_t _delay = 20;
 uint8_t _step = 10;
 uint8_t _hue = 0;
+uint8_t _sat = 255;
 
 // initializing the websocket server on port 81
 WebSocketsServer webSocket(81);
@@ -90,14 +97,16 @@ void loop() {
   server.handleClient(); // run the web server
 
   if (isPlay) {
+    String sendData;
+
     if (isLoopEffect) {
       if ((millis() - lastChange) > duration) {
         setFavEffects(favEffects, numFavEffects);
     
-        String str = "E_" + String(currentEffect, DEC);
+        sendData = "E_" + String(currentEffect, DEC);
+        webSocket.broadcastTXT(sendData);
+        Serial.println("Sent: " + sendData);
         
-        webSocket.broadcastTXT(str);
-        Serial.println("Sent: " + str);
       }
     }
     if (isRandom) {
@@ -106,9 +115,9 @@ void loop() {
         effect = favEffects[random(0, numFavEffects - 1)];
         currentEffect = effect - 1;
 
-        String str = "E_" + String(effect, DEC);
-        webSocket.broadcastTXT(str); // send the number of the current effect
-        Serial.println("Sent: " + str);
+        sendData = "E_" + String(effect, DEC);
+        webSocket.broadcastTXT(sendData); // send the number of the current effect
+        Serial.println("Sent: " + sendData);
       
       }
     }
@@ -118,12 +127,11 @@ void loop() {
 }
 
 void setFavEffects(const uint8_t *arr, uint8_t count) {
-
-    if (currentEffect > (count - 1)) {
-      currentEffect = 0;
-    }
-    effect = arr[currentEffect++];
-    lastChange = millis();
+  if (currentEffect > (count - 1)) {
+    currentEffect = 0;
+  }
+  effect = arr[currentEffect++];
+  lastChange = millis();
 }
 
 // the callback for handling incoming data
@@ -209,8 +217,6 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
         isPlay = true;
         isLoopEffect = true;
         isRandom = false;
-
-        effect = getData.toInt(); // ?????
       } 
       else {
         isLoopEffect = false;
@@ -257,8 +263,8 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
 // call the desired effect
 void setEffect(const uint8_t num) {
   switch(num) {
-case 0: updateColor(0,0,0); break;
-    case 1: rainbowFade(); _delay = 20; break;       
+    case 0: updateColor(0,0,0); break;
+    case 1: rainbowFade(); _delay = 20; break;
     case 2: rainbowLoop(); _delay = 20; break;
     case 3: rainbowLoopFade(); _delay = 5; break;
     case 4: rainbowVertical(); _delay = 50; _step = 15; break;
@@ -268,27 +274,32 @@ case 0: updateColor(0,0,0); break;
     case 8: blueFire(55, 250, _delay); _delay = 15; break;  
     case 9: randomBurst(); _delay = 20; break;
     case 10: flicker(); _delay = 20; break;
-    case 11: randomColorPop(); _delay = 35; break;                                      
-    case 12: sparkle(255, 255, 255, _delay); _delay = 0; break;                   
+    case 11: randomColorPop(); _delay = 35; break;
+    case 12: sparkle(255, 255, 255, _delay); _delay = 0; break;
     case 13: colorBounce(); _delay = 20; _hue = 0; break;
     case 14: colorBounceFade(); _delay = 40; _hue = 0; break;
     case 15: redBlueBounce(); _delay = 40; _hue = 0; break;
     case 16: rotatingRedBlue(); _delay = 40; _hue = 0; break;
-    case 17: matrix(); _delay = 50; _hue = 95; break; 
+    case 17: matrix(); _delay = 50; _hue = 95; break;
+    case 18: radiation(); _delay = 60; _hue = 95; break;
+    case 19: pacman(); _delay = 60; break;
+    case 20: popHorizontal(); _delay = 100; _hue = 0; break;
+    case 21: snowSparkle(); _delay = 20; break;
 
-    // heavy effects
-    case 18: rwbMarch(); _delay = 80; break;                         
-    case 19: flame(); break;
-    case 20: theaterChase(255, 0, 0, _delay); _delay = 50; break;
-    case 21: strobe(255, 255, 255, 10, _delay, 1000); _delay = 100; break;
-    case 22: policeBlinker(); _delay = 25; break;
-    case 23: kitt(); _delay = 100; break;
-    case 24: rule30(); _delay = 100; break;
-    case 25: fadeVertical(); _delay = 60; _hue = 180; break;
-    case 26: fadeToCenter(); break;
-    case 27: runnerChameleon(); break;
-    case 28: blende(); break;
-    case 29: blende_2();
+    // heavy effects (have nested loops and long delays)
+    // don't be surprised when your ESP will slow down with a quick change of brightness for them
+    case 22: rwbMarch(); _delay = 80; break;
+    case 23: flame(); break;
+    case 24: theaterChase(255, 0, 0, _delay); _delay = 50; break;
+    case 25: strobe(255, 255, 255, 10, _delay, 1000); _delay = 100; break;
+    case 26: policeBlinker(); _delay = 25; break;
+    case 27: kitt(); _delay = 100; break;
+    case 28: rule30(); _delay = 100; break;
+    case 29: fadeVertical(); _delay = 60; _hue = 180; break;
+    case 30: fadeToCenter(); break;
+    case 31: runnerChameleon(); break;
+    case 32: blende(); break;
+    case 33: blende_2();
 
   }
 }

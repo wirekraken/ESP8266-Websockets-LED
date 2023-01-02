@@ -16,7 +16,7 @@ const durationValue = document.querySelector('.duration_value');
 effectsList.style.height = document.documentElement.clientHeight - (panel.clientHeight + header.clientHeight) + 'px';
 
 
-const LED_COUNT = 29;
+const COUNT = effectsList.children.length; // effects count
 let currentEffect = 1;
 
 let webSocket;
@@ -31,9 +31,9 @@ function initWebSocket() {
 }
 
 function onMessage(payload) {
-	messageHandler(payload.data);
 
-	// console.log('Received: ', payload.data);
+	messageHandler(payload.data);
+	console.log('Received: ', payload);
 }
 
 function onClose(e) {
@@ -98,7 +98,7 @@ function messageHandler(payload) {
 			}
 		break;
 	}
-	console.log('Received: ', payload, getData);
+
 }
 
 function sendEffect() {
@@ -241,7 +241,7 @@ prevButton.onclick = function() {
 	togglePlay.checked = true;
 
 	if (currentEffect === 1) {
-		currentEffect = LED_COUNT;
+		currentEffect = COUNT;
 	}
 	else {
 		--currentEffect;
@@ -263,7 +263,7 @@ nextButton.onclick = function() {
 
 	togglePlay.checked = true;
 	
-	if (currentEffect === LED_COUNT) {
+	if (currentEffect === COUNT) {
 		currentEffect = 1;
 	}
 	else {

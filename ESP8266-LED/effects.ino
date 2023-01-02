@@ -65,6 +65,118 @@ void rainbowLoop() {
   delay(_delay);
 }
 
+//------------------------------- SNOW SPARKLE ---------------------------------------
+void snowSparkle() {
+  uint8_t red = 0x10;
+  uint8_t green = 0x10;
+  uint8_t blue = 0x10;
+  uint8_t sparkleDelay = 40;
+  uint8_t speedDelay = random(100, 1000);
+  updateColor(red, green, blue);
+
+  int pixel = random(LED_COUNT);
+  setPixel(pixel, 0xff, 0xff, 0xff);
+  FastLED.show();
+  delay(sparkleDelay);
+  setPixel(pixel, red, green, blue);
+  FastLED.show();
+  delay(speedDelay);
+}
+
+//------------------------------- RADIATION ---------------------------------------
+float rcount = 0.0;
+void radiation() {
+  updateColor(0,0,0);
+  int N3  = int(LED_COUNT / 3);
+  int N6  = int(LED_COUNT / 6);
+  int N12 = int(LED_COUNT / 12);
+  for (int i = 0; i < N6; i++) {
+    rcount = rcount + .02;
+    if (rcount > 3.14) {
+      rcount = 0.0;
+    }
+    ibright = int(sin(rcount) * 255);
+    int j0 = (i + LED_COUNT - N12) % LED_COUNT;
+    int j1 = (j0 + N3) % LED_COUNT;
+    int j2 = (j1 + N3) % LED_COUNT;
+    leds[j0] = CHSV(_hue, _sat, ibright);
+    leds[j1] = CHSV(_hue, _sat, ibright);
+    leds[j2] = CHSV(_hue, _sat, ibright);
+  }
+  LEDS.show();
+  delay(_delay);
+}
+
+// -------------------------------- POP GORIZONTAL -------------------------------------
+// pop from left to right up the ring
+void popHorizontal() {
+  int ix;
+  if (bouncedirection == 0) {
+    bouncedirection = 1;
+    ix = idex;
+  }
+  else if (bouncedirection == 1) {
+    bouncedirection = 0;
+    ix = horizontal_index(idex);
+    idex++;
+    if (idex > TOP_INDEX) {
+      idex = 0;
+    }
+  }
+  for (int i = 0; i < LED_COUNT; i++) {
+    if (i == ix) {
+      leds[i] = CHSV(_hue, _sat, 255);
+    }
+    else {
+      leds[i].r = 0; leds[i].g = 0; leds[i].b = 0;
+    }
+  }
+  LEDS.show();
+  delay(_delay);
+}
+
+// -------------------------------- PACMAN -------------------------------------
+// pacman chomping effect
+int pcounter = 0;
+void pacman() {
+  int s = int(LED_COUNT / 4);
+  pcounter++;
+  if (pcounter > 5) {
+    pcounter = 0;
+  }
+  if (pcounter == 0) {
+    for (int i = 0 ; i < LED_COUNT; i++) {
+      updatePixel(i, 255, 255, 0);
+    }
+  }
+  if (pcounter == 1 || pcounter == 5) {
+    for (int i = 0 ; i < LED_COUNT; i++) {
+      updatePixel(i, 255, 255, 0);
+    }
+    leds[s].r = 0; leds[s].g = 0; leds[s].b = 0;
+  }
+  if (pcounter == 2 || pcounter == 4) {
+    for (int i = 0 ; i < LED_COUNT; i++) {
+      updatePixel(i, 255, 255, 0);
+    }
+    leds[s - 1].r = 0; leds[s - 1].g = 0; leds[s - 1].b = 0;
+    leds[s].r = 0; leds[s].g = 0; leds[s].b = 0;
+    leds[s + 1].r = 0; leds[s + 1].g = 0; leds[s + 1].b = 0;
+  }
+  if (pcounter == 3) {
+    for (int i = 0 ; i < LED_COUNT; i++) {
+      updatePixel(i, 255, 255, 0);
+    }
+    leds[s - 2].r = 0; leds[s - 2].g = 0; leds[s - 2].b = 0;
+    leds[s - 1].r = 0; leds[s - 1].g = 0; leds[s - 1].b = 0;
+    leds[s].r = 0; leds[s].g = 0; leds[s].b = 0;
+    leds[s + 1].r = 0; leds[s + 1].g = 0; leds[s + 1].b = 0;
+    leds[s + 2].r = 0; leds[s + 2].g = 0; leds[s + 2].b = 0;
+  }
+  LEDS.show();
+  delay(_delay);
+}
+
 // -------------------------------- RANDOM BURST -------------------------------------
 // random color change
 void randomBurst() {

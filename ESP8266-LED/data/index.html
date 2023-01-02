@@ -1,164 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>led controller</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<meta name="theme-color" content="yellowGreen" />
-  <link rel="icon" type="image/x-icon" href="icons/colorpicker.png">
-  <link rel="stylesheet" href="index.css">
-  <link rel="stylesheet" href="header.css">
-  <link rel="stylesheet" href="content.css">
-  <link rel="stylesheet" href="panel.css">
-	<script src="html5kellycolorpicker.min.js"></script>
-  
-</head>
-<body>
-
-  <div id="app">
-    <!-- <div id="snow"></div> -->
-
-    <div class="header">
-
-      <div class="toggle_settings_block">
-        <input type="checkbox" class="toggle_settings" id="toggle_settings"/>
-        <label for="toggle_settings"></label>
-      </div>
-
-      <div class="toggle_content_block">
-        <input type="checkbox" class="toggle_content" id="toggle_content"/>
-        <label for="toggle_content"></label>
-      </div>
-
-      <div class="toggle_colorpicker_block">
-        <input type="checkbox" class="toggle_colorpicker" id="toggle_colorpicker"/>
-        <label for="toggle_colorpicker"></label>
-      </div>
-
-      <div class="settings_block">
-
-        <div class="theme_setter_block">
-          <span>Theme</span>
-          <div>
-            <input data-theme-color="orangeRed" id="theme_orangeRed" class="theme_setter theme_orangeRed" type="radio" name="theme">
-            <label for="theme_orangeRed"></label>
-            <input data-theme-color="yellowGreen" id="theme_yellowGreen" class="theme_setter theme_yellowGreen" checked type="radio" name="theme">
-            <label for="theme_yellowGreen"></label>
-            <input data-theme-color="royalBlue" id="theme_royalBlue" class="theme_setter theme_royalBlue" type="radio" name="theme">
-            <label for="theme_royalBlue"></label>
+  <head>
+    <meta charset="UTF-8">
+    <title>led controller</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="yellowGreen" />
+    <link rel="icon" type="image/x-icon" href="icons/colorpicker.png">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="content.css">
+    <link rel="stylesheet" href="panel.css">
+    <script src="html5kellycolorpicker.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="header">
+        <div class="toggle_settings_block">
+          <input type="checkbox" class="toggle_settings" id="toggle_settings"/>
+          <label for="toggle_settings"></label>
+        </div>
+        <div class="toggle_content_block">
+          <input type="checkbox" class="toggle_content" id="toggle_content"/>
+          <label for="toggle_content"></label>
+        </div>
+        <div class="toggle_colorpicker_block">
+          <input type="checkbox" class="toggle_colorpicker" id="toggle_colorpicker"/>
+          <label for="toggle_colorpicker"></label>
+        </div>
+        <div class="settings_block">
+          <div class="theme_setter_block">
+            <span>Theme</span>
+            <div>
+              <input data-theme-color="orangeRed" id="theme_orangeRed" class="theme_setter theme_orangeRed" type="radio" name="theme">
+              <label for="theme_orangeRed"></label>
+              <input data-theme-color="yellowGreen" id="theme_yellowGreen" class="theme_setter theme_yellowGreen" checked type="radio" name="theme">
+              <label for="theme_yellowGreen"></label>
+              <input data-theme-color="royalBlue" id="theme_royalBlue" class="theme_setter theme_royalBlue" type="radio" name="theme">
+              <label for="theme_royalBlue"></label>
+            </div>
+          </div>
+          <div class="toggle_panel_fill_block">
+            <label for="toggle_panel_fill">Fill panel</label>
+            <input type="checkbox" class="toggle_panel_fill" checked id="toggle_panel_fill"/>
+          </div>
+          <div class="toggle_bg_block">
+            <label for="toggle_bg">Background</label>
+            <input type="checkbox" class="toggle_bg" id="toggle_bg"/>
+          </div>
+          <div class="toggle_snow_block">
+            <label for="toggle_snow">Snow</label>
+            <input type="checkbox" class="toggle_snow" id="toggle_snow"/>
           </div>
         </div>
-
-        <div class="toggle_panel_fill_block">
-          <label for="toggle_panel_fill">Fill panel</label>
-          <input type="checkbox" class="toggle_panel_fill" checked id="toggle_panel_fill"/>
+        <div class="colorpicker_block">
+          <canvas id="colorpicker"></canvas>
         </div>
-
-        <div class="toggle_bg_block">
-          <label for="toggle_bg">Background</label>
-          <input type="checkbox" class="toggle_bg" id="toggle_bg"/>
-        </div>
-
-        <div class="toggle_snow_block">
-          <label for="toggle_snow">Snow</label>
-          <input type="checkbox" class="toggle_snow" id="toggle_snow"/>
-        </div>
-
       </div>
-      <div class="colorpicker_block">
-        <canvas id="colorpicker"></canvas>
-      </div>
-
-    </div>
-
-    <div class="content">
-
-      <div class="content_main">
-
-        <div class="current_effect">
-          <span>color bounce fade</span>
-        </div>
-
-        <div class="led_controls_rng">
-
-          <div class="range_brightness_block">
-            <img src="icons/brightness.png">
-            <input class="range range_brightness" type="range" value="0" min="0" max="100"/>
-            <output class="brightness_value"></output>
+      <div class="content">
+        <div class="content_main">
+          <div class="current_effect">
+            <span>color bounce fade</span>
           </div>
-          <div class="range_duration_block">
-            <img src="icons/duration.png">
-            <input class="range range_duration" type="range" value="2" min="2" max="60"/>
-            <output class="duration_value"></output>
+          <div class="led_controls_rng">
+            <div class="range_brightness_block">
+              <img src="icons/brightness.png">
+              <input class="range range_brightness" type="range" value="0" min="0" max="100"/>
+              <output class="brightness_value"></output>
+            </div>
+            <div class="range_duration_block">
+              <img src="icons/duration.png">
+              <input class="range range_duration" type="range" value="2" min="2" max="60"/>
+              <output class="duration_value"></output>
+            </div>
           </div>
+        </div>
+        <div class="effects_list" style="display:none;">
+          <span data-effect="1">rainbow fade</span>
+          <span data-effect="2">rainbow loop</span>
+          <span data-effect="3">rainbow loop fade</span>
+          <span data-effect="4">rainbow vertical</span>
+          <span data-effect="5">random march</span>
+          <span data-effect="6">rgb propeller</span>
+          <span data-effect="7">fire</span>
+          <span data-effect="8">blue fire</span>
+          <span data-effect="9">random burst</span>
+          <span data-effect="10">flicker</span>
+          <span data-effect="11">random color pop</span>
+          <span data-effect="12">sparkle</span>
+          <span data-effect="13">color bounce</span>
+          <span data-effect="14">color bounce fade</span>
+          <span data-effect="15">blue red bounce</span>
+          <span data-effect="16">rotating red blue</span>
+          <span data-effect="17">matrix</span>
+          <span data-effect="18">radiation</span>
+          <span data-effect="19">pacman</span>
+          <span data-effect="20">pop horizontal</span>
+          <span data-effect="21">snow sparkle</span>
+          <span data-effect="22">rwb march</span>
+          <span data-effect="23">flame</span>
+          <span data-effect="24">theater chase</span>
+          <span data-effect="25">strobe</span>
+          <span data-effect="26">police blinker</span>
+          <span data-effect="27">kitt</span>
+          <span data-effect="28">rule</span>
+          <span data-effect="29">fade vertical</span>
+          <span data-effect="30">fade to center</span>
+          <span data-effect="31">runner chameleon</span>
+          <span data-effect="32">blende</span>
+          <span data-effect="33">blende 2</span>
 
         </div>
       </div>
-
-
-      <div class="effects_list" style="display:none;">
-
-        <span data-effect="1">rainbow fade</span>
-        <span data-effect="2">rainbow loop</span>
-        <span data-effect="3">rainbow loop fade</span>
-        <span data-effect="4">rainbow vertical</span>
-        <span data-effect="5">random march</span>
-        <span data-effect="6">rgb propeller</span>
-        <span data-effect="7">fire</span>
-        <span data-effect="8">blue fire</span>
-        <span data-effect="9">random burst</span>
-        <span data-effect="10">flicker</span>
-        <span data-effect="11">random color pop</span>
-        <span data-effect="12">sparkle</span>
-        <span data-effect="13">color bounce</span>
-        <span data-effect="14">color bounce fade</span>
-        <span data-effect="15">blue red bounce</span>
-        <span data-effect="16">rotating red blue</span>
-        <span data-effect="17">matrix</span>
-        <span data-effect="18">rwb march</span>
-        <span data-effect="19">flame</span>
-        <span data-effect="20">theater chase</span>
-        <span data-effect="21">strobe</span>
-        <span data-effect="22">police blinker</span>
-        <span data-effect="23">kitt</span>
-        <span data-effect="24">rule</span>
-        <span data-effect="25">fade vertical</span>
-        <span data-effect="26">fade to center</span>
-        <span data-effect="27">runner chameleon</span>
-        <span data-effect="28">blende</span>
-        <span data-effect="29">blende 2</span>
-
-      </div>
-
-    </div>
-
       <div class="panel">
-
         <div class="toggle_loop_block">
           <input class="toggle toggle_loop" id="toggle_loop" type="checkbox"/>
           <label for="toggle_loop"></label>
         </div>
-
-          <div class="panel_nav_block">
-            <button class="button prev_btn"></button>
-            <div class="toggle_play_block">
-              <input class="toggle_play" id="toggle_play" type="checkbox"/>
-              <label for="toggle_play"></label>
-            </div>
-            <button class="button next_btn"></button>
+        <div class="panel_nav_block">
+          <button class="button prev_btn"></button>
+          <div class="toggle_play_block">
+            <input class="toggle_play" id="toggle_play" type="checkbox"/>
+            <label for="toggle_play"></label>
           </div>
-
-          <div class="toggle_random_block">
-            <input class="toggle toggle_random" id="toggle_random" type="checkbox"/>
-            <label for="toggle_random"></label>
-          </div>
-
+          <button class="button next_btn"></button>
         </div>
-
-  </div>
-
-</body>
-
+        <div class="toggle_random_block">
+          <input class="toggle toggle_random" id="toggle_random" type="checkbox"/>
+          <label for="toggle_random"></label>
+        </div>
+      </div>
+    </div>
+  </body>
   <script src="index.js"></script>
   <script src="handler.js"></script>
   <script src="color.js"></script>
