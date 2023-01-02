@@ -33,7 +33,7 @@ function initWebSocket() {
 function onMessage(payload) {
 
 	messageHandler(payload.data);
-	console.log('Received: ', payload);
+	console.log('Received: ', payload.data);
 }
 
 function onClose(e) {
@@ -59,14 +59,10 @@ function messageHandler(payload) {
 			updateList(localStorage.getItem('theme')); // handled by the server
 		break;
 		case 'B':
-			// setTimeout(() => {
-				updateRange(rangeBrightness, brightnessValue, parseInt(getData/2.555));
-			// }, 10);
+			updateRange(rangeBrightness, brightnessValue, getData);
 		break;
 		case 'D':
-			// setTimeout(() => {
-				updateRange(rangeDuration, durationValue, getData, isDuration=true);
-			// }, 10);
+			updateRange(rangeDuration, durationValue, getData, isDuration=true);
 		break;
 		case 'P':
 			if (getData === 1) {
@@ -74,7 +70,6 @@ function messageHandler(payload) {
 			}
 			else {
 				togglePlay.checked = false;
-				console.log("PP")
 			}
 		break;
 		case 'L':
@@ -146,7 +141,7 @@ function updateList(color) {
 
 		updateRange(rangeBrightness, brightnessValue, this.value);
 		
-		let payload = 'B_' + parseInt(this.value * 2.555);
+		let payload = 'B_' + this.value;
 
 		const now = (new Date).getTime();
 		if (lastSend > now - 50) return; // send data no more than 50ms
@@ -157,7 +152,7 @@ function updateList(color) {
 	};
 
 	rangeBrightness.onchange = function() { // fixes if move the range quickly
-		const payload = 'B_' + parseInt(this.value * 2.555);
+		const payload = 'B_' + this.value;
 		console.log(payload);
 		webSocket.send(payload);
 	}

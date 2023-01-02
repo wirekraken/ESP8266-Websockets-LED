@@ -1,4 +1,5 @@
 /**
+ * Simplified version
  * @author   Alexander Voykov <wirekraken>
  * @version  2.0
  * @link     https://github.com/wirekraken/ESP8266-Websockets-LED
@@ -6,12 +7,9 @@
 
 #include <ESP8266WebServer.h> // auto installed after installing ESP boards
 #include <WebSocketsServer.h> // by Markus Settler
-
-// the SPIFFS upload function is not currently supported on Arduino 2.0
-// use 1.8.x version
-// see: https://github.com/arduino/arduino-ide/issues/58
-#include <FS.h>
 #include <FastLED.h> // by Daniel Garcia
+
+#include "html.h" // html code here
 
 #define LED_COUNT 60 // the number of pixels on the strip
 #define DATA_PIN 14 // (D5 nodemcu), important: https://github.com/FastLED/FastLED/wiki/ESP8266-notes
@@ -33,7 +31,6 @@ uint8_t effect = 0;
 bool isPlay = false;
 bool isLoopEffect = false;
 bool isRandom = false;
-bool isColorPicker = false;
 
 // effects that will be in the loop
 uint8_t favEffects[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33};
@@ -41,7 +38,6 @@ uint8_t numFavEffects = sizeof(favEffects);
 
 uint32_t lastChange;
 uint8_t currentEffect = 0;
-
 
 CRGBArray<LED_COUNT> leds;
 // variables for basic effects settings
@@ -77,12 +73,10 @@ void setup() {
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP()); // IP adress assigned to your ESP
 
-  server.onNotFound([]() {
-    if (!handleFileRead(server.uri())) // check if the file exists in the flash memory, if so, send it
-      server.send(404, "text/plain", "404: File Not Found");
+  server.on("/", []() {
+    server.send(200, "text/html", html);
   });
-  
-  SPIFFS.begin(); // mount the SPIFFS file system
+
   server.begin();
   webSocket.begin();
 
@@ -141,16 +135,16 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
   if (type == WStype_CONNECTED) {
     IPAddress ip = webSocket.remoteIP(num);
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!must be shown in the web interface!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     webSocket.sendTXT(num, "Websocket established!"); // send status message
     Serial.println("New client connected! Num: " + String(num));
+
   }
   // if new text data is received
   if (type == WStype_TEXT) {
     Serial.printf("Client[%u] Received: %s\n", num, payload);
     messageHandler(num, payload, length);
-    
-  } 
+
+  }
 }
 
 void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
@@ -181,7 +175,7 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
     case 'B':
       Serial.println(getData);
       brightness = map(getData.toInt(), 0, 100, 0, 255);
-
+      
       sendData = "B_" + getData;
       webSocket.broadcastTXT(sendData);
       
@@ -237,25 +231,6 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
       sendData = "R_" + getData;
       webSocket.broadcastTXT(sendData);
     break;
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!must be synchronized!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // color (in hex format)
-    case '#':
-      isPlay = false;
-      isColorPicker = true;
-      // decode HEX to RGB
-      uint32_t rgb = (uint32_t) strtol((const char *) &payload[1], NULL, 16);
-      
-      uint8_t r = (rgb >> 16) & 0xFF;
-      uint8_t g = (rgb >>  8) & 0xFF;
-      uint8_t b = (rgb >>  0) & 0xFF;
-      
-      Serial.println("Client " + String(num) + ": Color: (" + String(r) + "," + String(g) + "," + String(b) + ")");
-      
-      for (int i = 0; i < LED_COUNT; i++) {
-        leds[i].setRGB(r,g,b);
-      }
-      LEDS.show();
-    break;
   }
   Serial.println("Sent: " + sendData);
 }
@@ -302,36 +277,4 @@ void setEffect(const uint8_t num) {
     case 33: blende_2();
 
   }
-}
-  
-// send the right file to the client (if it exists)
-bool handleFileRead(String path) {
-  #ifdef DEBUG
-    Serial.println("handleFileRead: " + path);
-  #endif
-  if (path.endsWith("/")) path += "index.html";
-  if (SPIFFS.exists(path)) {
-    File file = SPIFFS.open(path, "r");
-    size_t sent = server.streamFile(file, getContentType(path));
-    file.close();
-    return true;
-  }
-  return false;
-  
-}
-
-// determine the MIME type of file
-String getContentType(String filename) {
-  if (server.hasArg("download")) return "application/octet-stream";
-  else if(filename.endsWith(".htm")) return "text/html";
-  else if(filename.endsWith(".html")) return "text/html";
-  else if(filename.endsWith(".css")) return "text/css";
-  else if(filename.endsWith(".js")) return "application/javascript";
-  else if(filename.endsWith(".png")) return "image/png";
-  else if(filename.endsWith(".gif")) return "image/gif";
-  else if(filename.endsWith(".jpg")) return "image/jpeg";
-  else if(filename.endsWith(".ico")) return "image/x-icon";
-  else if(filename.endsWith(".svg")) return "image/svg+xml";
-  return "text/plain";
-
 }
