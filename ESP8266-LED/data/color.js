@@ -1,11 +1,5 @@
 (() => {
 
-	const canvasColorPicker = document.getElementById('colorpicker');
-
-	const colorPicker = new KellyColorPicker({
-		place : canvasColorPicker
-	});
-
 	colorPicker.getWheel().width += 14; // ring width 
 	colorPicker.getSvFigCursor().radius += 10; // width of the small ring
 	colorPicker.getWheelCursor().height += 5; // slider size

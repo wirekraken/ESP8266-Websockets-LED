@@ -7,6 +7,9 @@ const settingsBlock = document.querySelector('.settings_block');
 
 const contentMain = document.querySelector('.content .content_main');
 
+const canvasColorPicker = document.getElementById('colorpicker');
+const colorPicker = new KellyColorPicker({place: canvasColorPicker});
+
 const toggleColorPicker = document.querySelector('.toggle_colorpicker');
 const toggleSettings = document.querySelector('.toggle_settings');
 const toggleContent = document.querySelector('.toggle_content');

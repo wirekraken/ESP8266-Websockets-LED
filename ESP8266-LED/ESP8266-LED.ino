@@ -103,7 +103,7 @@ void loop() {
       if ((millis() - lastChange) > duration) {
         setFavEffects(favEffects, numFavEffects);
     
-        sendData = "E_" + String(currentEffect, DEC);
+        sendData = "E" + String(currentEffect, DEC);
         webSocket.broadcastTXT(sendData);
         Serial.println("Sent: " + sendData);
         
@@ -115,7 +115,7 @@ void loop() {
         effect = favEffects[random(0, numFavEffects - 1)];
         currentEffect = effect - 1;
 
-        sendData = "E_" + String(effect, DEC);
+        sendData = "E" + String(effect, DEC);
         webSocket.broadcastTXT(sendData); // send the number of the current effect
         Serial.println("Sent: " + sendData);
       
@@ -158,8 +158,10 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
   String getData;
   String sendData;
 
-  for (int i = 0; i < length; i++) {
-    if (!isdigit(payload[i])) continue;
+  uint16_t lastSend;
+
+  for (uint8_t i = 0; i < length; i++) {
+    if (i == 0) continue;
     getData += (char) payload[i];
   }
 
@@ -172,7 +174,7 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
 
       currentEffect = getData.toInt() - 1; // so that the loop starts from the current one
 
-      sendData = "E_" + getData;
+      sendData = "E" + getData;
       webSocket.broadcastTXT(sendData);
       
       setEffect(effect);
@@ -182,7 +184,7 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
       Serial.println(getData);
       brightness = map(getData.toInt(), 0, 100, 0, 255);
 
-      sendData = "B_" + getData;
+      sendData = "B" + getData;
       webSocket.broadcastTXT(sendData);
       
       LEDS.setBrightness(brightness);
@@ -192,7 +194,7 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
       Serial.println(getData);
       duration = (getData.toInt() * 1000);
 
-      sendData = "D_" + getData;
+      sendData = "D" + getData;
       webSocket.broadcastTXT(sendData);
     break;
     // play
@@ -202,13 +204,13 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
         if (effect == 0) {
           effect = 1;
         }
-        sendData = "E_" + String(effect, DEC);
+        sendData = "E" + String(effect, DEC);
         webSocket.broadcastTXT(sendData);
       } 
       else {
         isPlay = false;
       }
-      sendData = "P_" + getData;
+      sendData = "P" + getData;
       webSocket.broadcastTXT(sendData);
     break;
     // loop
@@ -221,7 +223,7 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
       else {
         isLoopEffect = false;
       }
-      sendData = "L_" + getData;
+      sendData = "L" + getData;
       webSocket.broadcastTXT(sendData);
     break;
     // random
@@ -234,10 +236,9 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
       else {
         isRandom = false;
       }
-      sendData = "R_" + getData;
+      sendData = "R" + getData;
       webSocket.broadcastTXT(sendData);
     break;
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!must be synchronized!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // color (in hex format)
     case '#':
       isPlay = false;
@@ -249,12 +250,20 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
       uint8_t g = (rgb >>  8) & 0xFF;
       uint8_t b = (rgb >>  0) & 0xFF;
       
-      Serial.println("Client " + String(num) + ": Color: (" + String(r) + "," + String(g) + "," + String(b) + ")");
+      // Serial.println("Client " + String(num) + ": Color: (" + String(r) + "," + String(g) + "," + String(b) + ")");
       
       for (int i = 0; i < LED_COUNT; i++) {
         leds[i].setRGB(r,g,b);
       }
       LEDS.show();
+
+      if ((millis() - lastSend) > 2000) { // we send it no more than in 2 seconds
+        lastSend = millis();
+        sendData = "#" + getData;
+        
+      }
+      webSocket.broadcastTXT(sendData);
+
     break;
   }
   Serial.println("Sent: " + sendData);

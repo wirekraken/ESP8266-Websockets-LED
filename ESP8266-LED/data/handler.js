@@ -51,11 +51,12 @@ function onOpen() {
 }
 
 function messageHandler(payload) {
-	let getData = (+payload.replace(/\D/g, ""));
+	let getData = payload.substring(1);
+	
 	switch(payload[0]) {
 		case 'E':
 			togglePlay.checked = true;
-			currentEffect = getData;
+			currentEffect = +(getData);
 			updateList(localStorage.getItem('theme')); // handled by the server
 		break;
 		case 'B':
@@ -65,7 +66,7 @@ function messageHandler(payload) {
 			updateRange(rangeDuration, durationValue, getData, isDuration=true);
 		break;
 		case 'P':
-			if (getData === 1) {
+			if (getData === '1') {
 				togglePlay.checked = true;
 			}
 			else {
@@ -73,7 +74,7 @@ function messageHandler(payload) {
 			}
 		break;
 		case 'L':
-			if (getData === 1) {
+			if (getData === '1') {
 				togglePlay.checked = true;
 				toggleLoop.checked = true;
 				toggleRandom.checked = false;
@@ -83,7 +84,7 @@ function messageHandler(payload) {
 			}
 		break;
 		case 'R':
-			if (getData === 1) {
+			if (getData === '1') {
 				togglePlay.checked = true;
 				toggleRandom.checked = true;
 				toggleLoop.checked = false;
@@ -91,6 +92,10 @@ function messageHandler(payload) {
 			else {
 				toggleRandom.checked = false;
 			}
+		break;
+		case '#':
+			colorPicker.setColorByHex(payload);
+			canvasColorPicker.style.boxShadow = `0px 0px 10px 10px ${colorPicker.getCurColorHex()} inset, 0 0 10px ${colorPicker.getCurColorHex()}`;
 		break;
 	}
 
@@ -108,7 +113,7 @@ function sendEffect() {
 			// updateList(localStorage.getItem('theme'));
 			updateList('rgba(120,120,120,.8'); // not handled by the server yet
 
-			const payload = 'E_' + this.dataset.effect;
+			const payload = 'E' + this.dataset.effect;
 
 			console.log(payload);
 			console.log("Current: ", currentEffect)
@@ -141,7 +146,7 @@ function updateList(color) {
 
 		updateRange(rangeBrightness, brightnessValue, this.value);
 		
-		let payload = 'B_' + this.value;
+		let payload = 'B' + this.value;
 
 		const now = (new Date).getTime();
 		if (lastSend > now - 50) return; // send data no more than 50ms
@@ -152,7 +157,7 @@ function updateList(color) {
 	};
 
 	rangeBrightness.onchange = function() { // fixes if move the range quickly
-		const payload = 'B_' + this.value;
+		const payload = 'B' + this.value;
 		console.log(payload);
 		webSocket.send(payload);
 	}
@@ -163,7 +168,7 @@ function updateList(color) {
 
 	};
 	rangeDuration.onchange = function() {
-		const payload = 'D_' + this.value;
+		const payload = 'D' + this.value;
 
 		console.log(payload);
 		webSocket.send(payload);
@@ -187,10 +192,10 @@ togglePlay.onclick = function() {
 
 	let payload;
 	if (this.checked) {
-		payload = 'P_1';
+		payload = 'P1';
 	}
 	else {
-		payload = 'P_0';
+		payload = 'P0';
 	}
 
 	console.log(payload);
@@ -203,10 +208,10 @@ toggleLoop.onclick = function() {
 	if (this.checked) {
 		togglePlay.checked = true;
 		toggleRandom.checked = false;
-		payload = 'L_1';
+		payload = 'L1';
 	}
 	else {
-		payload = 'L_0';
+		payload = 'L0';
 	}
 
 	console.log(payload);
@@ -220,10 +225,10 @@ toggleRandom.onclick = function() {
 	if (this.checked) {
 		togglePlay.checked = true;
 		toggleLoop.checked = false;
-		payload = 'R_1';
+		payload = 'R1';
 	}
 	else {
-		payload = 'R_0';
+		payload = 'R0';
 	}
 	
 	console.log(payload);
@@ -236,7 +241,8 @@ prevButton.onclick = function() {
 	togglePlay.checked = true;
 
 	if (currentEffect === 1) {
-		currentEffect = COUNT;
+		currentEffect = effectsList.children.length;
+		console.log('one')
 	}
 	else {
 		--currentEffect;
@@ -244,7 +250,7 @@ prevButton.onclick = function() {
 
 	updateList('rgba(120,120,120,.8');
 
-	const payload = 'E_' + currentEffect;
+	const payload = 'E' + currentEffect;
 
 	console.log(payload);
 	webSocket.send(payload);
@@ -258,7 +264,7 @@ nextButton.onclick = function() {
 
 	togglePlay.checked = true;
 	
-	if (currentEffect === COUNT) {
+	if (currentEffect === effectsList.children.length) {
 		currentEffect = 1;
 	}
 	else {
@@ -267,7 +273,7 @@ nextButton.onclick = function() {
 
 	updateList('rgba(120,120,120,.8');
 
-	const payload = 'E_' + currentEffect;
+	const payload = 'E' + currentEffect;
 
 	console.log(payload);
 	webSocket.send(payload);
