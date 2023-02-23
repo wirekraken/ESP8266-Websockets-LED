@@ -6,18 +6,18 @@ Control an addressable LED strip with an ESP8266 via a Web browser.
 
 ## Features
 * Synchronization between all connected devices
-* Desktop and mobile interface
+* Desktop and mobile Web interface
 * Сhoosing themes
 * Brightness adjustment
 * Loop duration adjustment
-* Color change. (Thanks to [NC22](https://github.com/NC22/HTML5-Color-Picker) for the colorpicker)
+* Color change (thanks to [NC22](https://github.com/NC22/HTML5-Color-Picker) for the colorpicker)
 * Selection of different effects (more will be added)
 
 ## Hardware
 * ESP8266-based board
 * Addressable LED strip (WS2811, WS2812, WS2812B)
 * 100 to 500 Ohm resistor (preferably)
-* 3.3V to 5V power supply (you can be powered directly from ESP, but the diodes will "flicker")
+* 3.3V to 5V power supply (if you have a strip <60 leds, you can be powered directly from ESP, but the diodes can "flicker")
 
 #### Wiring diagram
 ![scheme](images/wiring-diagram.jpg)
@@ -53,10 +53,10 @@ const char* ssid = ""; // SSID of the access point
 const char* password = ""; // password (if the access point is open, leave it empty)
 
 IPAddress Ip(192,168,100,10); // IP address for your ESP
-IPAddress Gateway(192,168,100,1); // IP address of the access point (gateway)
+IPAddress Gateway(192,168,100,1); // IP address of the access point
 ```
-* Upload a sketch
+* Upload the sketch
 * In the IDE's top menu, select `tools` -> `ESP8266 Sketch Data Upload` to upload files from the `data` directory to ESP flash memory
-* Open the serial port monitor (if the connection is successful, IP your ESP will be isplayed)
+* Open the serial port monitor (if the connection is successful, IP your ESP will be displayed)
 * Open the browser and enter the IP address.
 #### Happy use ッ
