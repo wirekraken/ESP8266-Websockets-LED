@@ -2,18 +2,18 @@ uint8_t idex = 0;
 uint8_t ihue = 0;
 uint8_t isat = 255;
 uint8_t ibright = 0;
-uint16_t TOP_INDEX = uint8_t(LED_COUNT / 2); // center of the stip
+uint16_t TOP_INDEX = uint16_t(LED_COUNT / 2); // center of the stip
 uint8_t EVENODD = LED_COUNT % 2;
 uint8_t bouncedirection = 0;
 int ledsX[LED_COUNT][3]; // array for storing random pixel values
 
-void updateColor (uint8_t r,uint8_t g,uint8_t b) {
-  for (uint8_t i = 0; i < LED_COUNT; i++) {
+void updateColor (byte r, byte g, byte b) {
+  for (int i = 0; i < LED_COUNT; i++) {
     leds[i].setRGB(r,g,b);
   }
 }
 
-void updatePixel (int i, uint8_t r, uint8_t g, uint8_t b) {
+void updatePixel (int i, byte r, byte g, byte b) {
   leds[i].setRGB(r,g,b);
 }
 

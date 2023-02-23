@@ -251,10 +251,11 @@ void messageHandler(uint8_t num, uint8_t * payload, size_t length) {
       uint8_t b = (rgb >>  0) & 0xFF;
       
       // Serial.println("Client " + String(num) + ": Color: (" + String(r) + "," + String(g) + "," + String(b) + ")");
-      
+
       for (int i = 0; i < LED_COUNT; i++) {
         leds[i].setRGB(r,g,b);
       }
+      LEDS.show();
       LEDS.show();
 
       if ((millis() - lastSend) > 2000) { // we send it no more than in 2 seconds
