@@ -30,6 +30,44 @@ html, body {
 	
 }
 
+
+.preloader {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999999;
+	display: flex;
+	align-items: center;
+	justify-content: center;  
+	background-color: #000;
+	transition: all 0.5s;
+	opacity: .98;
+}
+
+.preloader-remove {
+	opacity: 0;
+	z-index: -10;
+}
+
+.preloader img {
+	margin-top: -70px;
+	animation: rotate .4s infinite linear;
+
+}
+
+@keyframes rotate {
+	0% { 
+		transform: rotate(0deg);
+	}
+	100% { 
+		transform: rotate(360deg);
+	}
+}
+
+
+
 /*for PC*/
 @media only screen and (min-width: 600px) {
 
@@ -49,3 +87,4 @@ html, body {
 	border-radius: 10px;
 	background-color: rgba(178, 178, 178, 0.5);
 }
+

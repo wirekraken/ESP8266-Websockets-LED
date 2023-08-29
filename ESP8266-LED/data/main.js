@@ -7,39 +7,34 @@ import './settings.js';
 import './snow.js';
 
 
-const dev = 0;
-
-if (dev) localStorage.clear();
-
 window.onload = () => {
-	console.log('All content loaded');
+	document.querySelector('.preloader').classList.add('preloader-remove');
 	wsConnect();
 	initEffects();
 };
 
 
-
 UI.header.toggleColorPicker.onclick = function() {
-	const state = UI.header.toggleContent.checked;
+	const contentState = UI.header.toggleContent.checked;
 
 	if (this.checked) {
-		UI.content.main.currentEffectELem.style.display = 'none';
 		UI.header.toggleContent.checked = false;
+
+		UI.content.main.currentEffectELem.style.display = 'none';
 		UI.content.effectsList.style.display = 'none';
 		UI.content.main.block.style.display = 'flex';
 
 		UI.header.colorPickerBlock.style.display = 'flex';
-		UI.header.colorPickerBlock.hidden = false;
 		return;
 	}
 
-	UI.content.main.currentEffectELem.style.display = 'flex';
-	if (state) {
-		UI.header.toggleContent.checked = state;
+	if (contentState) {
+		UI.header.toggleContent.checked = contentState;
 		UI.content.effectsList.style.display = 'flex';
 	}
+	
+	UI.content.main.currentEffectELem.style.display = 'flex';
 	UI.header.colorPickerBlock.style.display = 'none';
-	UI.header.colorPickerBlock.hidden = true;
 };
 
 UI.header.toggleContent.onclick = function() {
@@ -64,3 +59,4 @@ UI.header.toggleSettings.onclick = function() {
 	}
 	UI.header.settingsBlock.style.display = 'none';
 };
+
