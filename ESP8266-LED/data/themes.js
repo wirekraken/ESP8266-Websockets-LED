@@ -1,7 +1,5 @@
+import { UI, updateList } from './init.js';
 
-let update = 0;
-
-if (update) localStorage.clear();
 
 (() => {
 
@@ -42,11 +40,11 @@ if (update) localStorage.clear();
 
 	togglePanelFill.onclick = function() {
 		if (this.checked) {
-			panel.style.background = checkedTheme;
+			UI.panel.block.style.background = checkedTheme;
 			// localStorage.setItem('panel_fill', true);
 		}
 		else {
-			panel.style.background = '';
+			UI.panel.block.style.background = '';
 			// localStorage.setItem('panel_fill', false);
 		}
 	};
@@ -71,7 +69,7 @@ if (update) localStorage.clear();
 			checkedTheme = item.dataset.themeColor;
 
 			if (togglePanelFill.checked) {
-				panel.style.background = checkedTheme;
+				UI.panel.block.style.background = checkedTheme;
 			}
 
 			if (localStorage.getItem('theme')) {
@@ -85,14 +83,14 @@ if (update) localStorage.clear();
 
 			if (togglePanelFill.checked) {
 				// localStorage.setItem('panel_fill', true);
-				panel.style.background = item.dataset.themeColor;
+				UI.panel.block.style.background = item.dataset.themeColor;
 			}
 			// Array.from(effectsList.children, e => e.style.color = item.dataset.themeColor )
 
 			
 			app.style.background = item.dataset.themeColor;
 
-			currentEffectELem.style.background = item.dataset.themeColor;
+			UI.content.main.currentEffectELem.style.background = item.dataset.themeColor;
 
 			Array.from(document.querySelectorAll('.led_controls_rng .range'), range => {
 				range.style.backgroundImage = `linear-gradient(${item.dataset.themeColor}, ${item.dataset.themeColor})`;
@@ -110,7 +108,7 @@ if (update) localStorage.clear();
 
 			app.style.background = item.dataset.themeColor;
 
-			currentEffectELem.style.background = this.dataset.themeColor;
+			UI.content.main.currentEffectELem.style.background = this.dataset.themeColor;
 
 			Array.from(document.querySelectorAll('.led_controls_rng .range'), e => {
 				e.style.backgroundImage = `linear-gradient(${this.dataset.themeColor}, ${this.dataset.themeColor})`;
@@ -122,7 +120,7 @@ if (update) localStorage.clear();
 
 			if (togglePanelFill.checked) {
 				// localStorage.setItem('panel_fill', true);
-				panel.style.background = item.dataset.themeColor;
+				UI.panel.block.style.background = item.dataset.themeColor;
 			}
 			else {
 				// localStorage.setItem('panel_fill', '');

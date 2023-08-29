@@ -27,7 +27,7 @@
 	width: 80px;
 	border-radius: 50%;
 	box-shadow: 0px 2px 5px rgba(0,0,0,.5);
-	background-image: url('icons/play.svg');
+	background-image: url('../icons/play.svg');
 	background-color: #fff;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -37,7 +37,7 @@
 }
 
 .toggle_play_block .toggle_play[type=checkbox]:checked + label {
-	background-image: url('icons/pause.svg');
+	background-image: url('../icons/pause.svg');
 
 }
 
@@ -55,7 +55,7 @@
 }
 
 .prev_btn {
-	background-image: url('icons/prev.svg');
+	background-image: url('../icons/prev.svg');
 }
 
 .prev_btn:active, .next_btn:active {
@@ -63,7 +63,7 @@
 }
 
 .next_btn {
-	background-image: url('icons/next.svg');
+	background-image: url('../icons/next.svg');
 }
 
 /* ############################# */
@@ -90,12 +90,12 @@
 }
 
 .toggle_loop_block label {
-	background-image: url('icons/loop.png');
+	background-image: url('../icons/loop.png');
 
 }
 
 .toggle_random_block label {
-	background-image: url('icons/random.png');
+	background-image: url('../icons/random.png');
 
 }
 

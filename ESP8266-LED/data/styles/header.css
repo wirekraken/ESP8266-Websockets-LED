@@ -51,7 +51,7 @@
 	display: block;
 	height: 50px;
 	width: 50px;
-	background-image: url('icons/colorpicker.png');
+	background-image: url('../icons/colorpicker.png');
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
@@ -61,7 +61,7 @@
 .toggle_colorpicker_block input[type=checkbox]:checked + label {
 	/* transform: scale(-1,1); */
 	filter: invert();
-	background-image: url('icons/close.png');
+	background-image: url('../icons/close.png');
 	background-size: 40px;
 
 }
@@ -117,7 +117,7 @@
 	display: block;
 	height: 40px;
 	width: 40px;
-	background-image: url('icons/settings.png');
+	background-image: url('../icons/settings.png');
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
@@ -147,7 +147,7 @@
 	display: block;
 	height: 40px;
 	width: 40px;
-	background-image: url('icons/effect.png');
+	background-image: url('../icons/effect.png');
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
@@ -159,7 +159,7 @@
 
 .toggle_content_block input[type=checkbox]:checked + label {
 	/* transform: scale(-1,1); */
-	background-image: url('icons/close.png');
+	background-image: url('../icons/close.png');
 
 }
 
