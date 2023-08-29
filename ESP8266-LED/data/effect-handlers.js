@@ -1,5 +1,5 @@
 import { UI, updateList } from './init.js';
-import { ws } from './socket.js';
+import { ws } from './ws.js';
 
 
 UI.content.effectsList.style.height = document.documentElement.clientHeight - (UI.panel.block.clientHeight + UI.header.block.clientHeight) + 'px';

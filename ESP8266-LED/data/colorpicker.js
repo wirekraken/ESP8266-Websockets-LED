@@ -1,5 +1,5 @@
 import { UI } from './init.js';
-import { ws } from './socket.js';
+import { ws } from './ws.js';
 
 const colorPicker = new KellyColorPicker({place: UI.header.canvasColorPicker});
 

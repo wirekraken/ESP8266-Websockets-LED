@@ -39,6 +39,9 @@ const UI = {
 	    themeSetters: document.querySelectorAll('.theme_setter_block .theme_setter'),
 		togglePanelFill: document.querySelector('.toggle_panel_fill'),
 		toggleBg: document.querySelector('.toggle_bg')
+	},
+	error: {
+		ws: document.querySelector('.error_ws')
 	}
 }
 

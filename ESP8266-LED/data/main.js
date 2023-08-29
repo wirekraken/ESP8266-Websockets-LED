@@ -1,5 +1,5 @@
 import { UI } from './init.js';
-import { wsConnect } from './socket.js';
+import { wsConnect } from './ws.js';
 import { initEffects } from './effect-handlers.js';
 
 import './colorpicker.js';
@@ -32,7 +32,7 @@ UI.header.toggleColorPicker.onclick = function() {
 		UI.header.toggleContent.checked = contentState;
 		UI.content.effectsList.style.display = 'flex';
 	}
-	
+
 	UI.content.main.currentEffectELem.style.display = 'flex';
 	UI.header.colorPickerBlock.style.display = 'none';
 };

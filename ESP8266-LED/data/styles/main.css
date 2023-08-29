@@ -1,6 +1,7 @@
 @import './panel.css';
 @import './header.css';
 @import './content.css';
+@import './error.css';
 
 
 html, body {
@@ -87,4 +88,3 @@ html, body {
 	border-radius: 10px;
 	background-color: rgba(178, 178, 178, 0.5);
 }
-
