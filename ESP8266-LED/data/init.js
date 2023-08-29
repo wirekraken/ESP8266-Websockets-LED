@@ -21,6 +21,7 @@ const UI = {
 		settingsBlock: document.querySelector('.settings_block')
 	},
 	content: {
+		block: document.querySelector('.content'),
 		effectsList: document.querySelector('.content .effects_list'),
 		effectElems: document.querySelectorAll('.effects_list span'),
 		main: {
@@ -33,6 +34,11 @@ const UI = {
 				durationValue: document.querySelector('.duration_value')
 			}
 		}
+	},
+	settings: {
+	    themeSetters: document.querySelectorAll('.theme_setter_block .theme_setter'),
+		togglePanelFill: document.querySelector('.toggle_panel_fill'),
+		toggleBg: document.querySelector('.toggle_bg')
 	}
 }
 

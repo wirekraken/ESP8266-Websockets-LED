@@ -3,7 +3,7 @@ import { wsConnect } from './socket.js';
 import { initEffects } from './effect-handlers.js';
 
 import './colorpicker.js';
-import './themes.js';
+import './settings.js';
 import './snow.js';
 
 
