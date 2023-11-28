@@ -1,12 +1,10 @@
-# ESP8266 - Websockets - LED strip
+Real-time addressable LED strip control using ESP8266 via web interface
 
-Control an addressable LED strip with an ESP8266 via a Web browser.
-
-<img src="images/mobile-app.jpg" width="250">
+<img src="images/LED-strip.jpg" width="500">
 
 ## Features
 * Synchronization between all connected devices
-* Desktop and mobile Web interface
+* Desktop and mobile web interface
 * Сhoosing themes
 * Brightness adjustment
 * Loop duration adjustment
@@ -17,15 +15,18 @@ Control an addressable LED strip with an ESP8266 via a Web browser.
 * ESP8266-based board
 * Addressable LED strip (WS2811, WS2812, WS2812B)
 * 100 to 500 Ohm resistor (preferably)
-* 3.3V to 5V power supply (if you have a strip <60 leds, you can be powered directly from ESP, but the diodes can "flicker")
+* 3.3V to 5V power supply
 
 #### Wiring diagram
 ![scheme](images/wiring-diagram.jpg)
 
 ## Software
-The Web application is a single page application that is written in native JS and CSS, so it is quite lightweight.
 
-ESP8266 is a Web server. After your browser downloads the web files, the connection immediately switches to the websockets protocol. Over this, synchronization between clients was implemented. This means that by changing the status of the strip, the changes will be visible to all connected devices. The addressable strip is managed only through the websockets, so the status changes "instantly".
+The web application is a single page application that is written in vanilla JS. So it is quite lightweight
+
+<img src="images/mobile-app.jpg" width="250">
+
+ESP8266 is a web server. After your browser downloads the web files, the connection immediately switches to the websockets protocol. Over this, synchronization between clients was implemented.
 
 *Note, although the brightness slider use a delayed event handler (to prevent from flooding the ESP with too many requests too quickly), during execution "heavy" effects (they are marked in the code) with a quick change of brightness, ESP may be unavailable (until effect loop is completed) and messages will go to the senting queue.*
 ## Installing
@@ -58,5 +59,5 @@ IPAddress Gateway(192,168,100,1); // IP address of the access point
 * Upload the sketch
 * In the IDE's top menu, select `tools` -> `ESP8266 Sketch Data Upload` to upload files from the `data` directory to ESP flash memory
 * Open the serial port monitor (if the connection is successful, IP your ESP will be displayed)
-* Open the browser and enter the IP address.
+* Open the browser and enter the IP address
 #### Happy use ッ
