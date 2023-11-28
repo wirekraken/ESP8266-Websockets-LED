@@ -17,8 +17,8 @@
 #define DATA_PIN 14 // (D5 nodemcu), important: https://github.com/FastLED/FastLED/wiki/ESP8266-notes
 
 // SSID and password of the access point
-const char* ssid = "HUAWEI-T8xP";
-const char* password = "fBAB4z5Q";
+const char* ssid = "";
+const char* password = "";
 
 // static IP address configuration
 IPAddress Ip(192,168,100,10); // IP address for your ESP
@@ -50,8 +50,8 @@ uint8_t _step = 10;
 uint8_t _hue = 0;
 uint8_t _sat = 255;
 
-// initializing the websocket server on port 81
-WebSocketsServer webSocket(81);
+// initializing the websocket server on port 8080
+WebSocketsServer webSocket(8080);
 ESP8266WebServer server; // 80 default
 
 void setup() {
@@ -141,7 +141,6 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
   if (type == WStype_CONNECTED) {
     IPAddress ip = webSocket.remoteIP(num);
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!must be shown in the web interface!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     webSocket.sendTXT(num, "Websocket established!"); // send status message
     Serial.println("New client connected! Num: " + String(num));
   }
