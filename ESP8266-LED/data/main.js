@@ -1,6 +1,6 @@
-import { UI } from './init.js';
+import UI from './ui.js';
 import { wsConnect } from './ws.js';
-import { initEffects } from './effect-handlers.js';
+import { initEffects } from './handlers.js';
 import { initSnow } from './snow.js'
 
 import './colorpicker.js';
@@ -58,6 +58,7 @@ window.onload = () => {
     }
     UI.header.settingsBlock.style.display = 'none';
   };
+
 };
 
 

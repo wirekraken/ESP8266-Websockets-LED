@@ -1,4 +1,5 @@
-import { UI, updateList } from './init.js';
+import UI from './ui.js';
+import { updateList } from './update.ui.js';
 
 // prepare background
 (() => {

@@ -1,4 +1,4 @@
-const UI = {
+export default {
   panel: {
     block: document.querySelector('.panel'),
     btnBlock: {
@@ -28,10 +28,14 @@ const UI = {
       block: document.querySelector('.content .content_main'),
       currentEffectELem: document.querySelector('.content_main .current_effect'),
       rangeBlock: {
-        rangeBrightness: document.querySelector('.range_brightness'),
-        brightnessValue: document.querySelector('.brightness_value'),
-        rangeDuration: document.querySelector('.range_duration'),
-        durationValue: document.querySelector('.duration_value')
+        brightness: {
+          input: document.querySelector('.range_brightness'),
+          output: document.querySelector('.brightness_output')
+        },
+        duration: {
+          input: document.querySelector('.range_duration'),
+          output: document.querySelector('.duration_output')
+        }
       }
     }
   },
@@ -44,17 +48,5 @@ const UI = {
   error: {
     ws: document.querySelector('.error_ws')
   }
-}
 
-const updateList = (color) => {
-  UI.content.main.currentEffectELem.innerText = UI.content.effectElems[+localStorage.currentEffect - 1].innerText;
-  UI.content.effectElems.forEach(elem => elem.style.background = '');
-  // if (+(UI.content.effectElems[+localStorage.currentEffect - 1].dataset.effect) > 17) {
-  //  background = '#cd5300';
-  // }
-  UI.content.main.currentEffectELem.style.background = color;
-  UI.content.effectElems[+localStorage.currentEffect - 1].style.background = color;
-
-}
-
-export { UI, updateList };
+};

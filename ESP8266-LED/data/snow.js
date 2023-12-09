@@ -1,4 +1,4 @@
-import { UI } from './init.js';
+import UI from './ui.js';
 
 
 export const initSnow = (snowflakesCount) => {
@@ -45,7 +45,6 @@ function addStyleElement(snowflakesCount) {
   const css = document.createElement('style');
   css.type = 'text/css';
   css.appendChild(document.createTextNode(rule)); // support for the rest
-  console.log(css)
   document.getElementsByTagName('head')[0].appendChild(css);
 }
 

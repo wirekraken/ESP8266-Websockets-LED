@@ -1,4 +1,4 @@
-import { UI } from './init.js';
+import UI from './ui.js';
 import { ws } from './ws.js';
 
 const colorPicker = new KellyColorPicker({ place: UI.header.canvasColorPicker });
@@ -65,3 +65,5 @@ function clickMove() {
   console.log(payload);
   ws.send(payload);
 }
+
+export { colorPicker };

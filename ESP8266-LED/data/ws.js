@@ -1,4 +1,6 @@
-import { UI } from './init.js';
+import UI from './ui.js';
+import { onMessage } from './update.ui.js'
+
 
 let ws;
 
@@ -9,6 +11,7 @@ function wsConnect() {
   ws.onopen = onOpen;
   ws.onclose = onClose;
   ws.onerror = onError;
+  ws.onmessage = onMessage;
 
 }
 
