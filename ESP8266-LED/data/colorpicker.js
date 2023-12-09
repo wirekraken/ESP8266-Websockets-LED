@@ -1,7 +1,7 @@
 import { UI } from './init.js';
 import { ws } from './ws.js';
 
-const colorPicker = new KellyColorPicker({place: UI.header.canvasColorPicker});
+const colorPicker = new KellyColorPicker({ place: UI.header.canvasColorPicker });
 
 colorPicker.getWheel().width += 14; // ring width 
 colorPicker.getSvFigCursor().radius += 10; // width of the small ring
@@ -10,55 +10,58 @@ colorPicker.resize(260); // total ring size
 
 let isActive = false;
 
-// positioning
-UI.header.colorPickerBlock.style.top = UI.content.main.currentEffectELem.offsetTop - (UI.header.colorPickerBlock.clientHeight / 3) + 'px';
-UI.header.colorPickerBlock.style.display = 'none';
+// set colorpicker position
+(() => {
+  const offsetTop = UI.content.main.currentEffectELem.offsetTop;
+  const height = UI.header.colorPickerBlock.clientHeight;
+  UI.header.colorPickerBlock.style.top = `${offsetTop - (height / 3)}px`;
+  UI.header.colorPickerBlock.style.display = 'none';
+})();
 
-// ------------------- fix me -----------------------
-// intervention error
+
 try {
-	document.createEvent('touchevent'); // check the touch screen
+  document.createEvent('touchevent'); // check the touch screen
 
-	UI.header.canvasColorPicker.addEventListener('touchstart', clickDown);
-	UI.header.canvasColorPicker.addEventListener('touchend', clickUp);
-	UI.header.canvasColorPicker.addEventListener('touchmove', clickMove);
+  UI.header.canvasColorPicker.addEventListener('touchstart', clickDown);
+  UI.header.canvasColorPicker.addEventListener('touchend', clickUp);
+  UI.header.canvasColorPicker.addEventListener('touchmove', clickMove);
 }
 catch (e) {
-	UI.header.canvasColorPicker.addEventListener('mousedown', clickDown);
-	UI.header.canvasColorPicker.addEventListener('mouseup', clickUp);
-	UI.header.canvasColorPicker.addEventListener('mousemove', clickMove);
+  UI.header.canvasColorPicker.addEventListener('mousedown', clickDown);
+  UI.header.canvasColorPicker.addEventListener('mouseup', clickUp);
+  UI.header.canvasColorPicker.addEventListener('mousemove', clickMove);
+}
+
+const setColorPickerBoxShadow = (currentColor) => {
+  const boxShadow = `0px 0px 10px 10px ${currentColor} inset, 0 0 10px ${currentColor}`;
+  UI.header.canvasColorPicker.style.boxShadow = boxShadow;  
 }
 
 function clickDown() {
-	isActive = true;
-	UI.panel.btnBlock.togglePlay.checked = false;
+  isActive = true;
+  UI.panel.btnBlock.togglePlay.checked = false;
 }
 
 function clickUp() {
-	isActive = false;
-	UI.header.canvasColorPicker.style.boxShadow = `0px 0px 10px 10px ${colorPicker.getCurColorHex()} inset, 0 0 10px ${colorPicker.getCurColorHex()}`;
+  isActive = false;
+  const payload = colorPicker.getCurColorHex();
+  setColorPickerBoxShadow(payload);
 
-	const payload = colorPicker.getCurColorHex();
-
-	console.log(payload);
-	ws.send(payload);
+  console.log(payload);
+  ws.send(payload);
 }
 
-let lastSend = 0;
+let lastSendTime = 0;
 
 function clickMove() {
-	if (isActive) {  
-		UI.header.canvasColorPicker.style.boxShadow = `0px 0px 10px 10px ${colorPicker.getCurColorHex()} inset, 0 0 10px ${colorPicker.getCurColorHex()}`;
+  if (!isActive) return;
+  const payload = colorPicker.getCurColorHex();
+  setColorPickerBoxShadow(payload);
+  const now = Date.now();
 
-		const payload = colorPicker.getCurColorHex();
-		const now = (new Date).getTime();
+  if (lastSendTime > now - 100) return; // send data no more than 100ms
+  lastSendTime = now;
 
-		if (lastSend > now - 100) return; // send data no more than 100ms
-
-		lastSend = now;
-
-		console.log(payload);
-		ws.send(payload);
-	}
-	
+  console.log(payload);
+  ws.send(payload);
 }
