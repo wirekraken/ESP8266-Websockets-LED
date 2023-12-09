@@ -38,7 +38,8 @@ const UI = {
   settings: {
     themeSetters: document.querySelectorAll('.theme_setter_block .theme_setter'),
     togglePanelFill: document.querySelector('.toggle_panel_fill'),
-    toggleBgImage: document.querySelector('.toggle_bg')
+    toggleBgImage: document.querySelector('.toggle_bg'),
+    toggleSnow: document.querySelector('.toggle_snow')
   },
   error: {
     ws: document.querySelector('.error_ws')
